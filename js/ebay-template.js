@@ -276,14 +276,17 @@ export function generateEbayHtml(config) {
         `).join('');
 
         matrixHtml = `
-        <div class="hl-card hl-matrix-card">
-            <details class="hl-matrix-details" open>
+        <div class="hl-matrix-wrapper">
+            <details class="hl-matrix-details">
                 <summary class="hl-matrix-summary">
                     <div class="hl-matrix-summary-title">
-                        <span class="hl-card-icon">📱</span>
-                        <span>Kompatible ${escapeHtml(brand)} Modelle &amp; Qualitätsübersicht</span>
+                        <span class="hl-matrix-icon">📱</span>
+                        <span>Kompatible <strong>${escapeHtml(brand)}</strong> Modelle &amp; Baureihen (Qualitätsübersicht)</span>
                     </div>
-                    <span class="hl-summary-hint">Liste ein-/ausklappen ▾</span>
+                    <div class="hl-summary-badge">
+                        <span class="hl-badge-text">Liste ausklappen</span>
+                        <span class="hl-summary-chevron">▼</span>
+                    </div>
                 </summary>
                 <div class="hl-matrix-inner">
                     <p class="hl-matrix-desc">
@@ -931,46 +934,77 @@ export function generateEbayHtml(config) {
     }
 
     /* Compatibility Matrix Collapsible Dropdown */
-    .hl-matrix-card {
+    .hl-matrix-wrapper {
         margin-bottom: 25px;
-        overflow: hidden;
     }
     .hl-matrix-details {
         width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid var(--hl-border);
+        background: #111118;
+        transition: all 0.3s ease;
+    }
+    .hl-matrix-details:hover {
+        border-color: var(--hl-primary);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
     .hl-matrix-summary {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 4px 0;
+        padding: 16px 20px;
         cursor: pointer;
         outline: none;
         list-style: none;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(0, 0, 0, 0.3) 100%);
+        user-select: none;
+        transition: all 0.25s ease;
     }
     .hl-matrix-summary::-webkit-details-marker {
         display: none;
     }
+    .hl-matrix-summary:hover {
+        background: var(--hl-accent-bg);
+    }
+    .hl-matrix-details[open] .hl-matrix-summary {
+        background: var(--hl-accent-bg);
+        border-bottom: 1px solid var(--hl-primary);
+    }
     .hl-matrix-summary-title {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
         font-size: 16px;
         font-weight: 800;
         color: var(--hl-light);
     }
-    .hl-summary-hint {
-        font-size: 11.5px;
-        font-weight: 700;
+    .hl-matrix-icon {
+        font-size: 20px;
+    }
+    .hl-summary-badge {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 800;
         color: var(--hl-primary);
-        background: var(--hl-accent-bg);
-        border: 1px solid var(--hl-border);
-        padding: 4px 10px;
-        border-radius: 15px;
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid var(--hl-primary);
+        padding: 6px 14px;
+        border-radius: 20px;
+    }
+    .hl-summary-chevron {
+        font-size: 11px;
+        transition: transform 0.3s ease;
+        display: inline-block;
+    }
+    .hl-matrix-details[open] .hl-summary-chevron {
+        transform: rotate(180deg);
     }
     .hl-matrix-inner {
-        margin-top: 14px;
-        border-top: 1px solid #232330;
-        padding-top: 14px;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.2);
     }
     .hl-matrix-desc {
         font-size: 13.5px;
