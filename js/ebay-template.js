@@ -26,7 +26,7 @@ export function generateEbayHtml(config) {
         upsellTitle = "Premium Panzerglas Schutz",
         upsellDesc = "Füge ein hochfestes 9H Panzerglas inkl. blasenfreier Montage hinzu.",
         formToggle = "yes", // 'yes' | 'no'
-        formLink = "https://mustafamuhammed29.github.io/handyland-generator/reparaturschein.html",
+        formLink = "https://mustafamuhammed29.github.io/handyland-generator/reparaturschein.pdf",
         featuresHtml = "",
         faq1Text = "",
         transparencyText = "",
