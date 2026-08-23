@@ -221,6 +221,20 @@
                         <option value="no">❌ Nein, Tabelle ausblenden</option>
                     </select>
                 </div>
+
+                <!-- Interactive Matrix Rows Editor -->
+                <div id="matrixEditorBox" class="matrix-editor-box">
+                    <div class="matrix-editor-header">
+                        <span>📱 Unterstützte Modelle &amp; Ersatzteil-Qualität:</span>
+                        <span style="font-size: 10.5px; color: #a0a0b0;">(Hinzufügen / Entfernen)</span>
+                    </div>
+                    <div id="matrixRowsContainer" class="matrix-rows-list">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                    <button type="button" id="btnAddMatrixRow" class="btn-add-matrix-row">
+                        ➕ Weitere Modellreihe hinzufügen
+                    </button>
+                </div>
             </div>
 
             <!-- Section 4: Dynamic Texts & Quality -->

@@ -42,6 +42,7 @@ export function generateEbayHtml(config) {
         afterTitle = "",
         afterDesc = "",
         matrixToggle = "yes", // 'yes' | 'no'
+        matrixRows = null, // Custom array from UI [{series, models, status}]
         qrToggle = "yes", // 'yes' | 'no'
         sealToggle = "yes", // 'yes' | 'no'
         featuresHtml = "",
@@ -257,39 +258,56 @@ export function generateEbayHtml(config) {
         </div>`;
     }
 
-    // Compatibility Matrix Table HTML
+    // Compatibility Matrix Table HTML (Collapsible Dropdown Accordion)
     let matrixHtml = '';
-    if (matrixToggle === 'yes' && REPAIR_DATA.compatibilityMatrix && REPAIR_DATA.compatibilityMatrix[brand]) {
-        const seriesList = REPAIR_DATA.compatibilityMatrix[brand];
-        const rows = seriesList.map(item => `
+    const activeMatrixList = (matrixRows && matrixRows.length > 0) 
+        ? matrixRows 
+        : (REPAIR_DATA.compatibilityMatrix && REPAIR_DATA.compatibilityMatrix[brand]) 
+            ? REPAIR_DATA.compatibilityMatrix[brand] 
+            : [];
+
+    if (matrixToggle === 'yes' && activeMatrixList.length > 0) {
+        const rows = activeMatrixList.map(item => `
             <tr>
                 <td class="hl-m-series"><strong>${escapeHtml(item.series)}</strong></td>
                 <td class="hl-m-models">${escapeHtml(item.models)}</td>
-                <td class="hl-m-status"><span class="hl-status-pill">✔ ${escapeHtml(item.status)}</span></td>
+                <td class="hl-m-status"><span class="hl-status-pill">✔ ${escapeHtml(item.status || "Kompatibel (Erstausrüsterqualität)")}</span></td>
             </tr>
         `).join('');
 
         matrixHtml = `
         <div class="hl-card hl-matrix-card">
-            <div class="hl-card-header">
-                <span class="hl-card-icon">📱</span>
-                <div class="hl-card-title">Kompatible ${escapeHtml(brand)} Modelle &amp; Baureihen</div>
-            </div>
-            <p class="hl-matrix-desc">Wir verbauen ausschließlich passgenaue Ersatzteile in geprüfter Meisterqualität für folgende Generationen:</p>
-            <div class="hl-matrix-table-wrap">
-                <table class="hl-matrix-table">
-                    <thead>
-                        <tr>
-                            <th>Serie / Reihe</th>
-                            <th>Unterstützte Modelle</th>
-                            <th>Qualitätsstatus</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${rows}
-                    </tbody>
-                </table>
-            </div>
+            <details class="hl-matrix-details" open>
+                <summary class="hl-matrix-summary">
+                    <div class="hl-matrix-summary-title">
+                        <span class="hl-card-icon">📱</span>
+                        <span>Kompatible ${escapeHtml(brand)} Modelle &amp; Qualitätsübersicht</span>
+                    </div>
+                    <span class="hl-summary-hint">Liste ein-/ausklappen ▾</span>
+                </summary>
+                <div class="hl-matrix-inner">
+                    <p class="hl-matrix-desc">
+                        Wir verbauen geprüfte Ersatzteile führender Qualitätshersteller (Erstausrüsterqualität) – passgenau, langlebig und fachgerecht montiert:
+                    </p>
+                    <div class="hl-table-responsive">
+                        <table class="hl-matrix-table">
+                            <thead>
+                                <tr>
+                                    <th>Serie / Baureihe</th>
+                                    <th>Unterstützte Modelle</th>
+                                    <th>Ersatzteil-Qualität &amp; Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${rows}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="hl-matrix-disclaimer">
+                        ⚖️ <strong>Transparenzhinweis:</strong> Sofern nicht ausdrücklich anders vermerkt, handelt es sich um geprüfte Neuteile in Erstausrüsterqualität (keine original ${escapeHtml(brand)}-Bauteile). Alle Markennamen dienen ausschließlich der Beschreibung der Kompatibilität.
+                    </div>
+                </div>
+            </details>
         </div>`;
     }
 
@@ -912,14 +930,53 @@ export function generateEbayHtml(config) {
         margin-top: 2px;
     }
 
-    /* Compatibility Matrix Table */
+    /* Compatibility Matrix Collapsible Dropdown */
     .hl-matrix-card {
         margin-bottom: 25px;
+        overflow: hidden;
+    }
+    .hl-matrix-details {
+        width: 100%;
+    }
+    .hl-matrix-summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 4px 0;
+        cursor: pointer;
+        outline: none;
+        list-style: none;
+    }
+    .hl-matrix-summary::-webkit-details-marker {
+        display: none;
+    }
+    .hl-matrix-summary-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 16px;
+        font-weight: 800;
+        color: var(--hl-light);
+    }
+    .hl-summary-hint {
+        font-size: 11.5px;
+        font-weight: 700;
+        color: var(--hl-primary);
+        background: var(--hl-accent-bg);
+        border: 1px solid var(--hl-border);
+        padding: 4px 10px;
+        border-radius: 15px;
+    }
+    .hl-matrix-inner {
+        margin-top: 14px;
+        border-top: 1px solid #232330;
+        padding-top: 14px;
     }
     .hl-matrix-desc {
         font-size: 13.5px;
         color: #c0c0d0;
         margin-bottom: 14px;
+        line-height: 1.45;
     }
     .hl-table-responsive {
         overflow-x: auto;
@@ -958,6 +1015,16 @@ export function generateEbayHtml(config) {
         font-size: 11px;
         font-weight: 700;
         white-space: nowrap;
+    }
+    .hl-matrix-disclaimer {
+        margin-top: 12px;
+        font-size: 11px;
+        color: #9090a0;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid #242430;
+        border-radius: 6px;
+        padding: 8px 12px;
+        line-height: 1.4;
     }
 
     /* Timeline Process */

@@ -15,7 +15,8 @@ const state = {
     currentTheme: 'gold',
     currentHtml: '',
     currentKleinanzeigenText: '',
-    savedTemplates: []
+    savedTemplates: [],
+    matrixRows: []
 };
 
 // DOM Elements Cache
@@ -27,6 +28,7 @@ function init() {
     renderQuickPresets();
     loadSavedTemplates();
     renderModelChips();
+    initMatrixRows();
     bindEvents();
     loadSavedSettings();
     updateDynamicTexts();
@@ -70,6 +72,9 @@ function cacheElements() {
         afterTitleInput: document.getElementById('inputAfterTitle'),
         afterDescInput: document.getElementById('inputAfterDesc'),
         matrixToggleSelect: document.getElementById('matrixToggle'),
+        matrixEditorBox: document.getElementById('matrixEditorBox'),
+        matrixRowsContainer: document.getElementById('matrixRowsContainer'),
+        btnAddMatrixRow: document.getElementById('btnAddMatrixRow'),
 
         dynFeatures: document.getElementById('dynFeatures'),
         dynFaq1: document.getElementById('dynFaq1'),
@@ -390,10 +395,136 @@ Hertzstr. 1
 💬 WhatsApp Express-Hotline: ${shop.phone}
 🔗 Direktkontakt: ${waUrl}
 ✉️ E-Mail: ${shop.email}
-🏛️ USt-IdNr.: ${shop.vatId}`;
+// ================= COMPATIBILITY MATRIX MANAGER =================
+function initMatrixRows() {
+    const brand = elements.brandSelect ? elements.brandSelect.value : 'Apple';
+    const repairType = elements.repairTypeSelect ? elements.repairTypeSelect.value : 'display';
+    
+    // Default quality label based on repair type
+    let defaultQuality = "Kompatibel (Erstausrüsterqualität)";
+    if (repairType === 'display') {
+        defaultQuality = (brand === 'Samsung') ? "Kompatibel (Dynamic AMOLED Qualität)" : "Kompatibel (HQ Display - kein Original)";
+    } else if (repairType === 'battery') {
+        defaultQuality = "Kompatibel (HQ Li-Ion 100% Kapazität)";
+    } else if (repairType === 'charging') {
+        defaultQuality = "Kompatibel (HQ Fast-Charge Modul)";
+    } else if (repairType === 'backcover') {
+        defaultQuality = "Kompatibel (Passgenaues Ersatzglas)";
+    }
+
+    if (REPAIR_DATA.compatibilityMatrix && REPAIR_DATA.compatibilityMatrix[brand]) {
+        state.matrixRows = REPAIR_DATA.compatibilityMatrix[brand].map(row => ({
+            series: row.series,
+            models: row.models,
+            status: defaultQuality
+        }));
+    } else {
+        state.matrixRows = [
+            { series: `${brand} Serie 1`, models: `${brand} Standard / Pro`, status: defaultQuality }
+        ];
+    }
+
+    renderMatrixEditorRows();
+}
+
+function renderMatrixEditorRows() {
+    if (!elements.matrixRowsContainer) return;
+    
+    elements.matrixRowsContainer.innerHTML = state.matrixRows.map((row, idx) => `
+        <div class="matrix-row-item" data-row-idx="${idx}">
+            <div class="matrix-row-top">
+                <input type="text" class="matrix-input-series" placeholder="Baureihe" value="${escapeHtml(row.series)}" title="Serie / Baureihe">
+                <input type="text" class="matrix-input-models" placeholder="Modelle" value="${escapeHtml(row.models)}" title="Unterstützte Modelle">
+                <button type="button" class="btn-del-matrix-row" data-del-idx="${idx}" title="Diese Modellreihe löschen">🗑️</button>
+            </div>
+            <select class="matrix-input-status" title="Ersatzteil-Qualität & Status">
+                <option value="Kompatibel (Erstausrüsterqualität)" ${row.status.includes('Erstausrüsterqualität') ? 'selected' : ''}>✔ Kompatibel (HQ Erstausrüsterqualität)</option>
+                <option value="Kompatibel (HQ Display - kein Original)" ${row.status.includes('HQ Display') || row.status.includes('kein Original') ? 'selected' : ''}>✔ Kompatibel (HQ Display - kein Original)</option>
+                <option value="Kompatibel (Dynamic AMOLED Qualität)" ${row.status.includes('AMOLED') ? 'selected' : ''}>✔ Kompatibel (Dynamic AMOLED Qualität)</option>
+                <option value="Kompatibel (HQ Li-Ion 100% Kapazität)" ${row.status.includes('Kapazität') ? 'selected' : ''}>✔ Kompatibel (HQ Li-Ion 100% Kapazität)</option>
+                <option value="Original Refurbished Qualität" ${row.status.includes('Refurbished') ? 'selected' : ''}>✔ Original Refurbished Qualität</option>
+                <option value="Original AMOLED Qualität" ${row.status === 'Original AMOLED Qualität' ? 'selected' : ''}>✔ Original AMOLED Qualität</option>
+            </select>
+        </div>
+    `).join('');
+
+    // Bind row input events
+    elements.matrixRowsContainer.querySelectorAll('.matrix-row-item').forEach(itemEl => {
+        const idx = parseInt(itemEl.getAttribute('data-row-idx'), 10);
+        const seriesInput = itemEl.querySelector('.matrix-input-series');
+        const modelsInput = itemEl.querySelector('.matrix-input-models');
+        const statusSelect = itemEl.querySelector('.matrix-input-status');
+
+        const updateData = () => {
+            if (state.matrixRows[idx]) {
+                state.matrixRows[idx].series = seriesInput.value;
+                state.matrixRows[idx].models = modelsInput.value;
+                state.matrixRows[idx].status = statusSelect.value;
+                generateAndRender();
+            }
+        };
+
+        seriesInput.addEventListener('input', updateData);
+        modelsInput.addEventListener('input', updateData);
+        statusSelect.addEventListener('change', updateData);
+    });
+
+    // Bind delete buttons
+    elements.matrixRowsContainer.querySelectorAll('.btn-del-matrix-row').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const delIdx = parseInt(btn.getAttribute('data-del-idx'), 10);
+            deleteMatrixRow(delIdx);
+        });
+    });
+}
+
+function addMatrixRow() {
+    const brand = elements.brandSelect.value;
+    state.matrixRows.push({
+        series: `Weitere ${brand} Serie`,
+        models: `Alle Modelle & Varianten`,
+        status: "Kompatibel (Erstausrüsterqualität)"
+    });
+    renderMatrixEditorRows();
+    generateAndRender();
+    showToast('➕ Neue Modellreihe hinzugefügt!');
+}
+
+function deleteMatrixRow(idx) {
+    state.matrixRows.splice(idx, 1);
+    renderMatrixEditorRows();
+    generateAndRender();
+    showToast('🗑️ Modellreihe entfernt.');
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
 }
 
 function bindEvents() {
+    // Add Matrix Row Button
+    if (elements.btnAddMatrixRow) {
+        elements.btnAddMatrixRow.addEventListener('click', addMatrixRow);
+    }
+
+    // Matrix Toggle change
+    if (elements.matrixToggleSelect && elements.matrixEditorBox) {
+        elements.matrixToggleSelect.addEventListener('change', () => {
+            if (elements.matrixToggleSelect.value === 'yes') {
+                elements.matrixEditorBox.classList.remove('hidden');
+            } else {
+                elements.matrixEditorBox.classList.add('hidden');
+            }
+            generateAndRender();
+        });
+    }
+
     // Save Custom Template Button
     if (elements.btnSaveTemplate) {
         elements.btnSaveTemplate.addEventListener('click', saveCustomTemplate);
@@ -612,6 +743,7 @@ function handleBrandChange() {
     if (brandObj && brandObj.defaultModel) {
         elements.modelInput.value = brandObj.defaultModel;
     }
+    initMatrixRows();
 }
 
 function handleRepairTypeChange() {
@@ -620,6 +752,7 @@ function handleRepairTypeChange() {
     if (typeObj && typeObj.defaultPrice) {
         elements.priceInput.value = typeObj.defaultPrice;
     }
+    initMatrixRows();
 }
 
 function updateDynamicTexts() {
@@ -722,6 +855,7 @@ function generateAndRender() {
         afterTitle: elements.afterTitleInput ? elements.afterTitleInput.value.trim() : "",
         afterDesc: elements.afterDescInput ? elements.afterDescInput.value.trim() : "",
         matrixToggle: elements.matrixToggleSelect ? elements.matrixToggleSelect.value : "yes",
+        matrixRows: state.matrixRows,
 
         formToggle: elements.formToggleSelect.value,
         formLink: elements.formLinkInput.value.trim(),
