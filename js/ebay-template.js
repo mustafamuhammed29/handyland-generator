@@ -334,9 +334,9 @@ export function generateEbayHtml(config) {
         </div>`;
     }
 
-    // VIP Original Apple Battery Card HTML
+    // VIP Original Apple Battery Card HTML (Active strictly for Apple + Battery repair)
     let appleOemHtml = '';
-    if (appleOemToggle === 'yes' && (brand === 'Apple' || repairTypeId === 'battery')) {
+    if (appleOemToggle === 'yes' && brand === 'Apple' && repairTypeId === 'battery') {
         const waOemMsg = encodeURIComponent(`Hallo HandyLand Heidelberg! Ich interessiere mich für einen originalen Apple-Akku direkt vom Hersteller für mein ${brand} ${model}. Bitte um ein unverbindliches Angebot.`);
         const waOemUrl = `https://wa.me/${shop.whatsappNumber}?text=${waOemMsg}`;
 

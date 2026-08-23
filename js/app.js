@@ -767,9 +767,9 @@ function updateDynamicTexts() {
 
     // Feature list customization
     let features = tpl.features;
-    if (typeId === 'display' && brandId === 'Apple' && tpl.apple_features) {
+    if (brandId === 'Apple' && tpl.apple_features) {
         features = tpl.apple_features;
-    } else if (typeId === 'display' && brandId === 'Samsung' && tpl.samsung_features) {
+    } else if (brandId === 'Samsung' && tpl.samsung_features) {
         features = tpl.samsung_features;
     }
 

@@ -211,9 +211,13 @@ export const REPAIR_DATA = {
         },
         charging: {
             features: `<li>Neue Premium-Ladebuchse / USB-C / Lightning Flex-Connector</li>
-<li>Gründliche Reinigung der internen Anschlüsse & Lautsprechergitter</li>
+<li>Gründliche Reinigung der internen Anschlüsse &amp; Lautsprechergitter</li>
 <li>Umfassende Prüfung der Schnellladefunktion (Fast Charge / PD)</li>
-<li>Überprüfung von Datenübertragung & Mikrofonfunktion</li>`,
+<li>Überprüfung von Datenübertragung &amp; Mikrofonfunktion</li>`,
+            apple_features: `<li>Neuer Lightning / USB-C Ladeanschluss Flex-Connector in Erstausrüsterqualität</li>
+<li>Unterstützung für schnelles Apple PD Fast Charging</li>
+<li>Prüfung von Mikrofon, Lautsprecherkontakt &amp; Antennenverbindung</li>
+<li>Sichere Verpackung für den versicherten DHL Rückversand</li>`,
             faq1: "Keine Sorge, beim Wechsel der Ladebuchse gehen keinerlei persönliche Daten verloren.",
             transparency: "Oft ist die Ladebuchse nur stark verschmutzt. Wir prüfen das Bauteil zuerst gründlich. Sollte nur eine professionelle Reinigung nötig sein, informieren wir dich transparent!",
             beforeAfter: {
@@ -230,11 +234,15 @@ export const REPAIR_DATA = {
 <li>Präzise, rückstandslose Entfernung des beschädigten Glases</li>
 <li>Spezialverklebung unter kontrolliertem Druck für nahtlosen Sitz</li>
 <li>Reinigung und Prüfung der rückseitigen Kameras und des Blitzes</li>`,
+            apple_features: `<li>Neues Premium-Rückglas in Original Apple Farbvarianten</li>
+<li>Schonende Laser- bzw. Kälteentfernung des gesplitterten Glases</li>
+<li>Präzise Spezialverklebung für nahtlose Passform und originale Spaltmaße</li>
+<li>Kamera-Linsen und MagSafe-Ladespule bleiben 100% geschützt</li>`,
             faq1: "Deine Daten bleiben vollständig unberührt. Die Reparatur betrifft ausschließlich das äußere Gehäuseglas.",
             transparency: "Aufgrund der werkseitigen Versiegelungsverfahren kann die herstellerseitige IP-Wasserdichtigkeit nach einem Gehäuseschaden und Tausch nicht mehr garantiert werden. Vor Spritzwasser ist das Gerät jedoch geschützt.",
             beforeAfter: {
-                beforeTitle: "Rückseite zersplittert",
-                beforeDesc: "Scherben lösen sich, unansehnliche Optik und Gefahr für die internen Kameras.",
+                beforeTitle: "Rückseite zersplittert & scharfkantig",
+                beforeDesc: "Scherben lösen sich, unansehnliche Risse und Verletzungsgefahr an den Händen.",
                 afterTitle: "Makellose neue Rückseite",
                 afterDesc: "Perfekte Spaltmaße, strahlender Original-Farbglanz und glattes Gefühl in der Hand."
             },
