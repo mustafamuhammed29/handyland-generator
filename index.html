@@ -139,7 +139,7 @@
                     </select>
                 </div>
 
-                <div class="control-group" id="promoPriceGroup" style="display: none;">
+                <div class="control-group hidden" id="promoPriceGroup">
                     <label for="inputUpsellPrice">Aufpreis (€)</label>
                     <input type="text" id="inputUpsellPrice" value="+ 15,00 €">
                 </div>
@@ -263,15 +263,15 @@
                 <div class="section-header">⭐ 6. Kundenbewertungen</div>
                 
                 <div class="control-group">
-                    <label>Bewertung 1</label>
-                    <textarea id="review1Text" rows="2"></textarea>
-                    <input type="text" id="review1Author" placeholder="Käufername (z.B. Michael T.)" style="margin-top: 5px;">
+                    <label for="review1Text">Bewertung 1 (Text &amp; Käufername)</label>
+                    <textarea id="review1Text" rows="2" placeholder="Erste Kundenbewertung..."></textarea>
+                    <input type="text" id="review1Author" class="review-author-input" placeholder="Käufername (z.B. Michael T.)" title="Käufername 1">
                 </div>
 
                 <div class="control-group">
-                    <label>Bewertung 2</label>
-                    <textarea id="review2Text" rows="2"></textarea>
-                    <input type="text" id="review2Author" placeholder="Käufername (z.B. Sarah K.)" style="margin-top: 5px;">
+                    <label for="review2Text">Bewertung 2 (Text &amp; Käufername)</label>
+                    <textarea id="review2Text" rows="2" placeholder="Zweite Kundenbewertung..."></textarea>
+                    <input type="text" id="review2Author" class="review-author-input" placeholder="Käufername (z.B. Sarah K.)" title="Käufername 2">
                 </div>
             </div>
 
@@ -350,13 +350,13 @@
                 <!-- Pane 2: HTML Code Output -->
                 <div id="pane-code" class="pane">
                     <div class="code-container">
-                        <textarea id="code-output" class="code-box" readonly spellcheck="false"></textarea>
+                        <textarea id="code-output" class="code-box" readonly spellcheck="false" title="Generierter eBay HTML Code" placeholder="Generierter eBay HTML Code wird hier angezeigt..."></textarea>
                         
                         <div class="code-footer-info">
                             <span class="compliance-pill">
                                 🛡️ 100% eBay Richtlinienkonform: Pure HTML &amp; Embedded CSS (Kein JavaScript)
                             </span>
-                            <div style="display: flex; gap: 10px;">
+                            <div class="code-actions-group">
                                 <button type="button" id="btnDownloadHtmlBottom" class="btn-action-download">
                                     💾 Als .html herunterladen
                                 </button>

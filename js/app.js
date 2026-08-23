@@ -174,9 +174,9 @@ function loadPreset(presetId) {
     elements.upsellPriceInput.value = preset.upsellPrice;
 
     if (preset.upsellType === 'paid') {
-        elements.upsellPriceGroup.style.display = 'flex';
+        elements.upsellPriceGroup.classList.remove('hidden');
     } else {
-        elements.upsellPriceGroup.style.display = 'none';
+        elements.upsellPriceGroup.classList.add('hidden');
     }
 
     renderModelChips();
@@ -262,9 +262,9 @@ function bindEvents() {
     elements.upsellTypeSelect.addEventListener('change', () => {
         const type = elements.upsellTypeSelect.value;
         if (type === 'paid') {
-            elements.upsellPriceGroup.style.display = 'flex';
+            elements.upsellPriceGroup.classList.remove('hidden');
         } else {
-            elements.upsellPriceGroup.style.display = 'none';
+            elements.upsellPriceGroup.classList.add('hidden');
         }
         generateAndRender();
     });

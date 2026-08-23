@@ -324,6 +324,19 @@ body {
     gap: 10px;
 }
 
+.hidden {
+    display: none !important;
+}
+
+.review-author-input {
+    margin-top: 6px;
+}
+
+.code-actions-group {
+    display: flex;
+    gap: 10px;
+}
+
 /* Generate Button */
 .btn-generate {
     background: var(--gold-gradient);
