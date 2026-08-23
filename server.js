@@ -53,15 +53,25 @@ const server = http.createServer((req, res) => {
     });
 });
 
-server.listen(PORT, () => {
-    const url = `http://localhost:${PORT}`;
-    console.log(`\n========================================================`);
-    console.log(`  🚀 HandyLand eBay Generator Pro running at:`);
-    console.log(`  🔗 ${url}`);
-    console.log(`========================================================\n`);
+function startServer(port) {
+    server.listen(port, () => {
+        const url = `http://localhost:${port}`;
+        console.log(`\n========================================================`);
+        console.log(`  🚀 HandyLand eBay Generator Pro running at:`);
+        console.log(`  🔗 ${url}`);
+        console.log(`========================================================\n`);
 
-    // Auto open browser on Windows/Mac/Linux
-    const startCmd = process.platform === 'win32' ? `start "" "${url}"` :
-                     process.platform === 'darwin' ? `open "${url}"` : `xdg-open "${url}"`;
-    exec(startCmd);
-});
+        const startCmd = process.platform === 'win32' ? `start "" "${url}"` :
+                         process.platform === 'darwin' ? `open "${url}"` : `xdg-open "${url}"`;
+        exec(startCmd);
+    }).on('error', (err) => {
+        if (err.code === 'EADDRINUSE') {
+            console.log(`⚠️ Port ${port} is in use, trying port ${port + 1}...`);
+            startServer(port + 1);
+        } else {
+            console.error('Server error:', err);
+        }
+    });
+}
+
+startServer(PORT);
