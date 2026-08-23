@@ -1059,7 +1059,7 @@ export function generateEbayHtml(config) {
     .hl-footer {
         background: #08080b;
         border-top: 2px solid var(--hl-primary);
-        padding: 28px 24px;
+        padding: 30px 24px;
     }
     .hl-footer-grid {
         display: flex;
@@ -1067,18 +1067,78 @@ export function generateEbayHtml(config) {
         flex-wrap: wrap;
         gap: 22px;
     }
+    .hl-footer-col {
+        flex: 1;
+        min-width: 220px;
+    }
     .hl-footer-col h4 {
         color: var(--hl-primary);
         font-size: 14px;
         text-transform: uppercase;
         letter-spacing: 0.8px;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
         font-weight: 800;
     }
-    .hl-footer-col p {
+    .hl-contact-pill {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid #242432;
+        border-radius: 8px;
+        padding: 9px 12px;
+        margin-bottom: 8px;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.2s;
+    }
+    .hl-contact-pill:hover {
+        border-color: var(--hl-primary);
+        background: rgba(255, 255, 255, 0.06);
+    }
+    .hl-contact-ico {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
+    }
+    .hl-ico-wa { background: rgba(37, 211, 102, 0.15); border: 1px solid rgba(37, 211, 102, 0.4); color: #25D366; }
+    .hl-ico-mail { background: rgba(88, 166, 255, 0.15); border: 1px solid rgba(88, 166, 255, 0.4); color: #58a6ff; }
+    .hl-ico-vat { background: rgba(212, 175, 55, 0.15); border: 1px solid rgba(212, 175, 55, 0.4); color: #d4af37; }
+    .hl-ico-loc { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #ff6b6b; }
+    .hl-contact-details {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.3;
+    }
+    .hl-contact-label {
+        font-size: 10px;
+        font-weight: 800;
+        color: #888898;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .hl-contact-val {
         font-size: 13px;
-        color: #9999a9;
-        line-height: 1.5;
+        font-weight: 700;
+        color: #ffffff;
+    }
+    .hl-shop-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--hl-gradient);
+        color: #000000;
+        font-weight: 800;
+        font-size: 12.5px;
+        padding: 8px 16px;
+        border-radius: 20px;
+        text-decoration: none;
+        margin-top: 10px;
     }
     .hl-copyright {
         text-align: center;
@@ -1327,20 +1387,51 @@ export function generateEbayHtml(config) {
         <div class="hl-footer-grid">
             <div class="hl-footer-col">
                 <h4>📍 Fachwerkstatt</h4>
-                <p><strong>${escapeHtml(shop.name)}</strong></p>
-                <p>Inh. ${escapeHtml(shop.owner)}</p>
-                <p>${escapeHtml(shop.street)}</p>
-                <p>${escapeHtml(shop.zipCity)}</p>
+                <div class="hl-contact-pill">
+                    <div class="hl-contact-ico hl-ico-loc">📍</div>
+                    <div class="hl-contact-details">
+                        <span class="hl-contact-label">Standort</span>
+                        <span class="hl-contact-val">${escapeHtml(shop.name)}</span>
+                        <span style="font-size: 11.5px; color: #a0a0b0;">Inh. ${escapeHtml(shop.owner)} • ${escapeHtml(shop.street)}, ${escapeHtml(shop.zipCity)}</span>
+                    </div>
+                </div>
             </div>
+
             <div class="hl-footer-col">
-                <h4>📞 Kontakt &amp; WhatsApp</h4>
-                <p><strong>WhatsApp:</strong> ${escapeHtml(shop.phone)}</p>
-                <p><strong>E-Mail:</strong> ${escapeHtml(shop.email)}</p>
-                <p><strong>USt-IdNr.:</strong> ${escapeHtml(shop.vatId)}</p>
+                <h4>📞 Kontakt &amp; Support</h4>
+                <a href="${waLink}" target="_blank" class="hl-contact-pill">
+                    <div class="hl-contact-ico hl-ico-wa">💬</div>
+                    <div class="hl-contact-details">
+                        <span class="hl-contact-label">WhatsApp Hotline</span>
+                        <span class="hl-contact-val">${escapeHtml(shop.phone)}</span>
+                    </div>
+                </a>
+
+                <a href="mailto:${escapeHtml(shop.email)}" class="hl-contact-pill">
+                    <div class="hl-contact-ico hl-ico-mail">✉️</div>
+                    <div class="hl-contact-details">
+                        <span class="hl-contact-label">E-Mail Support</span>
+                        <span class="hl-contact-val">${escapeHtml(shop.email)}</span>
+                    </div>
+                </a>
+
+                <div class="hl-contact-pill">
+                    <div class="hl-contact-ico hl-ico-vat">🏛️</div>
+                    <div class="hl-contact-details">
+                        <span class="hl-contact-label">Umsatzsteuer-ID (USt-IdNr.)</span>
+                        <span class="hl-contact-val">${escapeHtml(shop.vatId)}</span>
+                    </div>
+                </div>
             </div>
+
             <div class="hl-footer-col">
                 <h4>🛒 eBay Shop</h4>
-                <p>Besuche unseren eBay-Shop für weitere Smartphone-Reparaturen, Zubehör und geprüfte Refurbished-Geräte.</p>
+                <p style="font-size: 13px; color: #9999a9; line-height: 1.5; margin-bottom: 10px;">
+                    Entdecke weitere Express-Reparaturen, Displays, Akkus und geprüfte Refurbished-Smartphones in unserem Shop.
+                </p>
+                <a href="${escapeHtml(shop.ebayShopUrl)}" target="_blank" class="hl-shop-btn">
+                    🛍️ Zum eBay Shop ➔
+                </a>
             </div>
         </div>
         <div class="hl-copyright">
