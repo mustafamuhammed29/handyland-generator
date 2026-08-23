@@ -178,6 +178,49 @@
                 </div>
             </div>
 
+            <!-- Section 6: Video Showcase -->
+            <div class="form-section">
+                <div class="section-header">🎬 6. Werkstatt-Video (Einblick)</div>
+                
+                <div class="control-group">
+                    <label for="videoToggle">Video-Bereich im Angebot anzeigen?</label>
+                    <select id="videoToggle">
+                        <option value="yes">✅ Ja, Werkstatt-Video einbinden</option>
+                        <option value="no">❌ Nein, Video ausblenden</option>
+                    </select>
+                </div>
+
+                <div id="videoSettingsGroup">
+                    <div class="control-group">
+                        <label for="videoType">Video-Art (HTML5 Video / Link)</label>
+                        <select id="videoType">
+                            <option value="direct">🎥 Direktes Video (MP4 Player - eBay Konform)</option>
+                            <option value="link">📺 Video-Link / YouTube (Showcase-Card mit Button)</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="inputVideoUrl">Video-URL (MP4 Direktlink oder YouTube)</label>
+                        <input type="text" id="inputVideoUrl" value="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" placeholder="https://domain.com/video.mp4">
+                    </div>
+
+                    <div class="control-group">
+                        <label for="inputVideoPoster">Titelbild / Vorschaubild (Poster Image URL)</label>
+                        <input type="text" id="inputVideoPoster" value="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&q=80" placeholder="https://domain.com/poster.jpg">
+                    </div>
+
+                    <div class="control-group">
+                        <label for="inputVideoTitle">Video-Titel</label>
+                        <input type="text" id="inputVideoTitle" value="Einblick in unsere Meisterwerkstatt">
+                    </div>
+
+                    <div class="control-group">
+                        <label for="inputVideoDesc">Video-Beschreibung</label>
+                        <input type="text" id="inputVideoDesc" value="Erlebe Schritt für Schritt, mit welcher Präzision und Sorgfalt wir dein Smartphone reparieren.">
+                    </div>
+                </div>
+            </div>
+
             <!-- Submit Action -->
             <button type="button" id="btnGenerate" class="btn-generate">
                 🚀 eBay HTML Aktualisieren

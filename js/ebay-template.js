@@ -27,6 +27,12 @@ export function generateEbayHtml(config) {
         upsellDesc = "Füge ein hochfestes 9H Panzerglas inkl. blasenfreier Montage hinzu.",
         formToggle = "yes", // 'yes' | 'no'
         formLink = "https://mustafamuhammed29.github.io/handyland-generator/reparaturschein.pdf",
+        videoToggle = "yes", // 'yes' | 'no'
+        videoType = "direct", // 'direct' | 'link'
+        videoUrl = "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+        videoPoster = "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&q=80",
+        videoTitle = "Einblick in unsere Meisterwerkstatt",
+        videoDesc = "Erlebe Schritt für Schritt, mit welcher Präzision und Sorgfalt wir dein Smartphone reparieren.",
         featuresHtml = "",
         faq1Text = "",
         transparencyText = "",
@@ -93,6 +99,45 @@ export function generateEbayHtml(config) {
                 <p class="hl-timeline-desc">Verpacke dein <strong>${escapeHtml(brand)} ${escapeHtml(model)}</strong> sicher in Luftpolsterfolie. Lege bitte einen Zettel mit deinem <strong>eBay-Nutzernamen</strong>, deiner <strong>Telefonnummer</strong> und dem <strong>Entsperrcode</strong> (Muster/PIN) für die Endprüfung bei.</p>
             </div>
         </div>`;
+    }
+
+    // Video Showcase Section HTML
+    let videoHtml = '';
+    if (videoToggle === 'yes' && videoUrl && videoUrl.trim().length > 0) {
+        if (videoType === 'direct') {
+            videoHtml = `
+        <div class="hl-card hl-video-card" style="margin-bottom: 25px;">
+            <div class="hl-card-header">
+                <span class="hl-card-icon">🎬</span>
+                <div class="hl-card-title">${escapeHtml(videoTitle)}</div>
+            </div>
+            <p class="hl-video-desc">${escapeHtml(videoDesc)}</p>
+            <div class="hl-video-wrapper">
+                <video class="hl-video-element" controls preload="metadata" poster="${escapeHtml(videoPoster)}">
+                    <source src="${escapeHtml(videoUrl)}" type="video/mp4">
+                    Dein Browser unterstützt kein HTML5 Video.
+                </video>
+            </div>
+        </div>`;
+        } else {
+            videoHtml = `
+        <div class="hl-card hl-video-card" style="margin-bottom: 25px;">
+            <div class="hl-card-header">
+                <span class="hl-card-icon">🎬</span>
+                <div class="hl-card-title">${escapeHtml(videoTitle)}</div>
+            </div>
+            <p class="hl-video-desc">${escapeHtml(videoDesc)}</p>
+            <div class="hl-video-showcase-box">
+                <a href="${escapeHtml(videoUrl)}" target="_blank" class="hl-video-link-preview">
+                    <img src="${escapeHtml(videoPoster || 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&q=80')}" alt="Reparatur Video" class="hl-video-poster-img">
+                    <div class="hl-video-overlay">
+                        <div class="hl-play-btn-circle">▶</div>
+                        <span class="hl-play-btn-text">Werkstatt-Video ansehen ➔</span>
+                    </div>
+                </a>
+            </div>
+        </div>`;
+        }
     }
 
     // Optional Custom Notes Box
@@ -456,6 +501,91 @@ export function generateEbayHtml(config) {
         text-align: center;
     }
 
+    /* Video Showcase Styles (Pure HTML/CSS - eBay Compliant) */
+    .hl-video-card {
+        background: #181818;
+        border: 1px solid #2e2e2e;
+        border-radius: 10px;
+        padding: 22px;
+    }
+    .hl-video-desc {
+        font-size: 13.5px;
+        color: #b0b0b0;
+        margin-bottom: 14px;
+        line-height: 1.45;
+    }
+    .hl-video-wrapper {
+        width: 100%;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #000000;
+        border: 1px solid #333333;
+    }
+    .hl-video-element {
+        width: 100%;
+        max-height: 420px;
+        display: block;
+        border-radius: 8px;
+        background: #000000;
+    }
+    .hl-video-showcase-box {
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #000000;
+        border: 1px solid #333333;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+    .hl-video-link-preview {
+        display: block;
+        position: relative;
+        text-decoration: none;
+        overflow: hidden;
+    }
+    .hl-video-poster-img {
+        width: 100%;
+        height: auto;
+        max-height: 380px;
+        object-fit: cover;
+        display: block;
+        opacity: 0.85;
+        filter: brightness(0.85);
+        transition: transform 0.3s ease, filter 0.3s ease;
+    }
+    .hl-video-overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.45);
+        gap: 12px;
+    }
+    .hl-play-btn-circle {
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, #d4af37 0%, #aa8022 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #000000;
+        font-size: 24px;
+        font-weight: 900;
+        box-shadow: 0 0 25px rgba(212, 175, 55, 0.7);
+    }
+    .hl-play-btn-text {
+        background: rgba(0, 0, 0, 0.85);
+        color: #ffffff;
+        padding: 7px 18px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 800;
+        border: 1px solid #d4af37;
+        letter-spacing: 0.5px;
+    }
+
     /* Comparison Table / Box */
     .hl-comparison-grid {
         display: flex;
@@ -748,6 +878,8 @@ export function generateEbayHtml(config) {
                 </div>
             </div>
         </div>
+
+        ${videoHtml}
 
         <!-- Comparison Table -->
         <div class="hl-comparison-grid">

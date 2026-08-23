@@ -55,6 +55,15 @@ function cacheElements() {
         formToggleSelect: document.getElementById('formToggle'),
         formLinkInput: document.getElementById('inputFormLink'),
         
+        // Video Showcase
+        videoToggleSelect: document.getElementById('videoToggle'),
+        videoSettingsGroup: document.getElementById('videoSettingsGroup'),
+        videoTypeSelect: document.getElementById('videoType'),
+        videoUrlInput: document.getElementById('inputVideoUrl'),
+        videoPosterInput: document.getElementById('inputVideoPoster'),
+        videoTitleInput: document.getElementById('inputVideoTitle'),
+        videoDescInput: document.getElementById('inputVideoDesc'),
+        
         // SEO Box
         seoTitleInput: document.getElementById('seoTitleInput'),
         seoCounter: document.getElementById('titleCharCount'),
@@ -130,7 +139,13 @@ function bindEvents() {
         elements.review2Text,
         elements.review2Author,
         elements.formToggleSelect,
-        elements.formLinkInput
+        elements.formLinkInput,
+        elements.videoToggleSelect,
+        elements.videoTypeSelect,
+        elements.videoUrlInput,
+        elements.videoPosterInput,
+        elements.videoTitleInput,
+        elements.videoDescInput
     ];
 
     liveInputs.forEach(input => {
@@ -150,6 +165,18 @@ function bindEvents() {
         }
         generateAndRender();
     });
+
+    // Video toggle change
+    if (elements.videoToggleSelect && elements.videoSettingsGroup) {
+        elements.videoToggleSelect.addEventListener('change', () => {
+            if (elements.videoToggleSelect.value === 'yes') {
+                elements.videoSettingsGroup.style.display = 'block';
+            } else {
+                elements.videoSettingsGroup.style.display = 'none';
+            }
+            generateAndRender();
+        });
+    }
 
     // Copy SEO Title
     elements.btnCopySeo.addEventListener('click', () => {
@@ -287,6 +314,13 @@ function generateAndRender() {
         
         formToggle: elements.formToggleSelect.value,
         formLink: elements.formLinkInput.value.trim(),
+        
+        videoToggle: elements.videoToggleSelect ? elements.videoToggleSelect.value : "no",
+        videoType: elements.videoTypeSelect ? elements.videoTypeSelect.value : "direct",
+        videoUrl: elements.videoUrlInput ? elements.videoUrlInput.value.trim() : "",
+        videoPoster: elements.videoPosterInput ? elements.videoPosterInput.value.trim() : "",
+        videoTitle: elements.videoTitleInput ? elements.videoTitleInput.value.trim() : "",
+        videoDesc: elements.videoDescInput ? elements.videoDescInput.value.trim() : "",
         
         featuresHtml: elements.dynFeatures.value,
         faq1Text: elements.dynFaq1.value.trim(),
