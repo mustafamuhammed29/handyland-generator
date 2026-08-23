@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     
     <!-- Dashboard Stylesheet -->
-    <link rel="stylesheet" href="css/dashboard.css?v=3.0">
+    <link rel="stylesheet" href="css/dashboard.css?v=3.5">
 </head>
 <body>
 
@@ -40,6 +40,17 @@
                 </div>
             </div>
 
+            <!-- Saved Custom Templates (LocalStorage) -->
+            <div class="saved-templates-box">
+                <div class="saved-header">
+                    <span>💾 Eigene Vorlagen</span>
+                    <button type="button" id="btnSaveTemplate" class="btn-save-tpl" title="Aktuelle Eingaben als Vorlage speichern">➕ Speichern</button>
+                </div>
+                <div id="savedTemplatesList" class="saved-list">
+                    <!-- Dynamic saved templates -->
+                </div>
+            </div>
+
             <!-- Theme Color Selector -->
             <div class="control-group">
                 <label>🎨 eBay Design-Farbthema</label>
@@ -59,6 +70,17 @@
                 <div class="seo-input-group">
                     <input type="text" id="seoTitleInput" class="seo-input" readonly placeholder="SEO Titel wird generiert...">
                     <button type="button" id="btnCopySeo" class="btn-icon-copy" title="Titel in Zwischenablage kopieren">📋</button>
+                </div>
+            </div>
+
+            <!-- eBay SEO Keywords & Search Tags -->
+            <div class="seo-keywords-box">
+                <div class="saved-header">
+                    <span>🏷️ eBay Suchbegriffe (Tags)</span>
+                    <button type="button" id="btnCopyKeywords" class="btn-save-tpl" title="Alle Suchbegriffe kopieren">📋 Kopieren</button>
+                </div>
+                <div id="keywordsChipsContainer" class="keywords-row">
+                    <!-- Generated tags -->
                 </div>
             </div>
 
@@ -158,12 +180,12 @@
                 </div>
             </div>
 
-            <!-- Section 3: Before / After Visual Showcase -->
+            <!-- Section 3: Before / After & Matrix -->
             <div class="form-section">
-                <div class="section-header">✨ 3. Vorher / Nachher Vergleich</div>
+                <div class="section-header">✨ 3. Vergleich &amp; Modell-Tabelle</div>
                 
                 <div class="control-group">
-                    <label for="beforeAfterToggle">Vergleichsbereich im Angebot anzeigen?</label>
+                    <label for="beforeAfterToggle">Vorher/Nachher Vergleich anzeigen?</label>
                     <select id="beforeAfterToggle">
                         <option value="yes">✅ Ja, Vorher/Nachher anzeigen</option>
                         <option value="no">❌ Nein, ausblenden</option>
@@ -190,6 +212,14 @@
                         <label for="inputAfterDesc">Nachher: Ergebnisbeschreibung</label>
                         <input type="text" id="inputAfterDesc" value="Brillante Farben, makelloses Glas, ultraschnelle Touch-Reaktion und saubere Passform.">
                     </div>
+                </div>
+
+                <div class="control-group" style="margin-top: 10px;">
+                    <label for="matrixToggle">Modell-Kompatibilitätstabelle anzeigen?</label>
+                    <select id="matrixToggle">
+                        <option value="yes">✅ Ja, Modell-Tabelle im Angebot anzeigen</option>
+                        <option value="no">❌ Nein, Tabelle ausblenden</option>
+                    </select>
                 </div>
             </div>
 
@@ -278,9 +308,9 @@
                 </div>
             </div>
 
-            <!-- Section 7: Reparaturschein / Links -->
+            <!-- Section 7: Reparaturschein / Links & Customer Pre-fill -->
             <div class="form-section">
-                <div class="section-header">🔗 7. Reparaturschein &amp; Formular</div>
+                <div class="section-header">🔗 7. Reparaturschein &amp; Vorausfüllen</div>
                 
                 <div class="control-group">
                     <label for="formToggle">Reparaturschein im Ablauf anzeigen?</label>
@@ -293,6 +323,27 @@
                 <div class="control-group">
                     <label for="inputFormLink">Reparaturschein PDF-Link (GitHub Pages)</label>
                     <input type="text" id="inputFormLink" value="https://mustafamuhammed29.github.io/handyland-generator/reparaturschein.pdf">
+                </div>
+
+                <!-- Customer Direct Pre-Fill Tool -->
+                <div class="customer-fill-box">
+                    <div class="fill-header">✍️ Begleitschein für Kunden vorausfüllen &amp; drucken</div>
+                    <div class="row-2">
+                        <input type="text" id="custName" placeholder="Kundenname" title="Kundenname">
+                        <input type="text" id="custEbay" placeholder="eBay-Nutzername" title="eBay-Nutzername">
+                    </div>
+                    <div class="row-2">
+                        <input type="text" id="custAddress" placeholder="Straße &amp; Hausnr." title="Straße">
+                        <input type="text" id="custZipCity" placeholder="PLZ &amp; Ort" title="Ort">
+                    </div>
+                    <div class="row-2">
+                        <input type="text" id="custPhone" placeholder="Telefon / WhatsApp" title="Telefon">
+                        <input type="text" id="custPin" placeholder="Geräte-PIN / Code" title="PIN">
+                    </div>
+                    <textarea id="custNotes" rows="2" placeholder="Zusätzliche Fehlerbeschreibung..." title="Fehlerbeschreibung"></textarea>
+                    <button type="button" id="btnOpenFilledForm" class="btn-action-primary">
+                        📄 Vorausgefüllten Schein öffnen &amp; drucken ➔
+                    </button>
                 </div>
             </div>
 
@@ -319,6 +370,9 @@
                     </button>
                     <button type="button" id="tabCodeBtn" class="tab-btn">
                         💻 eBay HTML Code
+                    </button>
+                    <button type="button" id="tabKleinanzeigenBtn" class="tab-btn">
+                        📱 Kleinanzeigen Text
                     </button>
                 </div>
 
@@ -371,6 +425,22 @@
                     </div>
                 </div>
 
+                <!-- Pane 3: Kleinanzeigen.de Plain-Text Output -->
+                <div id="pane-kleinanzeigen" class="pane">
+                    <div class="code-container">
+                        <textarea id="kleinanzeigen-output" class="code-box" readonly spellcheck="false" title="Kleinanzeigen.de Textbeschreibung" placeholder="Kleinanzeigen Text wird generiert..."></textarea>
+                        
+                        <div class="code-footer-info">
+                            <span class="compliance-pill">
+                                📱 Optimiert für Kleinanzeigen.de &amp; Social Media
+                            </span>
+                            <button type="button" id="btnCopyKleinanzeigen" class="btn-action-primary">
+                                📋 Kleinanzeigen Text kopieren
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
         </main>
@@ -382,6 +452,6 @@
     </div>
 
     <!-- Main Module Script -->
-    <script type="module" src="js/app.js?v=3.0"></script>
+    <script type="module" src="js/app.js?v=3.5"></script>
 </body>
 </html>

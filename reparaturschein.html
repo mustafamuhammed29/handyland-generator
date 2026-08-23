@@ -50,32 +50,32 @@
                     
                     <div class="form-row">
                         <label>Vor- &amp; Nachname:</label>
-                        <div class="fill-line"></div>
+                        <div class="fill-line" id="fieldCustomerName"></div>
                     </div>
                     
                     <div class="form-row">
                         <label>eBay-Nutzername:</label>
-                        <div class="fill-line"></div>
+                        <div class="fill-line" id="fieldEbayUser"></div>
                     </div>
 
                     <div class="form-row">
                         <label>Straße &amp; Hausnr.:</label>
-                        <div class="fill-line"></div>
+                        <div class="fill-line" id="fieldAddress"></div>
                     </div>
 
                     <div class="form-row">
                         <label>PLZ &amp; Wohnort:</label>
-                        <div class="fill-line"></div>
+                        <div class="fill-line" id="fieldZipCity"></div>
                     </div>
 
                     <div class="form-row">
                         <label>Mobil / WhatsApp:</label>
-                        <div class="fill-line"></div>
+                        <div class="fill-line" id="fieldPhone"></div>
                     </div>
 
                     <div class="form-row">
                         <label>E-Mail-Adresse:</label>
-                        <div class="fill-line"></div>
+                        <div class="fill-line" id="fieldEmail"></div>
                     </div>
                 </div>
 
@@ -85,17 +85,17 @@
                     
                     <div class="form-row">
                         <label>Marke &amp; Modell:</label>
-                        <div class="fill-line"></div>
+                        <div class="fill-line" id="fieldModel"></div>
                     </div>
 
                     <div class="form-row">
                         <label>Farbe des Geräts:</label>
-                        <div class="fill-line"></div>
+                        <div class="fill-line" id="fieldColor"></div>
                     </div>
 
                     <div class="form-row">
                         <label>Geräte-PIN / Code:</label>
-                        <div class="fill-line"></div>
+                        <div class="fill-line" id="fieldPin"></div>
                     </div>
 
                     <div style="margin-top: 6px; display: flex; justify-content: space-between; align-items: center;">
@@ -116,7 +116,7 @@
                     </div>
 
                     <div class="check-item" style="margin-top: 4px;">
-                        <span class="check-square"></span>
+                        <span class="check-square" id="checkReset"></span>
                         <span>Gerät wurde vorab zurückgesetzt / ohne Sperre</span>
                     </div>
                 </div>
@@ -128,17 +128,17 @@
                 <div class="section-title">🛠️ 3. Gebuchte Reparaturleistung &amp; Fehlerangabe</div>
                 
                 <div class="check-grid">
-                    <div class="check-item"><span class="check-square"></span> <span>Display / Touchscreen defekt</span></div>
-                    <div class="check-item"><span class="check-square"></span> <span>Akku schwach / entlädt schnell</span></div>
-                    <div class="check-item"><span class="check-square"></span> <span>Ladebuchse / Wackelkontakt</span></div>
-                    <div class="check-item"><span class="check-square"></span> <span>Backcover / Rückglas gesprungen</span></div>
-                    <div class="check-item"><span class="check-square"></span> <span>Kamera unscharf / Glas defekt</span></div>
-                    <div class="check-item"><span class="check-square"></span> <span>Zusatz: Panzerglas Montage gebucht</span></div>
+                    <div class="check-item"><span class="check-square" id="chkDisplay"></span> <span>Display / Touchscreen defekt</span></div>
+                    <div class="check-item"><span class="check-square" id="chkBattery"></span> <span>Akku schwach / entlädt schnell</span></div>
+                    <div class="check-item"><span class="check-square" id="chkCharging"></span> <span>Ladebuchse / Wackelkontakt</span></div>
+                    <div class="check-item"><span class="check-square" id="chkBackcover"></span> <span>Backcover / Rückglas gesprungen</span></div>
+                    <div class="check-item"><span class="check-square" id="chkCamera"></span> <span>Kamera unscharf / Glas defekt</span></div>
+                    <div class="check-item"><span class="check-square" id="chkUpsell"></span> <span>Zusatz: Panzerglas Montage gebucht</span></div>
                 </div>
 
                 <div style="margin-top: 10px;">
                     <label style="font-size: 11px; font-weight: bold;">Zusätzliche Fehlerbeschreibung / Bemerkungen des Kunden:</label>
-                    <div class="fault-box"></div>
+                    <div class="fault-box" id="fieldNotes"></div>
                 </div>
             </div>
 
@@ -169,7 +169,7 @@
 
                 <div class="signature-grid">
                     <div class="sign-box">
-                        <div class="sign-line"></div>
+                        <div class="sign-line" id="fieldDate"></div>
                         <div class="sign-label">Ort, Datum</div>
                     </div>
                     <div class="sign-box">
@@ -187,5 +187,52 @@
 
     </div>
 
+    <!-- Script to Auto-Fill form fields from URL params (if generated via Generator) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            
+            const setText = (id, val) => {
+                if (val && document.getElementById(id)) {
+                    document.getElementById(id).textContent = val;
+                    document.getElementById(id).style.fontWeight = 'bold';
+                    document.getElementById(id).style.color = '#111827';
+                }
+            };
+
+            const setChecked = (id, condition) => {
+                if (condition && document.getElementById(id)) {
+                    document.getElementById(id).textContent = '✔';
+                    document.getElementById(id).style.textAlign = 'center';
+                    document.getElementById(id).style.lineHeight = '14px';
+                    document.getElementById(id).style.fontWeight = 'bold';
+                }
+            };
+
+            setText('fieldCustomerName', params.get('name'));
+            setText('fieldEbayUser', params.get('ebayUser'));
+            setText('fieldAddress', params.get('address'));
+            setText('fieldZipCity', params.get('zipCity'));
+            setText('fieldPhone', params.get('phone'));
+            setText('fieldEmail', params.get('email'));
+            setText('fieldModel', params.get('model'));
+            setText('fieldColor', params.get('color'));
+            setText('fieldPin', params.get('pin'));
+            setText('fieldNotes', params.get('notes'));
+            setText('fieldDate', params.get('date'));
+
+            const repairType = params.get('repair');
+            if (repairType === 'display') setChecked('chkDisplay', true);
+            if (repairType === 'battery') setChecked('chkBattery', true);
+            if (repairType === 'charging') setChecked('chkCharging', true);
+            if (repairType === 'backcover') setChecked('chkBackcover', true);
+            if (repairType === 'camera') setChecked('chkCamera', true);
+            if (params.get('upsell') === 'yes') setChecked('chkUpsell', true);
+
+            if (params.get('print') === '1') {
+                setTimeout(() => window.print(), 300);
+            }
+        });
+    </script>
 </body>
 </html>

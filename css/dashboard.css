@@ -640,3 +640,113 @@ body {
         height: 50vh;
     }
 }
+
+/* Saved Templates Manager */
+.saved-templates-box {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px dashed var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 10px 12px;
+    margin-bottom: 15px;
+}
+.saved-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+.btn-save-tpl {
+    background: rgba(212, 175, 55, 0.15);
+    border: 1px solid var(--gold-primary);
+    color: var(--gold-primary);
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+}
+.btn-save-tpl:hover {
+    background: var(--gold-primary);
+    color: #000000;
+}
+.saved-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-height: 24px;
+}
+.saved-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #191924;
+    border: 1px solid #2d2d3e;
+    color: #e0e0e0;
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+.saved-chip:hover {
+    border-color: var(--gold-primary);
+    color: var(--gold-primary);
+}
+.saved-chip-del {
+    color: #ef4444;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0 2px;
+}
+.saved-chip-del:hover {
+    transform: scale(1.2);
+}
+
+/* SEO Keywords Generator Box */
+.seo-keywords-box {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 10px 12px;
+    margin-bottom: 15px;
+}
+.keywords-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 6px;
+}
+.kw-chip {
+    background: rgba(88, 166, 255, 0.1);
+    border: 1px solid rgba(88, 166, 255, 0.3);
+    color: #58a6ff;
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 3px 7px;
+    border-radius: 4px;
+}
+
+/* Customer Pre-fill Form */
+.customer-fill-box {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid #2c2c3e;
+    border-radius: var(--radius-md);
+    padding: 12px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.fill-header {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--gold-primary);
+}
+.customer-fill-box input, .customer-fill-box textarea {
+    font-size: 12px;
+    padding: 7px 10px;
+}

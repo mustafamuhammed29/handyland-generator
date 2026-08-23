@@ -305,5 +305,45 @@ export const REPAIR_DATA = {
         vatId: "DE 406785869",
         ebayShopUrl: "https://www.ebay.de/sch/i.html?_ssn=handylandheidelberg",
         logoUrl: "https://i.imgur.com/WhNVees.png"
-    }
+    },
+
+    // Compatibility Matrix for Multi-Model Display
+    compatibilityMatrix: {
+        Apple: [
+            { series: "iPhone 15 Serie", models: "iPhone 15 / 15 Plus / 15 Pro / 15 Pro Max", status: "Kompatibel (100% Passgenau)" },
+            { series: "iPhone 14 Serie", models: "iPhone 14 / 14 Plus / 14 Pro / 14 Pro Max", status: "Kompatibel (100% Passgenau)" },
+            { series: "iPhone 13 Serie", models: "iPhone 13 / 13 mini / 13 Pro / 13 Pro Max", status: "Kompatibel (100% Passgenau)" },
+            { series: "iPhone 12 Serie", models: "iPhone 12 / 12 mini / 12 Pro / 12 Pro Max", status: "Kompatibel (100% Passgenau)" },
+            { series: "iPhone 11 & SE", models: "iPhone 11 / 11 Pro / SE (2020/2022) / X / XS", status: "Kompatibel (100% Passgenau)" }
+        ],
+        Samsung: [
+            { series: "Galaxy S24 Serie", models: "Galaxy S24 / S24 Plus / S24 Ultra", status: "Kompatibel (Dynamic AMOLED)" },
+            { series: "Galaxy S23 Serie", models: "Galaxy S23 / S23 Plus / S23 Ultra / S23 FE", status: "Kompatibel (Dynamic AMOLED)" },
+            { series: "Galaxy S22 Serie", models: "Galaxy S22 / S22 Plus / S22 Ultra", status: "Kompatibel (Dynamic AMOLED)" },
+            { series: "Galaxy S21 Serie", models: "Galaxy S21 / S21 Plus / S21 Ultra / S21 FE", status: "Kompatibel (Dynamic AMOLED)" },
+            { series: "Galaxy A Serie", models: "Galaxy A54 / A53 / A52 / A34 / A33 / A14", status: "Kompatibel (100% Passgenau)" }
+        ],
+        Xiaomi: [
+            { series: "Xiaomi 13 & 14", models: "Xiaomi 14 / 14 Ultra / 13 / 13 Pro / 13T", status: "Kompatibel (AMOLED)" },
+            { series: "Redmi Note Serie", models: "Redmi Note 13 / 12 / 11 Pro Plus", status: "Kompatibel (100% Passgenau)" }
+        ],
+        Google: [
+            { series: "Pixel 8 & 9 Serie", models: "Pixel 9 / 9 Pro / 8 / 8 Pro / 8a", status: "Kompatibel (OLED Display)" },
+            { series: "Pixel 7 & 6 Serie", models: "Pixel 7 / 7 Pro / 7a / 6 / 6 Pro / 6a", status: "Kompatibel (OLED Display)" }
+        ]
+    },
+
+    // SEO Keyword Tags for eBay Listings
+    seoKeywords: [
+        "Express Reparatur",
+        "Original Qualität",
+        "12 Monate Garantie",
+        "Rechnung inkl. 19% MwSt",
+        "DHL Blitzversand",
+        "Kein Datenverlust",
+        "Meisterwerkstatt Heidelberg",
+        "HandyLand Service",
+        "Display Tausch",
+        "Batteriewechsel 100%"
+    ]
 };

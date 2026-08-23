@@ -1,18 +1,21 @@
 /**
  * HandyLand Generator Pro - Main Application Controller
  * Handles UI interactions, live preview rendering, clipboard copying, 
- * preset loading, theme switching, file downloads, and state synchronization.
+ * preset loading, custom template saving, SEO tags, Kleinanzeigen export,
+ * customer slip auto-filling, theme switching, and file downloads.
  */
 
-import { REPAIR_DATA } from './data/repair-data.js?v=3.0';
-import { generateEbayHtml } from './ebay-template.js?v=3.0';
+import { REPAIR_DATA } from './data/repair-data.js?v=3.5';
+import { generateEbayHtml } from './ebay-template.js?v=3.5';
 
 // Application State
 const state = {
     currentTab: 'preview',
     currentDevice: 'desktop',
     currentTheme: 'gold',
-    currentHtml: ''
+    currentHtml: '',
+    currentKleinanzeigenText: '',
+    savedTemplates: []
 };
 
 // DOM Elements Cache
@@ -22,6 +25,7 @@ function init() {
     cacheElements();
     populateSelectOptions();
     renderQuickPresets();
+    loadSavedTemplates();
     renderModelChips();
     bindEvents();
     loadSavedSettings();
@@ -34,7 +38,11 @@ function cacheElements() {
         // Theme Swatches
         themeButtons: document.querySelectorAll('.btn-theme-swatch'),
         presetsContainer: document.getElementById('presetsContainer'),
+        savedTemplatesList: document.getElementById('savedTemplatesList'),
+        btnSaveTemplate: document.getElementById('btnSaveTemplate'),
         modelChipsContainer: document.getElementById('modelChipsContainer'),
+        keywordsChipsContainer: document.getElementById('keywordsChipsContainer'),
+        btnCopyKeywords: document.getElementById('btnCopyKeywords'),
 
         // Inputs
         brandSelect: document.getElementById('brandInput'),
@@ -54,13 +62,14 @@ function cacheElements() {
         upsellTitleInput: document.getElementById('inputUpsellTitle'),
         upsellDescInput: document.getElementById('inputUpsellDesc'),
         
-        // Before / After
+        // Before / After & Matrix
         beforeAfterToggleSelect: document.getElementById('beforeAfterToggle'),
         baSettingsGroup: document.getElementById('baSettingsGroup'),
         beforeTitleInput: document.getElementById('inputBeforeTitle'),
         beforeDescInput: document.getElementById('inputBeforeDesc'),
         afterTitleInput: document.getElementById('inputAfterTitle'),
         afterDescInput: document.getElementById('inputAfterDesc'),
+        matrixToggleSelect: document.getElementById('matrixToggle'),
 
         dynFeatures: document.getElementById('dynFeatures'),
         dynFaq1: document.getElementById('dynFaq1'),
@@ -84,6 +93,16 @@ function cacheElements() {
         formToggleSelect: document.getElementById('formToggle'),
         formLinkInput: document.getElementById('inputFormLink'),
         
+        // Customer Pre-fill Inputs
+        custName: document.getElementById('custName'),
+        custEbay: document.getElementById('custEbay'),
+        custAddress: document.getElementById('custAddress'),
+        custZipCity: document.getElementById('custZipCity'),
+        custPhone: document.getElementById('custPhone'),
+        custPin: document.getElementById('custPin'),
+        custNotes: document.getElementById('custNotes'),
+        btnOpenFilledForm: document.getElementById('btnOpenFilledForm'),
+
         // SEO Box
         seoTitleInput: document.getElementById('seoTitleInput'),
         seoCounter: document.getElementById('titleCharCount'),
@@ -93,13 +112,17 @@ function cacheElements() {
         btnGenerate: document.getElementById('btnGenerate'),
         tabPreviewBtn: document.getElementById('tabPreviewBtn'),
         tabCodeBtn: document.getElementById('tabCodeBtn'),
+        tabKleinanzeigenBtn: document.getElementById('tabKleinanzeigenBtn'),
         panePreview: document.getElementById('pane-preview'),
         paneCode: document.getElementById('pane-code'),
+        paneKleinanzeigen: document.getElementById('pane-kleinanzeigen'),
         previewViewport: document.getElementById('previewViewport'),
         previewIframe: document.getElementById('previewIframe'),
         codeOutput: document.getElementById('code-output'),
+        kleinanzeigenOutput: document.getElementById('kleinanzeigen-output'),
         btnCopyCodeTop: document.getElementById('btnCopyCodeTop'),
         btnCopyCodeBottom: document.getElementById('btnCopyCodeBottom'),
+        btnCopyKleinanzeigen: document.getElementById('btnCopyKleinanzeigen'),
         btnDownloadHtmlTop: document.getElementById('btnDownloadHtmlTop'),
         btnDownloadHtmlBottom: document.getElementById('btnDownloadHtmlBottom'),
         
@@ -112,12 +135,10 @@ function cacheElements() {
 }
 
 function populateSelectOptions() {
-    // Populate Brands
     elements.brandSelect.innerHTML = REPAIR_DATA.brands.map(b => 
         `<option value="${b.id}">${b.name}</option>`
     ).join('');
 
-    // Populate Repair Types
     elements.repairTypeSelect.innerHTML = REPAIR_DATA.repairTypes.map(r => 
         `<option value="${r.id}">${r.name}</option>`
     ).join('');
@@ -137,29 +158,6 @@ function renderQuickPresets() {
             loadPreset(presetId);
         });
     });
-}
-
-function renderModelChips() {
-    if (!elements.modelChipsContainer) return;
-    const currentBrand = elements.brandSelect.value;
-    const brandData = REPAIR_DATA.brands.find(b => b.id === currentBrand);
-    
-    if (brandData && brandData.quickModels) {
-        elements.modelChipsContainer.innerHTML = brandData.quickModels.map(m => `
-            <span class="chip" data-model="${m}">${m}</span>
-        `).join('');
-
-        elements.modelChipsContainer.querySelectorAll('.chip').forEach(chip => {
-            chip.addEventListener('click', (e) => {
-                const model = e.currentTarget.getAttribute('data-model');
-                elements.modelInput.value = model;
-                updateSeoTitle();
-                generateAndRender();
-            });
-        });
-    } else {
-        elements.modelChipsContainer.innerHTML = '';
-    }
 }
 
 function loadPreset(presetId) {
@@ -185,7 +183,230 @@ function loadPreset(presetId) {
     showToast(`⚡ Schnellvorlage "${preset.name}" geladen!`);
 }
 
+function renderModelChips() {
+    if (!elements.modelChipsContainer) return;
+    const currentBrand = elements.brandSelect.value;
+    const brandData = REPAIR_DATA.brands.find(b => b.id === currentBrand);
+    
+    if (brandData && brandData.quickModels) {
+        elements.modelChipsContainer.innerHTML = brandData.quickModels.map(m => `
+            <span class="chip" data-model="${m}">${m}</span>
+        `).join('');
+
+        elements.modelChipsContainer.querySelectorAll('.chip').forEach(chip => {
+            chip.addEventListener('click', (e) => {
+                const model = e.currentTarget.getAttribute('data-model');
+                elements.modelInput.value = model;
+                updateSeoTitle();
+                generateAndRender();
+            });
+        });
+    } else {
+        elements.modelChipsContainer.innerHTML = '';
+    }
+}
+
+// ================= CUSTOM TEMPLATES (LocalStorage) =================
+function saveCustomTemplate() {
+    const defaultName = `${elements.brandSelect.value} ${elements.modelInput.value} (${elements.repairTypeSelect.value})`;
+    const name = prompt('Name für deine Vorlage eingeben:', defaultName);
+    if (!name || name.trim().length === 0) return;
+
+    const tpl = {
+        id: 'tpl_' + Date.now(),
+        name: name.trim(),
+        brand: elements.brandSelect.value,
+        model: elements.modelInput.value,
+        repairType: elements.repairTypeSelect.value,
+        price: elements.priceInput.value,
+        shipping: elements.shippingCostInput.value,
+        warranty: elements.warrantyInput.value,
+        processing: elements.processingTimeInput.value,
+        upsellType: elements.upsellTypeSelect.value,
+        upsellPrice: elements.upsellPriceInput.value,
+        upsellTitle: elements.upsellTitleInput.value,
+        upsellDesc: elements.upsellDescInput.value,
+        theme: state.currentTheme
+    };
+
+    state.savedTemplates.push(tpl);
+    try {
+        localStorage.setItem('hl_custom_templates', JSON.stringify(state.savedTemplates));
+    } catch (e) {}
+
+    renderSavedTemplates();
+    showToast(`💾 Vorlage "${name}" erfolgreich gespeichert!`);
+}
+
+function loadSavedTemplates() {
+    try {
+        const data = localStorage.getItem('hl_custom_templates');
+        if (data) {
+            state.savedTemplates = JSON.parse(data) || [];
+        }
+    } catch (e) {
+        state.savedTemplates = [];
+    }
+    renderSavedTemplates();
+}
+
+function renderSavedTemplates() {
+    if (!elements.savedTemplatesList) return;
+    if (state.savedTemplates.length === 0) {
+        elements.savedTemplatesList.innerHTML = '<span style="font-size: 11px; color: #666;">Keine eigenen Vorlagen gespeichert.</span>';
+        return;
+    }
+
+    elements.savedTemplatesList.innerHTML = state.savedTemplates.map(t => `
+        <div class="saved-chip" data-tpl-id="${t.id}">
+            <span>📁 ${t.name}</span>
+            <span class="saved-chip-del" data-del-id="${t.id}" title="Vorlage löschen">×</span>
+        </div>
+    `).join('');
+
+    elements.savedTemplatesList.querySelectorAll('.saved-chip').forEach(chip => {
+        chip.addEventListener('click', (e) => {
+            if (e.target.classList.contains('saved-chip-del')) return;
+            const tplId = chip.getAttribute('data-tpl-id');
+            applyCustomTemplate(tplId);
+        });
+    });
+
+    elements.savedTemplatesList.querySelectorAll('.saved-chip-del').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const delId = btn.getAttribute('data-del-id');
+            deleteCustomTemplate(delId);
+        });
+    });
+}
+
+function applyCustomTemplate(tplId) {
+    const tpl = state.savedTemplates.find(t => t.id === tplId);
+    if (!tpl) return;
+
+    elements.brandSelect.value = tpl.brand;
+    elements.modelInput.value = tpl.model;
+    elements.repairTypeSelect.value = tpl.repairType;
+    elements.priceInput.value = tpl.price;
+    elements.shippingCostInput.value = tpl.shipping;
+    elements.warrantyInput.value = tpl.warranty;
+    elements.processingTimeInput.value = tpl.processing;
+    elements.upsellTypeSelect.value = tpl.upsellType;
+    elements.upsellPriceInput.value = tpl.upsellPrice;
+    elements.upsellTitleInput.value = tpl.upsellTitle;
+    elements.upsellDescInput.value = tpl.upsellDesc;
+
+    if (tpl.theme) {
+        state.currentTheme = tpl.theme;
+        elements.themeButtons.forEach(b => {
+            if (b.getAttribute('data-theme') === tpl.theme) b.classList.add('active');
+            else b.classList.remove('active');
+        });
+    }
+
+    renderModelChips();
+    updateDynamicTexts();
+    generateAndRender();
+    showToast(`📂 Vorlage "${tpl.name}" geladen!`);
+}
+
+function deleteCustomTemplate(tplId) {
+    state.savedTemplates = state.savedTemplates.filter(t => t.id !== tplId);
+    try {
+        localStorage.setItem('hl_custom_templates', JSON.stringify(state.savedTemplates));
+    } catch (e) {}
+    renderSavedTemplates();
+    showToast('🗑️ Vorlage gelöscht.');
+}
+
+// ================= SEO KEYWORDS GENERATOR =================
+function renderSeoKeywords() {
+    if (!elements.keywordsChipsContainer) return;
+    const brand = elements.brandSelect.value;
+    const model = elements.modelInput.value.trim();
+    const typeObj = REPAIR_DATA.repairTypes.find(r => r.id === elements.repairTypeSelect.value);
+    const kw = typeObj ? typeObj.seoKeyword : "Reparatur";
+
+    const dynamicTags = [
+        `${brand} ${model}`,
+        `${brand} ${kw}`,
+        `${model} ${kw}`,
+        "Express Reparatur Heidelberg",
+        "12 Monate Garantie",
+        "Rechnung inkl. 19% MwSt",
+        "DHL versicherter Versand",
+        "Kein Datenverlust",
+        "HandyLand Meisterwerkstatt",
+        "Display Glas Tausch"
+    ];
+
+    elements.keywordsChipsContainer.innerHTML = dynamicTags.map(t => `
+        <span class="kw-chip">${t}</span>
+    `).join('');
+
+    return dynamicTags.join(', ');
+}
+
+// ================= KLEINANZEIGEN.DE PLAIN-TEXT GENERATOR =================
+function generateKleinanzeigenText(config) {
+    const shop = REPAIR_DATA.shopInfo;
+    const waText = encodeURIComponent(`Hallo HandyLand Heidelberg! Ich habe euer Inserat auf Kleinanzeigen gesehen: ${config.brand} ${config.model} (${config.repairName}).`);
+    const waUrl = `https://wa.me/${shop.whatsappNumber}?text=${waText}`;
+
+    return `⚡ HandyLand Heidelberg • Professionelle Smartphone Reparatur ⚡
+═══════════════════════════════════════════════
+
+📱 GERÄT: ${config.brand} ${config.model}
+🛠️ REPARATURART: ${config.repairName}
+💶 PREIS: ${config.price} (inkl. 19% MwSt.)
+🛡️ GARANTIE: ${config.warrantyMonths} Monate Meister-Garantie
+⚡ DAUER: Express Bearbeitung (${config.processingTime})
+
+═══════════════════════════════════════════════
+⭐ UNSERE LEISTUNGEN & VORTEILE:
+═══════════════════════════════════════════════
+✔ Erstklassige Ersatzteile in geprüfter Meisterqualität
+✔ 100% DATENSCHUTZ: Deine Fotos, WhatsApp-Chats & Daten bleiben sicher erhalten
+✔ DHL Express Rückversand versichert mit Sendungsverfolgung
+✔ Auch persönliche Abgabe & Abholung in unserer Werkstatt in Heidelberg möglich!
+✔ Offizielle Rechnung mit ausgewiesener MwSt. (19%)
+
+═══════════════════════════════════════════════
+📦 SO EINFACH FUNKTIONIERT DER EINSENDESERVICE:
+═══════════════════════════════════════════════
+1. Kontaktiere uns kurz per WhatsApp oder Nachricht.
+2. Sende dein Gerät sicher verpackt an unsere Fachwerkstatt.
+3. Nach erfolgreicher Reparatur & Endtest senden wir dein Smartphone blitzschnell per DHL zurück.
+
+═══════════════════════════════════════════════
+📍 KONTAKT & WERKSTATT-STANDORT:
+═══════════════════════════════════════════════
+HandyLand Heidelberg
+Inh. Alsafi Nawfal
+Hertzstr. 1
+69126 Heidelberg
+
+💬 WhatsApp Express-Hotline: ${shop.phone}
+🔗 Direktkontakt: ${waUrl}
+✉️ E-Mail: ${shop.email}
+🏛️ USt-IdNr.: ${shop.vatId}`;
+}
+
 function bindEvents() {
+    // Save Custom Template Button
+    if (elements.btnSaveTemplate) {
+        elements.btnSaveTemplate.addEventListener('click', saveCustomTemplate);
+    }
+
+    // Copy Keywords Button
+    if (elements.btnCopyKeywords) {
+        elements.btnCopyKeywords.addEventListener('click', () => {
+            const tags = renderSeoKeywords();
+            copyToClipboard(tags, '🏷️ eBay Suchbegriffe (Tags) kopiert!');
+        });
+    }
+
     // Theme Switcher Buttons
     elements.themeButtons.forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -215,6 +436,7 @@ function bindEvents() {
     // Model and direct inputs trigger SEO and Live Preview
     elements.modelInput.addEventListener('input', () => {
         updateSeoTitle();
+        renderSeoKeywords();
         generateAndRender();
     });
 
@@ -226,6 +448,7 @@ function bindEvents() {
         elements.processingTimeInput,
         elements.logoModeSelect,
         elements.logoUrlInput,
+        elements.matrixToggleSelect,
         elements.upsellPriceInput,
         elements.upsellTitleInput,
         elements.upsellDescInput,
@@ -310,6 +533,13 @@ function bindEvents() {
         });
     }
 
+    // Copy Kleinanzeigen Text Button
+    if (elements.btnCopyKleinanzeigen) {
+        elements.btnCopyKleinanzeigen.addEventListener('click', () => {
+            copyToClipboard(state.currentKleinanzeigenText, '📱 Kleinanzeigen.de Textbeschreibung kopiert!');
+        });
+    }
+
     // Download HTML Buttons
     if (elements.btnDownloadHtmlTop) {
         elements.btnDownloadHtmlTop.addEventListener('click', downloadHtmlFile);
@@ -318,9 +548,17 @@ function bindEvents() {
         elements.btnDownloadHtmlBottom.addEventListener('click', downloadHtmlFile);
     }
 
-    // Tab Switching
+    // Tab Switching (Preview vs Code vs Kleinanzeigen)
     elements.tabPreviewBtn.addEventListener('click', () => switchTab('preview'));
     elements.tabCodeBtn.addEventListener('click', () => switchTab('code'));
+    if (elements.tabKleinanzeigenBtn) {
+        elements.tabKleinanzeigenBtn.addEventListener('click', () => switchTab('kleinanzeigen'));
+    }
+
+    // Customer Pre-fill Form Button
+    if (elements.btnOpenFilledForm) {
+        elements.btnOpenFilledForm.addEventListener('click', openPreFilledSlip);
+    }
 
     // Device Switcher
     elements.deviceButtons.forEach(btn => {
@@ -333,8 +571,39 @@ function bindEvents() {
     // Big Generate Button
     elements.btnGenerate.addEventListener('click', () => {
         generateAndRender();
-        showToast('🚀 eBay Vorlage erfolgreich aktualisiert!');
+        showToast('🚀 eBay Vorlage & Kleinanzeigen Text aktualisiert!');
     });
+}
+
+function openPreFilledSlip() {
+    const name = elements.custName ? elements.custName.value.trim() : '';
+    const ebayUser = elements.custEbay ? elements.custEbay.value.trim() : '';
+    const address = elements.custAddress ? elements.custAddress.value.trim() : '';
+    const zipCity = elements.custZipCity ? elements.custZipCity.value.trim() : '';
+    const phone = elements.custPhone ? elements.custPhone.value.trim() : '';
+    const pin = elements.custPin ? elements.custPin.value.trim() : '';
+    const notes = elements.custNotes ? elements.custNotes.value.trim() : '';
+    const brand = elements.brandSelect.value;
+    const model = elements.modelInput.value.trim();
+    const repair = elements.repairTypeSelect.value;
+    const today = new Date().toLocaleDateString('de-DE');
+
+    const params = new URLSearchParams({
+        name: name,
+        ebayUser: ebayUser,
+        address: address,
+        zipCity: zipCity,
+        phone: phone,
+        model: `${brand} ${model}`,
+        pin: pin,
+        repair: repair,
+        notes: notes,
+        date: today,
+        print: '1'
+    });
+
+    window.open(`reparaturschein.html?${params.toString()}`, '_blank');
+    showToast('📄 Vorausgefüllter Reparaturschein wird geöffnet...');
 }
 
 function handleBrandChange() {
@@ -396,6 +665,7 @@ function updateDynamicTexts() {
     }
 
     updateSeoTitle();
+    renderSeoKeywords();
 }
 
 function updateSeoTitle() {
@@ -451,6 +721,7 @@ function generateAndRender() {
         beforeDesc: elements.beforeDescInput ? elements.beforeDescInput.value.trim() : "",
         afterTitle: elements.afterTitleInput ? elements.afterTitleInput.value.trim() : "",
         afterDesc: elements.afterDescInput ? elements.afterDescInput.value.trim() : "",
+        matrixToggle: elements.matrixToggleSelect ? elements.matrixToggleSelect.value : "yes",
 
         formToggle: elements.formToggleSelect.value,
         formLink: elements.formLinkInput.value.trim(),
@@ -483,6 +754,13 @@ function generateAndRender() {
     // Update Code Pane
     elements.codeOutput.value = generatedHtml;
 
+    // Generate and update Kleinanzeigen text
+    const kleinanzeigenText = generateKleinanzeigenText(config);
+    state.currentKleinanzeigenText = kleinanzeigenText;
+    if (elements.kleinanzeigenOutput) {
+        elements.kleinanzeigenOutput.value = kleinanzeigenText;
+    }
+
     // Update Live Preview Iframe safely
     renderPreviewIframe(generatedHtml);
 
@@ -513,16 +791,23 @@ function renderPreviewIframe(html) {
 function switchTab(tab) {
     state.currentTab = tab;
     
+    elements.tabPreviewBtn.classList.remove('active');
+    elements.tabCodeBtn.classList.remove('active');
+    if (elements.tabKleinanzeigenBtn) elements.tabKleinanzeigenBtn.classList.remove('active');
+    
+    elements.panePreview.classList.remove('active');
+    elements.paneCode.classList.remove('active');
+    if (elements.paneKleinanzeigen) elements.paneKleinanzeigen.classList.remove('active');
+
     if (tab === 'preview') {
         elements.tabPreviewBtn.classList.add('active');
-        elements.tabCodeBtn.classList.remove('active');
         elements.panePreview.classList.add('active');
-        elements.paneCode.classList.remove('active');
-    } else {
-        elements.tabPreviewBtn.classList.remove('active');
+    } else if (tab === 'code') {
         elements.tabCodeBtn.classList.add('active');
-        elements.panePreview.classList.remove('active');
         elements.paneCode.classList.add('active');
+    } else if (tab === 'kleinanzeigen') {
+        if (elements.tabKleinanzeigenBtn) elements.tabKleinanzeigenBtn.classList.add('active');
+        if (elements.paneKleinanzeigen) elements.paneKleinanzeigen.classList.add('active');
     }
 }
 
@@ -559,7 +844,6 @@ function downloadHtmlFile() {
 
 function copyToClipboard(text, message) {
     if (!navigator.clipboard) {
-        // Fallback
         const textarea = document.createElement('textarea');
         textarea.value = text;
         document.body.appendChild(textarea);
@@ -588,9 +872,7 @@ function saveSettings() {
     try {
         const formLink = elements.formLinkInput.value.trim();
         localStorage.setItem('hl_form_link', formLink);
-    } catch (e) {
-        // Local storage might be blocked in some iframe environments
-    }
+    } catch (e) {}
 }
 
 function loadSavedSettings() {
@@ -599,9 +881,7 @@ function loadSavedSettings() {
         if (savedLink && savedLink.length > 0) {
             elements.formLinkInput.value = savedLink;
         }
-    } catch (e) {
-        // Ignore
-    }
+    } catch (e) {}
 }
 
 // Start when DOM is loaded

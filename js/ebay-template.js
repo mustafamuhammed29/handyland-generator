@@ -41,6 +41,9 @@ export function generateEbayHtml(config) {
         beforeDesc = "",
         afterTitle = "",
         afterDesc = "",
+        matrixToggle = "yes", // 'yes' | 'no'
+        qrToggle = "yes", // 'yes' | 'no'
+        sealToggle = "yes", // 'yes' | 'no'
         featuresHtml = "",
         faq1Text = "",
         transparencyText = "",
@@ -213,9 +216,89 @@ export function generateEbayHtml(config) {
         </div>`;
     }
 
-    // Dynamic WhatsApp Pre-filled URL
+    // Dynamic WhatsApp Pre-filled URL & QR Code
     const waText = encodeURIComponent(`Hallo HandyLand Heidelberg! Ich interessiere mich für die eBay-Reparatur: ${brand} ${model} (${repairName}). Könnt ihr mir bitte weiterhelfen?`);
     const waLink = `https://wa.me/${shop.whatsappNumber}?text=${waText}`;
+    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&margin=8&data=${encodeURIComponent(waLink)}`;
+
+    // German Trust & Warranty Seal Bar
+    let trustSealHtml = '';
+    if (sealToggle === 'yes') {
+        trustSealHtml = `
+        <div class="hl-trust-seal-bar">
+            <div class="hl-seal-item">
+                <div class="hl-seal-badge-icon">🏆</div>
+                <div class="hl-seal-content">
+                    <div class="hl-seal-title">${escapeHtml(warrantyMonths)} MONATE GARANTIE</div>
+                    <div class="hl-seal-sub">Auf alle verbauten Ersatzteile</div>
+                </div>
+            </div>
+            <div class="hl-seal-item">
+                <div class="hl-seal-badge-icon">🧾</div>
+                <div class="hl-seal-content">
+                    <div class="hl-seal-title">RECHNUNG MIT 19% MWST.</div>
+                    <div class="hl-seal-sub">Offizieller deutscher Fachbetrieb</div>
+                </div>
+            </div>
+            <div class="hl-seal-item">
+                <div class="hl-seal-badge-icon">🔒</div>
+                <div class="hl-seal-content">
+                    <div class="hl-seal-title">100% DATENSCHUTZ</div>
+                    <div class="hl-seal-sub">Kein Werksreset / Daten bleiben</div>
+                </div>
+            </div>
+            <div class="hl-seal-item">
+                <div class="hl-seal-badge-icon">⚡</div>
+                <div class="hl-seal-content">
+                    <div class="hl-seal-title">12-24H EXPRESS</div>
+                    <div class="hl-seal-sub">Schneller DHL Rückversand</div>
+                </div>
+            </div>
+        </div>`;
+    }
+
+    // Compatibility Matrix Table HTML
+    let matrixHtml = '';
+    if (matrixToggle === 'yes' && REPAIR_DATA.compatibilityMatrix && REPAIR_DATA.compatibilityMatrix[brand]) {
+        const seriesList = REPAIR_DATA.compatibilityMatrix[brand];
+        const rows = seriesList.map(item => `
+            <tr>
+                <td class="hl-m-series"><strong>${escapeHtml(item.series)}</strong></td>
+                <td class="hl-m-models">${escapeHtml(item.models)}</td>
+                <td class="hl-m-status"><span class="hl-status-pill">✔ ${escapeHtml(item.status)}</span></td>
+            </tr>
+        `).join('');
+
+        matrixHtml = `
+        <div class="hl-card hl-matrix-card">
+            <div class="hl-card-header">
+                <span class="hl-card-icon">📱</span>
+                <div class="hl-card-title">Kompatible ${escapeHtml(brand)} Modelle &amp; Baureihen</div>
+            </div>
+            <p class="hl-matrix-desc">Wir verbauen ausschließlich passgenaue Ersatzteile in geprüfter Meisterqualität für folgende Generationen:</p>
+            <div class="hl-matrix-table-wrap">
+                <table class="hl-matrix-table">
+                    <thead>
+                        <tr>
+                            <th>Serie / Reihe</th>
+                            <th>Unterstützte Modelle</th>
+                            <th>Qualitätsstatus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rows}
+                    </tbody>
+                </table>
+            </div>
+        </div>`;
+    }
+
+    // QR-Code Box for WhatsApp Card
+    const qrImgHtml = qrToggle === 'yes' ? `
+    <div class="hl-wa-qr-box">
+        <img src="${qrCodeUrl}" alt="WhatsApp QR-Code" class="hl-wa-qr-img">
+        <span class="hl-wa-qr-label">📱 Scan mit Handy</span>
+    </div>` : '';
 
     // Optional Custom Notes Box
     let customNotesHtml = '';
@@ -746,6 +829,33 @@ export function generateEbayHtml(config) {
         color: #e0e0e0;
         line-height: 1.45;
     }
+    .hl-wa-actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-shrink: 0;
+    }
+    .hl-wa-qr-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: #ffffff;
+        padding: 6px;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+    .hl-wa-qr-img {
+        width: 70px;
+        height: 70px;
+        display: block;
+    }
+    .hl-wa-qr-label {
+        font-size: 8.5px;
+        font-weight: 800;
+        color: #111827;
+        margin-top: 3px;
+        text-transform: uppercase;
+    }
     .hl-wa-btn {
         background: #25D366;
         color: #000000;
@@ -759,6 +869,95 @@ export function generateEbayHtml(config) {
         align-items: center;
         gap: 8px;
         box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+    }
+
+    /* German Trust & Warranty Seal Bar */
+    .hl-trust-seal-bar {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+        margin-bottom: 25px;
+    }
+    .hl-seal-item {
+        background: #12121a;
+        border: 1px solid var(--hl-border);
+        border-radius: 10px;
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+    .hl-seal-badge-icon {
+        font-size: 24px;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: var(--hl-accent-bg);
+        border: 1px solid var(--hl-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    .hl-seal-title {
+        font-size: 12px;
+        font-weight: 900;
+        color: var(--hl-primary);
+        letter-spacing: 0.5px;
+    }
+    .hl-seal-sub {
+        font-size: 11px;
+        color: #b0b0b8;
+        margin-top: 2px;
+    }
+
+    /* Compatibility Matrix Table */
+    .hl-matrix-card {
+        margin-bottom: 25px;
+    }
+    .hl-matrix-desc {
+        font-size: 13.5px;
+        color: #c0c0d0;
+        margin-bottom: 14px;
+    }
+    .hl-table-responsive {
+        overflow-x: auto;
+    }
+    .hl-matrix-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+        text-align: left;
+    }
+    .hl-matrix-table th {
+        background: #171722;
+        color: var(--hl-primary);
+        padding: 10px 14px;
+        font-weight: 800;
+        border-bottom: 2px solid var(--hl-primary);
+    }
+    .hl-matrix-table td {
+        padding: 10px 14px;
+        border-bottom: 1px solid #232330;
+        color: #d0d0dc;
+    }
+    .hl-matrix-table tr:nth-child(even) td {
+        background: rgba(255, 255, 255, 0.02);
+    }
+    .hl-m-series {
+        color: #ffffff;
+        font-weight: 700;
+    }
+    .hl-status-pill {
+        background: rgba(37, 211, 102, 0.15);
+        color: #25D366;
+        border: 1px solid rgba(37, 211, 102, 0.4);
+        padding: 3px 8px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
     }
 
     /* Timeline Process */
@@ -1255,10 +1454,16 @@ export function generateEbayHtml(config) {
             </div>
         </div>
 
+        <!-- German Trust & Warranty Seal Bar -->
+        ${trustSealHtml}
+
         <!-- Before / After Visual Comparison -->
         ${beforeAfterHtml}
 
-        <!-- WhatsApp Quick Live Chat Card -->
+        <!-- Compatibility Matrix -->
+        ${matrixHtml}
+
+        <!-- WhatsApp Quick Live Chat Card with QR Code -->
         <div class="hl-whatsapp-card">
             <div class="hl-wa-info">
                 <div class="hl-wa-avatar">💬</div>
@@ -1267,9 +1472,12 @@ export function generateEbayHtml(config) {
                     <p>Schreib uns direkt auf WhatsApp! Unser Techniker berät dich kostenlos und unverbindlich vor dem Kauf.</p>
                 </div>
             </div>
-            <a href="${waLink}" target="_blank" class="hl-wa-btn">
-                💬 WhatsApp Chat starten ➔
-            </a>
+            <div class="hl-wa-actions">
+                ${qrImgHtml}
+                <a href="${waLink}" target="_blank" class="hl-wa-btn">
+                    💬 WhatsApp Chat ➔
+                </a>
+            </div>
         </div>
 
         <!-- Step-by-Step Timeline Process -->
