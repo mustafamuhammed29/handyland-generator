@@ -45,6 +45,9 @@ function cacheElements() {
         warrantyInput: document.getElementById('warrantyInput'),
         processingTimeInput: document.getElementById('processingTimeInput'),
         
+        logoModeSelect: document.getElementById('logoModeSelect'),
+        logoUrlInput: document.getElementById('inputLogoUrl'),
+        
         upsellTypeSelect: document.getElementById('upsellType'),
         upsellPriceGroup: document.getElementById('promoPriceGroup'),
         upsellPriceInput: document.getElementById('inputUpsellPrice'),
@@ -221,6 +224,8 @@ function bindEvents() {
         elements.shippingCostInput,
         elements.warrantyInput,
         elements.processingTimeInput,
+        elements.logoModeSelect,
+        elements.logoUrlInput,
         elements.upsellPriceInput,
         elements.upsellTitleInput,
         elements.upsellDescInput,
@@ -425,6 +430,8 @@ function generateAndRender() {
 
     const config = {
         themeId: state.currentTheme,
+        logoMode: elements.logoModeSelect ? elements.logoModeSelect.value : "badge",
+        logoUrl: elements.logoUrlInput ? elements.logoUrlInput.value.trim() : "",
         brand: elements.brandSelect.value,
         model: elements.modelInput.value.trim(),
         repairTypeId: elements.repairTypeSelect.value,

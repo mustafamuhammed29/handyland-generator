@@ -14,6 +14,8 @@ import { REPAIR_DATA } from './data/repair-data.js';
 export function generateEbayHtml(config) {
     const {
         themeId = "gold",
+        logoMode = "badge", // 'badge' | 'image' | 'text'
+        logoUrl = "https://i.imgur.com/WhNVees.png",
         brand = "Apple",
         model = "iPhone 14 Pro",
         repairTypeId = "battery",
@@ -49,6 +51,33 @@ export function generateEbayHtml(config) {
 
     const shop = REPAIR_DATA.shopInfo;
     const theme = REPAIR_DATA.themes[themeId] || REPAIR_DATA.themes.gold;
+
+    // Logo Emblem / Image HTML
+    let logoHtml = '';
+    const finalLogoUrl = logoUrl || shop.logoUrl;
+    if (logoMode === 'badge') {
+        logoHtml = `
+        <div class="hl-logo-wrapper">
+            <div class="hl-logo-emblem">
+                <img src="${escapeHtml(finalLogoUrl)}" alt="HandyLand Heidelberg" class="hl-logo-img">
+                <div class="hl-logo-text-col">
+                    <div class="hl-brand-heading">HANDY<span>LAND</span></div>
+                    <div class="hl-brand-subheading">HEIDELBERG • MEISTERWERKSTATT</div>
+                </div>
+            </div>
+        </div>`;
+    } else if (logoMode === 'image') {
+        logoHtml = `
+        <div class="hl-logo-wrapper">
+            <img src="${escapeHtml(finalLogoUrl)}" alt="HandyLand Heidelberg" class="hl-logo-img-standalone">
+        </div>`;
+    } else {
+        logoHtml = `
+        <div class="hl-logo-wrapper">
+            <div class="hl-brand-heading-large">⚡ HANDY<span>LAND</span></div>
+            <div class="hl-brand-subheading-large">FACHWERKSTATT HEIDELBERG</div>
+        </div>`;
+    }
 
     // Promotion / Upsell Box HTML
     let promoHtml = '';
@@ -284,12 +313,71 @@ export function generateEbayHtml(config) {
         position: relative;
     }
     .hl-logo-wrapper {
-        margin-bottom: 15px;
+        margin-bottom: 18px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .hl-logo-emblem {
+        display: inline-flex;
+        align-items: center;
+        gap: 16px;
+        background: rgba(0, 0, 0, 0.65);
+        border: 1px solid var(--hl-border);
+        padding: 10px 24px;
+        border-radius: 40px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     }
     .hl-logo-img {
-        max-height: 55px;
-        max-width: 220px;
+        height: 64px;
+        width: auto;
+        max-width: 140px;
+        object-fit: contain;
+        filter: drop-shadow(0 2px 8px rgba(212, 175, 55, 0.4));
+    }
+    .hl-logo-img-standalone {
+        max-height: 95px;
+        max-width: 280px;
+        object-fit: contain;
         display: inline-block;
+        filter: drop-shadow(0 4px 15px rgba(212, 175, 55, 0.45));
+    }
+    .hl-logo-text-col {
+        text-align: left;
+    }
+    .hl-brand-heading {
+        font-size: 24px;
+        font-weight: 900;
+        letter-spacing: 2px;
+        color: #ffffff;
+        line-height: 1.1;
+    }
+    .hl-brand-heading span {
+        color: var(--hl-primary);
+    }
+    .hl-brand-subheading {
+        font-size: 9.5px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        color: var(--hl-light);
+        margin-top: 3px;
+    }
+    .hl-brand-heading-large {
+        font-size: 32px;
+        font-weight: 900;
+        letter-spacing: 3px;
+        color: #ffffff;
+    }
+    .hl-brand-heading-large span {
+        color: var(--hl-primary);
+    }
+    .hl-brand-subheading-large {
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        color: var(--hl-light);
+        margin-top: 4px;
     }
     .hl-header-tagline {
         display: inline-block;
@@ -1032,9 +1120,7 @@ export function generateEbayHtml(config) {
 
     <!-- Header -->
     <div class="hl-header">
-        <div class="hl-logo-wrapper">
-            <img src="${escapeHtml(shop.logoUrl)}" alt="HandyLand Heidelberg Logo" class="hl-logo-img">
-        </div>
+        ${logoHtml}
         <div class="hl-header-tagline">Fachwerkstatt &amp; Express Einsendeservice</div>
         <h1>Premium <span>${escapeHtml(repairName)}</span></h1>
         <p class="hl-header-subtitle">Fachgerechte Reparatur für ${escapeHtml(brand)} ${escapeHtml(model)}</p>
