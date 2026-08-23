@@ -121,10 +121,10 @@ body {
     gap: 6px;
     overflow-x: auto;
     padding-bottom: 4px;
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
 }
 .quick-nav-bar::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
+    display: none;
 }
 .quick-nav-pill {
     flex-shrink: 0;

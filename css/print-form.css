@@ -378,7 +378,7 @@ body {
     }
     .sheet-container {
         width: 100%;
-        min-height: auto;
+        min-height: 0;
         padding: 0;
         box-shadow: none;
         border-radius: 0;
