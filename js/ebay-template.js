@@ -1388,7 +1388,9 @@ export function generateEbayHtml(config) {
             <div class="hl-footer-col">
                 <h4>📍 Fachwerkstatt</h4>
                 <div class="hl-contact-pill">
-                    <div class="hl-contact-ico hl-ico-loc">📍</div>
+                    <div class="hl-contact-ico hl-ico-loc">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#ff6b6b" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2ZM12 11.5C10.62 11.5 9.5 10.38 9.5 9C9.5 7.62 10.62 6.5 12 6.5C13.38 6.5 14.5 7.62 14.5 9C14.5 10.38 13.38 11.5 12 11.5Z"/></svg>
+                    </div>
                     <div class="hl-contact-details">
                         <span class="hl-contact-label">Standort</span>
                         <span class="hl-contact-val">${escapeHtml(shop.name)}</span>
@@ -1400,7 +1402,9 @@ export function generateEbayHtml(config) {
             <div class="hl-footer-col">
                 <h4>📞 Kontakt &amp; Support</h4>
                 <a href="${waLink}" target="_blank" class="hl-contact-pill">
-                    <div class="hl-contact-ico hl-ico-wa">💬</div>
+                    <div class="hl-contact-ico hl-ico-wa">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="#25D366" xmlns="http://www.w3.org/2000/svg"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.04 14.69 2 12.04 2ZM12.04 20.15C10.56 20.15 9.11 19.76 7.85 19.01L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 14.99 3.8 13.47 3.8 11.91C3.8 7.37 7.5 3.67 12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15ZM16.56 14.37C16.31 14.25 15.09 13.65 14.86 13.57C14.64 13.48 14.47 13.44 14.31 13.69C14.14 13.94 13.66 14.5 13.51 14.67C13.37 14.83 13.22 14.86 12.97 14.73C12.72 14.61 11.92 14.35 10.97 13.5C10.23 12.84 9.73 12.02 9.58 11.77C9.44 11.52 9.57 11.39 9.69 11.26C9.8 11.15 9.94 10.97 10.06 10.83C10.19 10.69 10.23 10.58 10.31 10.42C10.39 10.25 10.35 10.11 10.29 9.98C10.23 9.86 9.73 8.63 9.53 8.12C9.32 7.63 9.12 7.69 8.97 7.69C8.82 7.68 8.66 7.68 8.49 7.68C8.32 7.68 8.06 7.74 7.83 7.99C7.6 8.24 6.96 8.84 6.96 10.05C6.96 11.27 7.85 12.44 7.97 12.61C8.1 12.77 9.72 15.28 12.21 16.35C12.8 16.61 13.26 16.76 13.62 16.88C14.22 17.07 14.76 17.04 15.19 16.98C15.68 16.9 16.69 16.36 16.9 15.77C17.11 15.19 17.11 14.69 17.05 14.59C16.99 14.49 16.81 14.49 16.56 14.37Z"/></svg>
+                    </div>
                     <div class="hl-contact-details">
                         <span class="hl-contact-label">WhatsApp Hotline</span>
                         <span class="hl-contact-val">${escapeHtml(shop.phone)}</span>
@@ -1408,7 +1412,9 @@ export function generateEbayHtml(config) {
                 </a>
 
                 <a href="mailto:${escapeHtml(shop.email)}" class="hl-contact-pill">
-                    <div class="hl-contact-ico hl-ico-mail">✉️</div>
+                    <div class="hl-contact-ico hl-ico-mail">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#58a6ff" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z"/></svg>
+                    </div>
                     <div class="hl-contact-details">
                         <span class="hl-contact-label">E-Mail Support</span>
                         <span class="hl-contact-val">${escapeHtml(shop.email)}</span>
@@ -1416,7 +1422,9 @@ export function generateEbayHtml(config) {
                 </a>
 
                 <div class="hl-contact-pill">
-                    <div class="hl-contact-ico hl-ico-vat">🏛️</div>
+                    <div class="hl-contact-ico hl-ico-vat">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#d4af37" xmlns="http://www.w3.org/2000/svg"><path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1ZM10 16L6.5 12.5L7.91 11.09L10 13.17L16.09 7.08L17.5 8.5L10 16Z"/></svg>
+                    </div>
                     <div class="hl-contact-details">
                         <span class="hl-contact-label">Umsatzsteuer-ID (USt-IdNr.)</span>
                         <span class="hl-contact-val">${escapeHtml(shop.vatId)}</span>
@@ -1430,7 +1438,7 @@ export function generateEbayHtml(config) {
                     Entdecke weitere Express-Reparaturen, Displays, Akkus und geprüfte Refurbished-Smartphones in unserem Shop.
                 </p>
                 <a href="${escapeHtml(shop.ebayShopUrl)}" target="_blank" class="hl-shop-btn">
-                    🛍️ Zum eBay Shop ➔
+                    <span style="font-weight: 900; letter-spacing: 0.5px;"><span style="color:#e53238">e</span><span style="color:#0064d2">b</span><span style="color:#f5af02">a</span><span style="color:#86b817">y</span></span> Shop besuchen ➔
                 </a>
             </div>
         </div>
