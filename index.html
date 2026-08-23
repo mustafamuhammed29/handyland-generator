@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     
     <!-- Dashboard Stylesheet -->
-    <link rel="stylesheet" href="css/dashboard.css?v=3.5">
+    <link rel="stylesheet" href="css/dashboard.css?v=4.0">
 </head>
 <body>
 
@@ -30,6 +30,19 @@
                     ⚡ Handy<span>Land</span>
                 </div>
                 <span class="logo-badge">Generator Pro</span>
+            </div>
+
+            <!-- Quick Navigation Mini Bar for Instant Access -->
+            <div class="quick-nav-container">
+                <nav class="quick-nav-bar" aria-label="Schnellzugriff auf Abschnitte">
+                    <a href="#sec-1" class="quick-nav-pill">📦 1. Basis</a>
+                    <a href="#sec-2" class="quick-nav-pill">🎁 2. Upsell</a>
+                    <a href="#sec-3" class="quick-nav-pill">✨ 3. Modelle</a>
+                    <a href="#sec-4" class="quick-nav-pill">⚙️ 4. Texte</a>
+                    <a href="#sec-5" class="quick-nav-pill">🎬 5. Video</a>
+                    <a href="#sec-6" class="quick-nav-pill">⭐ 6. Reviews</a>
+                    <a href="#sec-7" class="quick-nav-pill">🔗 7. Schein</a>
+                </nav>
             </div>
 
             <!-- Quick 1-Click Repair Presets -->
@@ -85,7 +98,7 @@
             </div>
 
             <!-- Section 1: Basic Reparatur Data -->
-            <div class="form-section">
+            <div class="form-section" id="sec-1">
                 <div class="section-header">📦 1. Basisdaten &amp; Preise</div>
                 
                 <div class="row-2">
@@ -152,7 +165,7 @@
             </div>
 
             <!-- Section 2: Promotion & Upsell -->
-            <div class="form-section">
+            <div class="form-section" id="sec-2">
                 <div class="section-header">🎁 2. Promotion &amp; Upsell</div>
                 
                 <div class="control-group">
@@ -181,7 +194,7 @@
             </div>
 
             <!-- Section 3: Before / After & Matrix -->
-            <div class="form-section">
+            <div class="form-section" id="sec-3">
                 <div class="section-header">✨ 3. Vergleich &amp; Modell-Tabelle</div>
                 
                 <div class="control-group">
@@ -238,7 +251,7 @@
             </div>
 
             <!-- Section 4: Dynamic Texts & Quality -->
-            <div class="form-section">
+            <div class="form-section" id="sec-4">
                 <div class="section-header">⚙️ 4. Dynamische Leistungsbeschreibungen</div>
                 
                 <div class="control-group">
@@ -271,7 +284,7 @@
             </div>
 
             <!-- Section 5: Video Showcase -->
-            <div class="form-section">
+            <div class="form-section" id="sec-5">
                 <div class="section-header">🎬 5. Werkstatt-Video (Einblick)</div>
                 
                 <div class="control-group">
@@ -314,7 +327,7 @@
             </div>
 
             <!-- Section 6: Reviews -->
-            <div class="form-section">
+            <div class="form-section" id="sec-6">
                 <div class="section-header">⭐ 6. Kundenbewertungen</div>
                 
                 <div class="control-group">
@@ -331,7 +344,7 @@
             </div>
 
             <!-- Section 7: Reparaturschein / Links & Customer Pre-fill -->
-            <div class="form-section">
+            <div class="form-section" id="sec-7">
                 <div class="section-header">🔗 7. Reparaturschein &amp; Vorausfüllen</div>
                 
                 <div class="control-group">
@@ -369,10 +382,12 @@
                 </div>
             </div>
 
-            <!-- Submit Action -->
-            <button type="button" id="btnGenerate" class="btn-generate">
-                🚀 eBay HTML Aktualisieren
-            </button>
+            <!-- Sticky Generate Action Bar -->
+            <div class="sidebar-sticky-footer">
+                <button type="button" id="btnGenerate" class="btn-generate">
+                    🚀 eBay HTML Aktualisieren
+                </button>
+            </div>
 
             <!-- Bottom Links -->
             <div class="sidebar-links">
@@ -474,6 +489,6 @@
     </div>
 
     <!-- Main Module Script -->
-    <script type="module" src="js/app.js?v=3.5"></script>
+    <script type="module" src="js/app.js?v=4.0"></script>
 </body>
 </html>
