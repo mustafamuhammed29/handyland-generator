@@ -8,16 +8,16 @@
     <meta http-equiv="Expires" content="0">
     <title>HandyLand Heidelberg - Reparatur-Begleitschein (A4 Formular)</title>
     <meta name="description" content="Interaktiver Reparatur-Begleitschein für Einsendungen an HandyLand Heidelberg. Direkt digital ausfüllen und drucken oder dem Paket beilegen.">
-    <link rel="stylesheet" href="css/print-form.css?v=2.0">
+    <link rel="stylesheet" href="css/print-form.css?v=2.5">
 </head>
 <body>
 
     <!-- Floating Quick Action Bar for Web Users -->
     <div class="web-actions">
-        <a href="index.html" class="btn-print" style="background: #1f2937; color: #fff; text-decoration: none;">
+        <a href="index.html" class="btn-print btn-back-gen">
             🔙 Zum Generator
         </a>
-        <button type="button" class="btn-print" style="background: #f59e0b; color: #000;" id="btnResetForm">
+        <button type="button" class="btn-print btn-reset-form" id="btnResetForm">
             🔄 Leeren
         </button>
         <button type="button" class="btn-print" id="btnPrintForm">
@@ -107,8 +107,8 @@
                         <input type="text" id="fieldPin" class="form-input" placeholder="Für Endkontrolle nach Reparatur">
                     </div>
 
-                    <div style="margin-top: 6px; display: flex; justify-content: space-between; align-items: center;">
-                        <div style="font-size: 10.5px; color: #555; max-width: 170px;">
+                    <div class="pattern-row">
+                        <div class="pattern-text">
                             <strong>Entsperrmuster</strong> (falls vorhanden, bitte Verbindungspunkte einzeichnen):
                         </div>
                         <div class="pattern-grid">
@@ -124,7 +124,7 @@
                         </div>
                     </div>
 
-                    <div class="check-item" style="margin-top: 6px;">
+                    <div class="check-item check-margin-top">
                         <input type="checkbox" id="checkReset">
                         <label for="checkReset">Gerät wurde vorab zurückgesetzt / ohne Sperre</label>
                     </div>
@@ -133,7 +133,7 @@
             </div>
 
             <!-- Section 3: Fehlerbeschreibung & Reparaturart -->
-            <div class="box-section" style="margin-bottom: 14px;">
+            <div class="box-section section-margin-bottom">
                 <div class="section-title">🛠️ 3. Gebuchte Reparaturleistung &amp; Fehlerangabe</div>
                 
                 <div class="check-grid">
@@ -163,8 +163,8 @@
                     </div>
                 </div>
 
-                <div style="margin-top: 10px;">
-                    <label for="fieldNotes" style="font-size: 11px; font-weight: bold; display: block;">Zusätzliche Fehlerbeschreibung / Bemerkungen:</label>
+                <div class="notes-wrapper">
+                    <label for="fieldNotes" class="notes-label">Zusätzliche Fehlerbeschreibung / Bemerkungen:</label>
                     <textarea id="fieldNotes" class="form-textarea" placeholder="Beschreibe hier kurz eventuelle Besonderheiten oder weitere Defekte..."></textarea>
                 </div>
             </div>
@@ -177,7 +177,7 @@
                     <p>Hertzstr. 1 • 69126 Heidelberg • Deutschland</p>
                     <p>WhatsApp / Hotline: +49 176 25565255 • E-Mail: handyland.hd1@gmail.com</p>
                 </div>
-                <div style="text-align: right; font-size: 11px; color: #444; border-left: 1px solid #ccc; padding-left: 14px;">
+                <div class="shipping-tip">
                     <strong>Versand-Tipp:</strong><br>
                     Nur versichert mit DHL / Hermes<br>
                     Sendungsnummer notieren!
@@ -188,7 +188,7 @@
             <div class="box-section">
                 <div class="section-title">📋 4. Checkliste &amp; Auftragserteilung</div>
                 
-                <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 6px;">
+                <div class="checklist-row">
                     <div>☑ SIM-Karte &amp; Speicherkarte entnommen</div>
                     <div>☑ Hülle &amp; Zubehör entfernt</div>
                     <div>☑ Gerät sicher &amp; stoßfest gepolstert</div>
@@ -196,7 +196,7 @@
 
                 <div class="signature-grid">
                     <div class="sign-box">
-                        <input type="text" id="fieldDate" class="form-input" style="text-align: center;" value="Heidelberg, 24.08.2026">
+                        <input type="text" id="fieldDate" class="form-input text-center" title="Ort und Datum der Auftragserteilung" placeholder="Ort, Datum" value="Heidelberg, 24.08.2026">
                         <div class="sign-label">Ort, Datum</div>
                     </div>
                     <div class="sign-box">
