@@ -395,6 +395,9 @@ Hertzstr. 1
 💬 WhatsApp Express-Hotline: ${shop.phone}
 🔗 Direktkontakt: ${waUrl}
 ✉️ E-Mail: ${shop.email}
+🏛️ USt-IdNr.: ${shop.vatId}`;
+}
+
 // ================= COMPATIBILITY MATRIX MANAGER =================
 function initMatrixRows() {
     const brand = elements.brandSelect ? elements.brandSelect.value : 'Apple';
