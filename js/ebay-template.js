@@ -13,8 +13,9 @@ import { REPAIR_DATA } from './data/repair-data.js';
 
 export function generateEbayHtml(config) {
     const {
+        themeId = "gold",
         brand = "Apple",
-        model = "iPhone 13 Pro",
+        model = "iPhone 14 Pro",
         repairTypeId = "battery",
         repairName = "Akku / Batterie 🔋",
         price = "69,00 €",
@@ -33,6 +34,11 @@ export function generateEbayHtml(config) {
         videoPoster = "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&q=80",
         videoTitle = "Einblick in unsere Meisterwerkstatt",
         videoDesc = "Erlebe Schritt für Schritt, mit welcher Präzision und Sorgfalt wir dein Smartphone reparieren.",
+        beforeAfterToggle = "yes", // 'yes' | 'no'
+        beforeTitle = "",
+        beforeDesc = "",
+        afterTitle = "",
+        afterDesc = "",
         featuresHtml = "",
         faq1Text = "",
         transparencyText = "",
@@ -42,6 +48,7 @@ export function generateEbayHtml(config) {
     } = config;
 
     const shop = REPAIR_DATA.shopInfo;
+    const theme = REPAIR_DATA.themes[themeId] || REPAIR_DATA.themes.gold;
 
     // Promotion / Upsell Box HTML
     let promoHtml = '';
@@ -140,6 +147,47 @@ export function generateEbayHtml(config) {
         }
     }
 
+    // Before / After Visual Showcase
+    let beforeAfterHtml = '';
+    if (beforeAfterToggle === 'yes') {
+        const bTitle = beforeTitle || "Defekt & Eingeschränkt";
+        const bDesc = beforeDesc || "Schaden beeinträchtigt die tägliche Nutzung und mindert den Wert.";
+        const aTitle = afterTitle || "Wie neu aus der Box";
+        const aDesc = afterDesc || "100% Funktionalität, makellose Optik und geprüfte Sicherheit.";
+
+        beforeAfterHtml = `
+        <div class="hl-card hl-ba-section" style="margin-bottom: 25px;">
+            <div class="hl-card-header">
+                <span class="hl-card-icon">✨</span>
+                <div class="hl-card-title">Vorher vs. Nachher: Dein Ergebnis</div>
+            </div>
+            <div class="hl-ba-grid">
+                <div class="hl-ba-col hl-ba-before">
+                    <div class="hl-ba-badge hl-badge-red">VORHER</div>
+                    <div class="hl-ba-icon">💔 📱</div>
+                    <h4>${escapeHtml(bTitle)}</h4>
+                    <p>${escapeHtml(bDesc)}</p>
+                </div>
+
+                <div class="hl-ba-arrow-box">
+                    <div class="hl-ba-arrow">➔</div>
+                    <span class="hl-ba-arrow-text">HandyLand Express</span>
+                </div>
+
+                <div class="hl-ba-col hl-ba-after">
+                    <div class="hl-ba-badge hl-badge-green">NACHHER</div>
+                    <div class="hl-ba-icon">✨ 📱</div>
+                    <h4>${escapeHtml(aTitle)}</h4>
+                    <p>${escapeHtml(aDesc)}</p>
+                </div>
+            </div>
+        </div>`;
+    }
+
+    // Dynamic WhatsApp Pre-filled URL
+    const waText = encodeURIComponent(`Hallo HandyLand Heidelberg! Ich interessiere mich für die eBay-Reparatur: ${brand} ${model} (${repairName}). Könnt ihr mir bitte weiterhelfen?`);
+    const waLink = `https://wa.me/${shop.whatsappNumber}?text=${waText}`;
+
     // Optional Custom Notes Box
     let customNotesHtml = '';
     if (customNotes && customNotes.trim().length > 0) {
@@ -160,13 +208,21 @@ export function generateEbayHtml(config) {
 <style>
     /* CSS Scoped & Embedded inside container - Pure CSS3 / No external dependencies */
     .hl-wrapper {
+        --hl-primary: ${theme.primary};
+        --hl-light: ${theme.light};
+        --hl-dark: ${theme.dark};
+        --hl-gradient: ${theme.gradient};
+        --hl-accent-bg: ${theme.accentBg};
+        --hl-border: ${theme.border};
+        --hl-glow: ${theme.glow};
+
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         max-width: 960px;
         margin: 0 auto;
-        background-color: #121212;
+        background-color: #0f0f13;
         color: #f0f0f0;
-        border: 1px solid #2a2a2a;
-        border-radius: 14px;
+        border: 1px solid #2a2a35;
+        border-radius: 16px;
         overflow: hidden;
         line-height: 1.6;
         box-sizing: border-box;
@@ -177,13 +233,54 @@ export function generateEbayHtml(config) {
         margin: 0;
         padding: 0;
     }
+
+    /* Keyframe Animations (Pure CSS - Zero JS) */
+    @keyframes hlShimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+    }
+    @keyframes hlPulseGlow {
+        0%, 100% { box-shadow: 0 0 15px rgba(37, 211, 102, 0.2); }
+        50% { box-shadow: 0 0 25px rgba(37, 211, 102, 0.5); }
+    }
+
+    /* Live Workshop Status Bar */
+    .hl-status-bar {
+        background: #15151c;
+        border-bottom: 1px solid #282834;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 12.5px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .hl-status-live {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #25D366;
+        font-weight: 700;
+    }
+    .hl-pulse-dot {
+        width: 8px;
+        height: 8px;
+        background-color: #25D366;
+        border-radius: 50%;
+        box-shadow: 0 0 8px #25D366;
+    }
+    .hl-status-loc {
+        color: #a0a0b0;
+        font-weight: 600;
+    }
     
     /* Header Section */
     .hl-header {
-        background: linear-gradient(180deg, #1c1c1c 0%, #0d0d0d 100%);
-        padding: 35px 20px;
+        background: linear-gradient(180deg, #181822 0%, #0d0d12 100%);
+        padding: 38px 20px;
         text-align: center;
-        border-bottom: 2px solid #d4af37;
+        border-bottom: 2px solid var(--hl-primary);
         position: relative;
     }
     .hl-logo-wrapper {
@@ -196,39 +293,40 @@ export function generateEbayHtml(config) {
     }
     .hl-header-tagline {
         display: inline-block;
-        background: rgba(212, 175, 55, 0.12);
-        color: #d4af37;
-        border: 1px solid #d4af37;
-        padding: 4px 14px;
+        background: var(--hl-accent-bg);
+        color: var(--hl-primary);
+        border: 1px solid var(--hl-primary);
+        padding: 5px 16px;
         border-radius: 20px;
         font-size: 12px;
-        font-weight: 700;
+        font-weight: 800;
         letter-spacing: 1px;
         text-transform: uppercase;
         margin-bottom: 12px;
     }
     .hl-header h1 {
-        font-size: 28px;
-        font-weight: 800;
+        font-size: 30px;
+        font-weight: 900;
         color: #ffffff;
         margin-bottom: 8px;
         line-height: 1.3;
+        letter-spacing: -0.5px;
     }
     .hl-header h1 span {
-        color: #d4af37;
+        color: var(--hl-primary);
     }
     .hl-header-subtitle {
-        font-size: 16px;
-        color: #a5a5a5;
+        font-size: 16.5px;
+        color: #a8a8b8;
     }
     
     /* Trust Bar */
     .hl-trust-bar {
         display: flex;
         justify-content: space-around;
-        background: #181818;
-        border-bottom: 1px solid #2a2a2a;
-        padding: 15px 10px;
+        background: #14141c;
+        border-bottom: 1px solid #262632;
+        padding: 16px 12px;
         flex-wrap: wrap;
         gap: 10px;
     }
@@ -236,10 +334,10 @@ export function generateEbayHtml(config) {
         display: flex;
         align-items: center;
         gap: 8px;
-        padding: 5px 12px;
+        padding: 4px 10px;
         font-size: 13px;
         font-weight: 700;
-        color: #f3e5ab;
+        color: var(--hl-light);
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
@@ -265,51 +363,51 @@ export function generateEbayHtml(config) {
 
     /* Cards */
     .hl-card {
-        background: #1a1a1a;
-        border: 1px solid #2e2e2e;
-        border-radius: 10px;
-        padding: 22px;
+        background: #16161e;
+        border: 1px solid #2a2a38;
+        border-radius: 12px;
+        padding: 24px;
         height: 100%;
     }
     .hl-card-header {
         display: flex;
         align-items: center;
         gap: 12px;
-        border-bottom: 1px solid #333333;
-        padding-bottom: 12px;
+        border-bottom: 1px solid #2c2c3c;
+        padding-bottom: 14px;
         margin-bottom: 18px;
     }
     .hl-card-icon {
         font-size: 22px;
     }
     .hl-card-title {
-        font-size: 18px;
-        font-weight: 700;
-        color: #d4af37;
+        font-size: 18.5px;
+        font-weight: 800;
+        color: var(--hl-primary);
     }
 
     /* Price Box */
     .hl-price-box {
-        background: linear-gradient(135deg, #d4af37 0%, #aa8022 100%);
+        background: var(--hl-gradient);
         color: #000000;
-        border-radius: 8px;
-        padding: 18px;
+        border-radius: 10px;
+        padding: 20px;
         text-align: center;
-        margin-bottom: 15px;
-        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.25);
+        margin-bottom: 16px;
+        box-shadow: var(--hl-glow);
     }
     .hl-price-num {
-        font-size: 34px;
+        font-size: 36px;
         font-weight: 900;
         display: block;
         line-height: 1.1;
     }
     .hl-price-sub {
-        font-size: 12.5px;
-        font-weight: 700;
+        font-size: 13px;
+        font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        opacity: 0.85;
+        opacity: 0.9;
     }
 
     /* Feature List */
@@ -319,34 +417,35 @@ export function generateEbayHtml(config) {
     }
     .hl-checklist li {
         position: relative;
-        padding-left: 26px;
-        margin-bottom: 10px;
+        padding-left: 28px;
+        margin-bottom: 11px;
         font-size: 14.5px;
-        color: #e0e0e0;
+        color: #e4e4ee;
+        line-height: 1.45;
     }
     .hl-checklist li::before {
         content: "✔";
         position: absolute;
         left: 0;
         top: 0;
-        color: #d4af37;
-        font-weight: bold;
+        color: var(--hl-primary);
+        font-weight: 900;
         font-size: 15px;
     }
 
     /* Upsell / Promo Box */
     .hl-upsell-box {
-        border-radius: 8px;
-        padding: 15px;
-        margin-top: 15px;
+        border-radius: 10px;
+        padding: 16px;
+        margin-top: 16px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 15px;
     }
     .hl-upsell-paid {
-        background: rgba(212, 175, 55, 0.08);
-        border: 1px dashed #d4af37;
+        background: var(--hl-accent-bg);
+        border: 1px dashed var(--hl-primary);
     }
     .hl-upsell-free {
         background: rgba(37, 211, 102, 0.1);
@@ -355,30 +454,33 @@ export function generateEbayHtml(config) {
     .hl-upsell-badge {
         font-size: 11px;
         font-weight: 800;
-        color: #d4af37;
+        color: var(--hl-primary);
         margin-bottom: 4px;
     }
     .hl-badge-green {
         color: #25D366;
     }
+    .hl-badge-red {
+        color: #ef4444;
+    }
     .hl-upsell-content h4 {
         color: #ffffff;
-        font-size: 14px;
+        font-size: 14.5px;
         margin-bottom: 4px;
     }
     .hl-upsell-content p {
         font-size: 12.5px;
-        color: #b0b0b0;
+        color: #b0b0b8;
         line-height: 1.4;
     }
     .hl-upsell-price-tag {
         font-size: 16px;
         font-weight: 900;
         background: #000000;
-        color: #d4af37;
-        padding: 8px 14px;
+        color: var(--hl-primary);
+        padding: 8px 16px;
         border-radius: 20px;
-        border: 1px solid #d4af37;
+        border: 1px solid var(--hl-primary);
         white-space: nowrap;
     }
     .hl-tag-free {
@@ -389,21 +491,21 @@ export function generateEbayHtml(config) {
 
     /* Transparency Box */
     .hl-transparency {
-        background: rgba(212, 175, 55, 0.05);
-        border-left: 3px solid #d4af37;
-        padding: 12px 15px;
-        border-radius: 0 6px 6px 0;
-        margin-top: 15px;
+        background: var(--hl-accent-bg);
+        border-left: 3px solid var(--hl-primary);
+        padding: 14px 16px;
+        border-radius: 0 8px 8px 0;
+        margin-top: 16px;
     }
     .hl-transparency h5 {
-        color: #d4af37;
-        font-size: 13px;
+        color: var(--hl-primary);
+        font-size: 13.5px;
         margin-bottom: 4px;
-        font-weight: 700;
+        font-weight: 800;
     }
     .hl-transparency p {
         font-size: 13px;
-        color: #cccccc;
+        color: #d0d0d8;
         line-height: 1.45;
     }
 
@@ -411,37 +513,182 @@ export function generateEbayHtml(config) {
     .hl-custom-note {
         background: rgba(88, 166, 255, 0.1);
         border: 1px solid rgba(88, 166, 255, 0.3);
-        border-radius: 8px;
-        padding: 12px 15px;
-        margin-bottom: 20px;
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin-bottom: 22px;
         display: flex;
-        gap: 10px;
+        gap: 12px;
         align-items: center;
     }
     .hl-note-icon {
-        font-size: 20px;
+        font-size: 22px;
     }
     .hl-note-text {
         font-size: 13.5px;
         color: #d0e2ff;
     }
 
+    /* Before / After Visual Showcase */
+    .hl-ba-grid {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+    }
+    .hl-ba-col {
+        flex: 1;
+        background: #111116;
+        border: 1px solid #282834;
+        border-radius: 10px;
+        padding: 20px 16px;
+        text-align: center;
+    }
+    .hl-ba-before {
+        border-color: rgba(239, 68, 68, 0.3);
+        background: rgba(239, 68, 68, 0.03);
+    }
+    .hl-ba-after {
+        border-color: rgba(37, 211, 102, 0.4);
+        background: rgba(37, 211, 102, 0.04);
+        box-shadow: 0 0 20px rgba(37, 211, 102, 0.1);
+    }
+    .hl-ba-badge {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 1px;
+        padding: 3px 10px;
+        border-radius: 12px;
+        margin-bottom: 12px;
+    }
+    .hl-ba-before .hl-ba-badge {
+        background: rgba(239, 68, 68, 0.15);
+        color: #ff6b6b;
+        border: 1px solid rgba(239, 68, 68, 0.4);
+    }
+    .hl-ba-after .hl-ba-badge {
+        background: rgba(37, 211, 102, 0.15);
+        color: #25D366;
+        border: 1px solid rgba(37, 211, 102, 0.4);
+    }
+    .hl-ba-icon {
+        font-size: 32px;
+        margin-bottom: 10px;
+    }
+    .hl-ba-col h4 {
+        font-size: 15px;
+        font-weight: 800;
+        color: #ffffff;
+        margin-bottom: 6px;
+    }
+    .hl-ba-col p {
+        font-size: 12.5px;
+        color: #a0a0b0;
+        line-height: 1.4;
+    }
+    .hl-ba-arrow-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        flex-shrink: 0;
+    }
+    .hl-ba-arrow {
+        width: 44px;
+        height: 44px;
+        background: var(--hl-gradient);
+        color: #000;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: 900;
+        box-shadow: var(--hl-glow);
+    }
+    .hl-ba-arrow-text {
+        font-size: 10.5px;
+        font-weight: 800;
+        color: var(--hl-primary);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* WhatsApp Interactive Live Support Card */
+    .hl-whatsapp-card {
+        background: linear-gradient(135deg, rgba(37, 211, 102, 0.12) 0%, rgba(18, 140, 126, 0.08) 100%);
+        border: 1px solid rgba(37, 211, 102, 0.4);
+        border-radius: 12px;
+        padding: 22px 24px;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        animation: hlPulseGlow 3s infinite ease-in-out;
+    }
+    .hl-wa-info {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+    }
+    .hl-wa-avatar {
+        width: 52px;
+        height: 52px;
+        background: #25D366;
+        color: #000;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        flex-shrink: 0;
+    }
+    .hl-wa-text h4 {
+        color: #25D366;
+        font-size: 16.5px;
+        font-weight: 800;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .hl-wa-text p {
+        font-size: 13.5px;
+        color: #e0e0e0;
+        line-height: 1.45;
+    }
+    .hl-wa-btn {
+        background: #25D366;
+        color: #000000;
+        text-decoration: none;
+        font-weight: 800;
+        font-size: 14px;
+        padding: 12px 22px;
+        border-radius: 30px;
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+    }
+
     /* Timeline Process */
     .hl-timeline {
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: 18px;
     }
     .hl-timeline-item {
         display: flex;
-        gap: 15px;
+        gap: 16px;
     }
     .hl-timeline-badge {
-        width: 32px;
-        height: 32px;
+        width: 34px;
+        height: 34px;
         background: #111;
-        border: 2px solid #d4af37;
-        color: #d4af37;
+        border: 2px solid var(--hl-primary);
+        color: var(--hl-primary);
         font-weight: 900;
         font-size: 14px;
         border-radius: 50%;
@@ -454,40 +701,41 @@ export function generateEbayHtml(config) {
         flex: 1;
     }
     .hl-timeline-title {
-        font-size: 15px;
-        font-weight: 700;
-        color: #f3e5ab;
+        font-size: 15.5px;
+        font-weight: 800;
+        color: var(--hl-light);
         margin-bottom: 4px;
     }
     .hl-timeline-desc {
         font-size: 13.5px;
-        color: #b0b0b0;
+        color: #b0b0b8;
         line-height: 1.45;
     }
     .hl-form-box {
-        background: rgba(212, 175, 55, 0.08);
-        border: 1px solid rgba(212, 175, 55, 0.3);
-        border-radius: 8px;
-        padding: 14px;
-        margin-top: 10px;
+        background: var(--hl-accent-bg);
+        border: 1px solid var(--hl-border);
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 12px;
     }
     .hl-form-header {
         display: flex;
-        gap: 10px;
+        gap: 12px;
         align-items: flex-start;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
     }
     .hl-form-icon {
-        font-size: 22px;
+        font-size: 24px;
     }
     .hl-form-header h5 {
-        color: #d4af37;
-        font-size: 13.5px;
+        color: var(--hl-primary);
+        font-size: 14px;
         margin-bottom: 3px;
+        font-weight: 800;
     }
     .hl-form-header p {
-        font-size: 12.5px;
-        color: #cccccc;
+        font-size: 13px;
+        color: #d0d0d8;
     }
     .hl-form-btn {
         display: inline-block;
@@ -495,22 +743,22 @@ export function generateEbayHtml(config) {
         color: #000000;
         font-weight: 800;
         font-size: 13px;
-        padding: 8px 16px;
+        padding: 9px 18px;
         border-radius: 6px;
         text-decoration: none;
         text-align: center;
     }
 
-    /* Video Showcase Styles (Pure HTML/CSS - eBay Compliant) */
+    /* Video Showcase Styles */
     .hl-video-card {
-        background: #181818;
-        border: 1px solid #2e2e2e;
-        border-radius: 10px;
-        padding: 22px;
+        background: #16161e;
+        border: 1px solid #2a2a38;
+        border-radius: 12px;
+        padding: 24px;
     }
     .hl-video-desc {
         font-size: 13.5px;
-        color: #b0b0b0;
+        color: #b0b0b8;
         margin-bottom: 14px;
         line-height: 1.45;
     }
@@ -550,7 +798,6 @@ export function generateEbayHtml(config) {
         display: block;
         opacity: 0.85;
         filter: brightness(0.85);
-        transition: transform 0.3s ease, filter 0.3s ease;
     }
     .hl-video-overlay {
         position: absolute;
@@ -565,7 +812,7 @@ export function generateEbayHtml(config) {
     .hl-play-btn-circle {
         width: 64px;
         height: 64px;
-        background: linear-gradient(135deg, #d4af37 0%, #aa8022 100%);
+        background: var(--hl-gradient);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -573,7 +820,7 @@ export function generateEbayHtml(config) {
         color: #000000;
         font-size: 24px;
         font-weight: 900;
-        box-shadow: 0 0 25px rgba(212, 175, 55, 0.7);
+        box-shadow: var(--hl-glow);
     }
     .hl-play-btn-text {
         background: rgba(0, 0, 0, 0.85);
@@ -582,52 +829,53 @@ export function generateEbayHtml(config) {
         border-radius: 20px;
         font-size: 13px;
         font-weight: 800;
-        border: 1px solid #d4af37;
+        border: 1px solid var(--hl-primary);
         letter-spacing: 0.5px;
     }
 
     /* Comparison Table / Box */
     .hl-comparison-grid {
         display: flex;
-        gap: 15px;
+        gap: 16px;
         margin-bottom: 25px;
     }
     .hl-comp-col {
         flex: 1;
-        border-radius: 8px;
-        padding: 18px;
+        border-radius: 10px;
+        padding: 20px;
     }
     .hl-comp-us {
-        background: rgba(212, 175, 55, 0.06);
-        border: 1px solid rgba(212, 175, 55, 0.4);
+        background: var(--hl-accent-bg);
+        border: 1px solid var(--hl-border);
     }
     .hl-comp-other {
-        background: #171717;
-        border: 1px solid #2a2a2a;
+        background: #131318;
+        border: 1px solid #24242e;
         opacity: 0.8;
     }
     .hl-comp-head {
-        font-size: 15px;
-        font-weight: 800;
+        font-size: 15.5px;
+        font-weight: 900;
         text-align: center;
-        padding-bottom: 10px;
-        margin-bottom: 12px;
-        border-bottom: 1px solid #333333;
+        padding-bottom: 12px;
+        margin-bottom: 14px;
+        border-bottom: 1px solid #2e2e3e;
     }
     .hl-comp-us .hl-comp-head {
-        color: #d4af37;
+        color: var(--hl-primary);
     }
     .hl-comp-other .hl-comp-head {
-        color: #888888;
+        color: #888898;
     }
     .hl-comp-list {
         list-style: none;
     }
     .hl-comp-list li {
-        font-size: 13px;
-        margin-bottom: 8px;
+        font-size: 13.5px;
+        margin-bottom: 9px;
         display: flex;
-        gap: 8px;
+        gap: 10px;
+        line-height: 1.4;
     }
     .hl-check { color: #25D366; font-weight: bold; }
     .hl-cross { color: #ff4d4d; font-weight: bold; }
@@ -635,15 +883,15 @@ export function generateEbayHtml(config) {
     /* Trust Banners */
     .hl-trust-banners {
         display: flex;
-        gap: 15px;
+        gap: 16px;
         margin-bottom: 25px;
     }
     .hl-t-banner {
         flex: 1;
-        padding: 14px;
-        border-radius: 8px;
+        padding: 16px;
+        border-radius: 10px;
         display: flex;
-        gap: 12px;
+        gap: 14px;
         align-items: flex-start;
     }
     .hl-tb-blue {
@@ -655,115 +903,132 @@ export function generateEbayHtml(config) {
         border: 1px solid rgba(37, 211, 102, 0.3);
     }
     .hl-tb-icon {
-        font-size: 24px;
+        font-size: 26px;
     }
     .hl-tb-text h5 {
-        font-size: 14px;
+        font-size: 14.5px;
         margin-bottom: 3px;
+        font-weight: 800;
     }
     .hl-tb-blue h5 { color: #58a6ff; }
     .hl-tb-green h5 { color: #3fb950; }
     .hl-tb-text p {
         font-size: 12.5px;
-        color: #b0b0b0;
+        color: #b0b0b8;
         line-height: 1.4;
     }
 
     /* FAQ (Pure HTML details / summary - NO JS) */
     .hl-faq-item {
-        background: #181818;
-        border: 1px solid #2a2a2a;
-        border-radius: 6px;
-        margin-bottom: 8px;
+        background: #14141c;
+        border: 1px solid #262634;
+        border-radius: 8px;
+        margin-bottom: 10px;
         overflow: hidden;
     }
     .hl-faq-summary {
-        padding: 12px 16px;
-        font-size: 14px;
-        font-weight: 700;
-        color: #f3e5ab;
+        padding: 14px 18px;
+        font-size: 14.5px;
+        font-weight: 800;
+        color: var(--hl-light);
         cursor: pointer;
         outline: none;
     }
     .hl-faq-content {
-        padding: 0 16px 14px 16px;
+        padding: 0 18px 16px 18px;
         font-size: 13.5px;
         color: #cccccc;
-        line-height: 1.45;
+        line-height: 1.5;
     }
 
     /* Reviews */
     .hl-review-card {
-        background: #161616;
-        border: 1px solid #2a2a2a;
-        border-radius: 8px;
-        padding: 14px;
-        margin-bottom: 10px;
+        background: #14141c;
+        border: 1px solid #262634;
+        border-radius: 10px;
+        padding: 16px;
+        margin-bottom: 12px;
     }
     .hl-stars {
         color: #ffb703;
-        font-size: 14px;
+        font-size: 15px;
         margin-bottom: 6px;
     }
     .hl-review-text {
-        font-size: 13px;
+        font-size: 13.5px;
         font-style: italic;
         color: #cccccc;
         margin-bottom: 8px;
+        line-height: 1.45;
     }
     .hl-review-author {
-        font-size: 12px;
-        font-weight: 700;
-        color: #d4af37;
+        font-size: 12.5px;
+        font-weight: 800;
+        color: var(--hl-primary);
     }
 
     /* Footer / Impressum */
     .hl-footer {
-        background: #0a0a0a;
-        border-top: 2px solid #d4af37;
-        padding: 25px 20px;
+        background: #08080b;
+        border-top: 2px solid var(--hl-primary);
+        padding: 28px 24px;
     }
     .hl-footer-grid {
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
-        gap: 20px;
+        gap: 22px;
     }
     .hl-footer-col h4 {
-        color: #d4af37;
-        font-size: 13.5px;
+        color: var(--hl-primary);
+        font-size: 14px;
         text-transform: uppercase;
         letter-spacing: 0.8px;
         margin-bottom: 10px;
+        font-weight: 800;
     }
     .hl-footer-col p {
         font-size: 13px;
-        color: #999999;
+        color: #9999a9;
         line-height: 1.5;
     }
     .hl-copyright {
         text-align: center;
-        margin-top: 20px;
-        padding-top: 15px;
-        border-top: 1px solid #1f1f1f;
-        font-size: 11.5px;
-        color: #666666;
+        margin-top: 22px;
+        padding-top: 16px;
+        border-top: 1px solid #1a1a24;
+        font-size: 12px;
+        color: #666676;
     }
 
     /* Responsive adjustments */
     @media (max-width: 768px) {
-        .hl-grid-2, .hl-comparison-grid, .hl-trust-banners, .hl-footer-grid {
+        .hl-grid-2, .hl-comparison-grid, .hl-trust-banners, .hl-footer-grid, .hl-ba-grid, .hl-whatsapp-card {
             flex-direction: column;
             gap: 15px;
         }
+        .hl-ba-arrow {
+            transform: rotate(90deg);
+        }
         .hl-header h1 {
-            font-size: 22px;
+            font-size: 24px;
         }
         .hl-content {
             padding: 20px 15px;
         }
     }
 </style>
+
+    <!-- Live Workshop Status Bar -->
+    <div class="hl-status-bar">
+        <div class="hl-status-live">
+            <span class="hl-pulse-dot"></span>
+            <span>Fachwerkstatt Heidelberg: Jetzt geöffnet &amp; Express-Eingang aktiv</span>
+        </div>
+        <div class="hl-status-loc">
+            📍 Hertzstr. 1, 69126 Heidelberg
+        </div>
+    </div>
 
     <!-- Header -->
     <div class="hl-header">
@@ -842,6 +1107,23 @@ export function generateEbayHtml(config) {
                     <p>Reparieren schont die Umwelt und spart wertvolle Ressourcen gegenüber einem teuren Neukauf.</p>
                 </div>
             </div>
+        </div>
+
+        <!-- Before / After Visual Comparison -->
+        ${beforeAfterHtml}
+
+        <!-- WhatsApp Quick Live Chat Card -->
+        <div class="hl-whatsapp-card">
+            <div class="hl-wa-info">
+                <div class="hl-wa-avatar">💬</div>
+                <div class="hl-wa-text">
+                    <h4>Fragen zum ${escapeHtml(brand)} ${escapeHtml(model)}?</h4>
+                    <p>Schreib uns direkt auf WhatsApp! Unser Techniker berät dich kostenlos und unverbindlich vor dem Kauf.</p>
+                </div>
+            </div>
+            <a href="${waLink}" target="_blank" class="hl-wa-btn">
+                💬 WhatsApp Chat starten ➔
+            </a>
         </div>
 
         <!-- Step-by-Step Timeline Process -->
@@ -965,8 +1247,8 @@ export function generateEbayHtml(config) {
                 <p>${escapeHtml(shop.zipCity)}</p>
             </div>
             <div class="hl-footer-col">
-                <h4>📞 Kontakt &amp; Support</h4>
-                <p><strong>WhatsApp / Tel:</strong> ${escapeHtml(shop.phone)}</p>
+                <h4>📞 Kontakt &amp; WhatsApp</h4>
+                <p><strong>WhatsApp:</strong> ${escapeHtml(shop.phone)}</p>
                 <p><strong>E-Mail:</strong> ${escapeHtml(shop.email)}</p>
                 <p><strong>USt-IdNr.:</strong> ${escapeHtml(shop.vatId)}</p>
             </div>

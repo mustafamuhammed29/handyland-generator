@@ -1,17 +1,154 @@
 /**
  * HandyLand Generator Pro - Repair Data & Templates
- * Contains all predefined templates for brands, repair types, default texts, and SEO configurations.
+ * Contains all predefined templates, quick presets, themes, brand chips, and shop info.
  */
 
 export const REPAIR_DATA = {
+    // Color Themes for the eBay Listing
+    themes: {
+        gold: {
+            id: "gold",
+            name: "👑 Dark Gold Luxury (Standard)",
+            primary: "#d4af37",
+            light: "#f3e5ab",
+            dark: "#aa8022",
+            gradient: "linear-gradient(135deg, #d4af37 0%, #aa8022 100%)",
+            accentBg: "rgba(212, 175, 55, 0.08)",
+            border: "rgba(212, 175, 55, 0.35)",
+            glow: "0 0 25px rgba(212, 175, 55, 0.35)"
+        },
+        blue: {
+            id: "blue",
+            name: "💎 Sapphire Tech Blue",
+            primary: "#388bfd",
+            light: "#a5d6ff",
+            dark: "#1f6feb",
+            gradient: "linear-gradient(135deg, #388bfd 0%, #1f6feb 100%)",
+            accentBg: "rgba(56, 139, 253, 0.08)",
+            border: "rgba(56, 139, 253, 0.35)",
+            glow: "0 0 25px rgba(56, 139, 253, 0.35)"
+        },
+        emerald: {
+            id: "emerald",
+            name: "🌿 Emerald Titanium Green",
+            primary: "#2ea043",
+            light: "#7ee787",
+            dark: "#238636",
+            gradient: "linear-gradient(135deg, #2ea043 0%, #238636 100%)",
+            accentBg: "rgba(46, 160, 67, 0.08)",
+            border: "rgba(46, 160, 67, 0.35)",
+            glow: "0 0 25px rgba(46, 160, 67, 0.35)"
+        }
+    },
+
+    // Brands with popular quick-selection chips
     brands: [
-        { id: "Apple", name: "Apple", defaultModel: "iPhone 13 Pro" },
-        { id: "Samsung", name: "Samsung", defaultModel: "Galaxy S23" },
-        { id: "Xiaomi", name: "Xiaomi", defaultModel: "Redmi Note 12" },
-        { id: "Google", name: "Google (Pixel)", defaultModel: "Pixel 7 Pro" },
-        { id: "Huawei", name: "Huawei", defaultModel: "P30 Pro" },
-        { id: "Sony", name: "Sony Xperia", defaultModel: "Xperia 1 IV" },
-        { id: "OnePlus", name: "OnePlus", defaultModel: "OnePlus 11" }
+        { 
+            id: "Apple", 
+            name: "Apple", 
+            defaultModel: "iPhone 14 Pro",
+            quickModels: ["iPhone 15 Pro", "iPhone 14 Pro", "iPhone 13", "iPhone 12", "iPhone 11", "iPhone SE"]
+        },
+        { 
+            id: "Samsung", 
+            name: "Samsung", 
+            defaultModel: "Galaxy S23 Ultra",
+            quickModels: ["Galaxy S24 Ultra", "Galaxy S23", "Galaxy S22", "Galaxy A54", "Galaxy Z Flip 5"]
+        },
+        { 
+            id: "Xiaomi", 
+            name: "Xiaomi", 
+            defaultModel: "Redmi Note 12",
+            quickModels: ["Xiaomi 13 Pro", "Redmi Note 12", "Poco F5", "Xiaomi 12T"]
+        },
+        { 
+            id: "Google", 
+            name: "Google (Pixel)", 
+            defaultModel: "Pixel 8 Pro",
+            quickModels: ["Pixel 8 Pro", "Pixel 7a", "Pixel 7 Pro", "Pixel 6"]
+        },
+        { 
+            id: "Huawei", 
+            name: "Huawei", 
+            defaultModel: "P30 Pro",
+            quickModels: ["P30 Pro", "Mate 40 Pro", "P40 Pro"]
+        },
+        { 
+            id: "Sony", 
+            name: "Sony Xperia", 
+            defaultModel: "Xperia 1 V",
+            quickModels: ["Xperia 1 V", "Xperia 5 IV", "Xperia 10 V"]
+        },
+        { 
+            id: "OnePlus", 
+            name: "OnePlus", 
+            defaultModel: "OnePlus 11",
+            quickModels: ["OnePlus 12", "OnePlus 11", "Nord 3"]
+        }
+    ],
+
+    // Quick 1-Click Repair Presets
+    quickPresets: [
+        {
+            id: "apple_display",
+            name: "📱 iPhone Display Express",
+            brand: "Apple",
+            model: "iPhone 14 Pro",
+            repairType: "display",
+            price: "129,00 €",
+            upsellType: "paid",
+            upsellPrice: "+ 15,00 €"
+        },
+        {
+            id: "apple_battery",
+            name: "🔋 iPhone Akku 100%",
+            brand: "Apple",
+            model: "iPhone 13",
+            repairType: "battery",
+            price: "69,00 €",
+            upsellType: "free",
+            upsellPrice: "+ 0,00 €"
+        },
+        {
+            id: "samsung_display",
+            name: "📱 Samsung AMOLED Tausch",
+            brand: "Samsung",
+            model: "Galaxy S23",
+            repairType: "display",
+            price: "159,00 €",
+            upsellType: "paid",
+            upsellPrice: "+ 15,00 €"
+        },
+        {
+            id: "samsung_battery",
+            name: "🔋 Samsung Akku Service",
+            brand: "Samsung",
+            model: "Galaxy S22",
+            repairType: "battery",
+            price: "59,00 €",
+            upsellType: "none",
+            upsellPrice: "+ 15,00 €"
+        },
+        {
+            id: "charging_port",
+            name: "🔌 USB-C Ladebuchse",
+            brand: "Apple",
+            model: "iPhone 12",
+            repairType: "charging",
+            price: "59,00 €",
+            upsellType: "none",
+            upsellPrice: "+ 15,00 €"
+        },
+        {
+            id: "backcover_glass",
+            name: "🛠️ Backcover Glas Tausch",
+            brand: "Apple",
+            model: "iPhone 14",
+            repairType: "backcover",
+            price: "79,00 €",
+            upsellType: "free",
+            upsellPrice: "+ 0,00 €"
+        }
     ],
 
     repairTypes: [
@@ -34,6 +171,12 @@ export const REPAIR_DATA = {
             faq1: "Nein! Bei einem regulären Akkutausch bleiben all deine persönlichen Daten, Bilder, Chats und Apps vollständig erhalten. Wir führen keinen Werksreset durch.",
             transparency: "Je nach Modell und Hersteller kann nach dem Akkutausch in den Systemeinstellungen ein Hinweis zur Batterie angezeigt werden. Dies ist technisch bedingt völlig normal und beeinträchtigt weder Akkulaufzeit noch Ladeleistung.",
             apple_transparency: "Bei Apple iPhones (ab Modell Xs/Xr) wird nach dem Tausch herstellerbedingt die Meldung 'Wichtige Batterienachricht' angezeigt und die prozentuale Maximalkapazität in den Einstellungen ausgeblendet. Die tatsächliche Leistung und Qualität unseres Premium-Akkus ist davon zu 100% unberührt.",
+            beforeAfter: {
+                beforeTitle: "Akku schwach & entlädt rasant",
+                beforeDesc: "Ständiges Nachladen, plötzliche Abschaltungen bei Kälte, verlangsamte Systemleistung.",
+                afterTitle: "100% volle Akku-Power",
+                afterDesc: "Volle Tageslaufzeit wie am ersten Tag, maximale Spitzenleistung und stabiler Betrieb."
+            },
             review1: { text: '"Sehr professionell und blitzschnell repariert. Mein iPhone-Akku hält wieder wie am ersten Tag. Klare Empfehlung!"', author: "Michael T." },
             review2: { text: '"Handy war nach nur 2 Tagen repariert zurück. Extrem transparente Abwicklung und top Kundenservice!"', author: "Sarah K." }
         },
@@ -57,6 +200,12 @@ export const REPAIR_DATA = {
             transparency: "Bitte beachte: Bei starken Sturzschäden mit verzogenem Gehäuserahmen richten wir den Rahmen bestmöglich aus, um minimale Spaltmaße zu gewährleisten.",
             apple_transparency: "Bei Apple iPhones (ab Modell 11) kann nach dem Tausch eine 'Wichtige Displaynachricht' (Hinweis auf unbekanntes Bauteil) in den iOS-Einstellungen erscheinen. Dies ist eine herstellerspezifische Meldung und beeinträchtigt die erstklassige Funktion in keiner Weise.",
             samsung_transparency: "Wir verwenden ausschließlich geprüfte Premium-Displays, die höchste Farbtreue bieten und perfekt mit dem Fingerabdrucksensor deines Samsung Galaxy harmonieren.",
+            beforeAfter: {
+                beforeTitle: "Glas gesplittert & Streifen im Bild",
+                beforeDesc: "Gefahr von Schnittverletzungen, Touch reagiert verzögert oder flackert, unschöne Risse.",
+                afterTitle: "Kristallklares Premium-Display",
+                afterDesc: "Brillante Farben, makelloses Glas, ultraschnelle Touch-Reaktion und saubere Passform."
+            },
             review1: { text: '"Display sieht absolut aus wie neu! Farben sind brillant und der Touch reagiert sofort. Großartige Arbeit!"', author: "Dennis W." },
             review2: { text: '"Mein Display war komplett zersplittert. Nach 24 Stunden hatte ich das Tracking für den Rückversand. Perfekt!"', author: "Laura M." }
         },
@@ -67,6 +216,12 @@ export const REPAIR_DATA = {
 <li>Überprüfung von Datenübertragung & Mikrofonfunktion</li>`,
             faq1: "Keine Sorge, beim Wechsel der Ladebuchse gehen keinerlei persönliche Daten verloren.",
             transparency: "Oft ist die Ladebuchse nur stark verschmutzt. Wir prüfen das Bauteil zuerst gründlich. Sollte nur eine professionelle Reinigung nötig sein, informieren wir dich transparent!",
+            beforeAfter: {
+                beforeTitle: "Wackelkontakt & Ladeabbrüche",
+                beforeDesc: "Kabel rutscht heraus, Handy lädt nur in bestimmten Winkeln oder gar nicht mehr.",
+                afterTitle: "Fester Halt & Schnellladung",
+                afterDesc: "Stecker rastet sicher ein, stabiler Ladestrom und einwandfreie Datenübertragung."
+            },
             review1: { text: '"Das Handy lädt endlich wieder ohne nervigen Wackelkontakt. Sehr schneller Service und fairer Preis."', author: "Thomas R." },
             review2: { text: '"Schnell repariert, kompetente Rückmeldung per Nachricht. Preis-Leistung unschlagbar!"', author: "Kaan Y." }
         },
@@ -77,6 +232,12 @@ export const REPAIR_DATA = {
 <li>Reinigung und Prüfung der rückseitigen Kameras und des Blitzes</li>`,
             faq1: "Deine Daten bleiben vollständig unberührt. Die Reparatur betrifft ausschließlich das äußere Gehäuseglas.",
             transparency: "Aufgrund der werkseitigen Versiegelungsverfahren kann die herstellerseitige IP-Wasserdichtigkeit nach einem Gehäuseschaden und Tausch nicht mehr garantiert werden. Vor Spritzwasser ist das Gerät jedoch geschützt.",
+            beforeAfter: {
+                beforeTitle: "Rückseite zersplittert",
+                beforeDesc: "Scherben lösen sich, unansehnliche Optik und Gefahr für die internen Kameras.",
+                afterTitle: "Makellose neue Rückseite",
+                afterDesc: "Perfekte Spaltmaße, strahlender Original-Farbglanz und glattes Gefühl in der Hand."
+            },
             review1: { text: '"Das Glas auf der Rückseite war völlig zersplittert. Sieht jetzt wieder aus wie frisch aus der Packung!"', author: "Elena S." },
             review2: { text: '"Hervorragende Arbeit. Man sieht absolut keinen Unterschied. Vielen Dank an das HandyLand-Team!"', author: "Markus H." }
         },
@@ -88,6 +249,12 @@ export const REPAIR_DATA = {
             faq1: "Deine Fotos, Videos und persönlichen Daten bleiben beim Kameratausch zu 100% erhalten.",
             transparency: "Hinweis: Sollte das äußere Kameraglas auf der Rückseite ebenfalls Risse aufweisen, muss dieses separat getauscht werden, um das neue Modul vor Staub und Feuchtigkeit zu schützen.",
             apple_transparency: "Bei neueren iPhone-Modellen (ab Modell 12) kann nach dem Kameratausch ein Systemhinweis in den iOS-Einstellungen bzgl. des getauschten Kamerabauteils erscheinen. Die Kamerafunktion arbeitet einwandfrei.",
+            beforeAfter: {
+                beforeTitle: "Unscharfe Fotos & Rütteln",
+                beforeDesc: "Kamera fokussiert nicht, schwarze Punkte/Flecken im Bild oder vibrierender Autofokus.",
+                afterTitle: "Gestochen scharfe 4K-Aufnahmen",
+                afterDesc: "Blitzschneller Fokus, glasklare Linsen und perfekte Farbwiedergabe in allen Modi."
+            },
             review1: { text: '"Kamera fokussiert wieder blitzschnell und ohne Flecken im Bild. Endlich wieder scharfe Fotos!"', author: "Julia B." },
             review2: { text: '"Schnelle Reparatur und sehr freundliche Kommunikation. 5 Sterne verdient!"', author: "Ali K." }
         },
@@ -98,6 +265,12 @@ export const REPAIR_DATA = {
 <li>Prüfung der Freisprech- und Mikrofonfunktion</li>`,
             faq1: "Deine Daten bleiben während der Audioreparatur vollkommen unverändert und sicher auf dem Gerät.",
             transparency: "Häufig sind nur die feinen Schutzgitter der Hörmuschel verstopft. Wir testen das Modul vorab und tauschen nur, was wirklich nötig ist.",
+            beforeAfter: {
+                beforeTitle: "Sehr leise & verzerrter Ton",
+                beforeDesc: "Gesprächspartner kaum verständlich, krächzende Lautsprecher bei Musik und Klingelton.",
+                afterTitle: "Glasklarer Stereo-Klang",
+                afterDesc: "Volle Lautstärke, saubere Bässe und deutliche Stimmwiedergabe beim Telefonieren."
+            },
             review1: { text: '"Gesprächspartner waren kaum noch zu hören. Jetzt ist der Klang wieder glasklar und laut!"', author: "Christian V." },
             review2: { text: '"Schnell, unkompliziert und zuverlässig. Mein Lautsprecher funktioniert wieder wie neu."', author: "Nadine B." }
         },
@@ -108,6 +281,12 @@ export const REPAIR_DATA = {
 <li>Detaillierter Kostenvoranschlag für eventuell benötigte Bauteile</li>`,
             faq1: "Bei Wasserschäden hat die Rettung deiner persönlichen Daten oberste Priorität. Wir setzen alles daran, deine Daten unberührt zu sichern.",
             transparency: "Bei Wasserschäden handelt es sich um eine fundierte Reinigungs- und Diagnoseleistung. Eine Erfolgsgarantie auf dauerhaften Weiterbetrieb kann bei Flüssigkeitsschäden physikalisch nicht gegeben werden.",
+            beforeAfter: {
+                beforeTitle: "Gerät tot & Korrosion",
+                beforeDesc: "Handy geht nicht mehr an, Kurzschlüsse und fortschreitende Bauteilzerstörung.",
+                afterTitle: "Professionell gereinigt",
+                afterDesc: "Oxidationsschichten entfernt, Platinenleiterbahnen gerettet und Daten gesichert."
+            },
             review1: { text: '"Handy war im Pool gelandet. HandyLand konnte all meine unbezahlbaren Urlaubsfotos retten!"', author: "Daniela F." },
             review2: { text: '"Sehr ehrliche Beratung und transparente Fehlerdiagnose. Top Fachbetrieb!"', author: "Stefan W." }
         }
@@ -120,6 +299,8 @@ export const REPAIR_DATA = {
         zipCity: "69126 Heidelberg",
         country: "Deutschland",
         phone: "+49 176 25565255",
+        phoneFormatted: "+49 176 25565255",
+        whatsappNumber: "4917625565255",
         email: "handyland.hd1@gmail.com",
         vatId: "DE 406785869",
         ebayShopUrl: "https://www.ebay.de/sch/i.html?_ssn=handylandheidelberg",

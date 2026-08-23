@@ -1,6 +1,7 @@
 /**
  * HandyLand Generator Pro - Main Application Controller
- * Handles UI interactions, live preview rendering, clipboard copying, and state synchronization.
+ * Handles UI interactions, live preview rendering, clipboard copying, 
+ * preset loading, theme switching, file downloads, and state synchronization.
  */
 
 import { REPAIR_DATA } from './data/repair-data.js';
@@ -10,6 +11,7 @@ import { generateEbayHtml } from './ebay-template.js';
 const state = {
     currentTab: 'preview',
     currentDevice: 'desktop',
+    currentTheme: 'gold',
     currentHtml: ''
 };
 
@@ -19,6 +21,8 @@ let elements = {};
 function init() {
     cacheElements();
     populateSelectOptions();
+    renderQuickPresets();
+    renderModelChips();
     bindEvents();
     loadSavedSettings();
     updateDynamicTexts();
@@ -27,6 +31,11 @@ function init() {
 
 function cacheElements() {
     elements = {
+        // Theme Swatches
+        themeButtons: document.querySelectorAll('.btn-theme-swatch'),
+        presetsContainer: document.getElementById('presetsContainer'),
+        modelChipsContainer: document.getElementById('modelChipsContainer'),
+
         // Inputs
         brandSelect: document.getElementById('brandInput'),
         modelInput: document.getElementById('modelInput'),
@@ -42,18 +51,18 @@ function cacheElements() {
         upsellTitleInput: document.getElementById('inputUpsellTitle'),
         upsellDescInput: document.getElementById('inputUpsellDesc'),
         
+        // Before / After
+        beforeAfterToggleSelect: document.getElementById('beforeAfterToggle'),
+        baSettingsGroup: document.getElementById('baSettingsGroup'),
+        beforeTitleInput: document.getElementById('inputBeforeTitle'),
+        beforeDescInput: document.getElementById('inputBeforeDesc'),
+        afterTitleInput: document.getElementById('inputAfterTitle'),
+        afterDescInput: document.getElementById('inputAfterDesc'),
+
         dynFeatures: document.getElementById('dynFeatures'),
         dynFaq1: document.getElementById('dynFaq1'),
         dynTransparency: document.getElementById('dynTransparency'),
         customNotes: document.getElementById('customNotes'),
-        
-        review1Text: document.getElementById('review1Text'),
-        review1Author: document.getElementById('review1Author'),
-        review2Text: document.getElementById('review2Text'),
-        review2Author: document.getElementById('review2Author'),
-        
-        formToggleSelect: document.getElementById('formToggle'),
-        formLinkInput: document.getElementById('inputFormLink'),
         
         // Video Showcase
         videoToggleSelect: document.getElementById('videoToggle'),
@@ -63,6 +72,14 @@ function cacheElements() {
         videoPosterInput: document.getElementById('inputVideoPoster'),
         videoTitleInput: document.getElementById('inputVideoTitle'),
         videoDescInput: document.getElementById('inputVideoDesc'),
+
+        review1Text: document.getElementById('review1Text'),
+        review1Author: document.getElementById('review1Author'),
+        review2Text: document.getElementById('review2Text'),
+        review2Author: document.getElementById('review2Author'),
+        
+        formToggleSelect: document.getElementById('formToggle'),
+        formLinkInput: document.getElementById('inputFormLink'),
         
         // SEO Box
         seoTitleInput: document.getElementById('seoTitleInput'),
@@ -80,6 +97,8 @@ function cacheElements() {
         codeOutput: document.getElementById('code-output'),
         btnCopyCodeTop: document.getElementById('btnCopyCodeTop'),
         btnCopyCodeBottom: document.getElementById('btnCopyCodeBottom'),
+        btnDownloadHtmlTop: document.getElementById('btnDownloadHtmlTop'),
+        btnDownloadHtmlBottom: document.getElementById('btnDownloadHtmlBottom'),
         
         // Device switcher
         deviceButtons: document.querySelectorAll('.btn-device'),
@@ -101,10 +120,85 @@ function populateSelectOptions() {
     ).join('');
 }
 
+function renderQuickPresets() {
+    if (!elements.presetsContainer) return;
+    elements.presetsContainer.innerHTML = REPAIR_DATA.quickPresets.map(p => `
+        <button type="button" class="btn-preset" data-preset-id="${p.id}">
+            ${p.name}
+        </button>
+    `).join('');
+
+    elements.presetsContainer.querySelectorAll('.btn-preset').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const presetId = e.currentTarget.getAttribute('data-preset-id');
+            loadPreset(presetId);
+        });
+    });
+}
+
+function renderModelChips() {
+    if (!elements.modelChipsContainer) return;
+    const currentBrand = elements.brandSelect.value;
+    const brandData = REPAIR_DATA.brands.find(b => b.id === currentBrand);
+    
+    if (brandData && brandData.quickModels) {
+        elements.modelChipsContainer.innerHTML = brandData.quickModels.map(m => `
+            <span class="chip" data-model="${m}">${m}</span>
+        `).join('');
+
+        elements.modelChipsContainer.querySelectorAll('.chip').forEach(chip => {
+            chip.addEventListener('click', (e) => {
+                const model = e.currentTarget.getAttribute('data-model');
+                elements.modelInput.value = model;
+                updateSeoTitle();
+                generateAndRender();
+            });
+        });
+    } else {
+        elements.modelChipsContainer.innerHTML = '';
+    }
+}
+
+function loadPreset(presetId) {
+    const preset = REPAIR_DATA.quickPresets.find(p => p.id === presetId);
+    if (!preset) return;
+
+    elements.brandSelect.value = preset.brand;
+    elements.modelInput.value = preset.model;
+    elements.repairTypeSelect.value = preset.repairType;
+    elements.priceInput.value = preset.price;
+    elements.upsellTypeSelect.value = preset.upsellType;
+    elements.upsellPriceInput.value = preset.upsellPrice;
+
+    if (preset.upsellType === 'paid') {
+        elements.upsellPriceGroup.style.display = 'flex';
+    } else {
+        elements.upsellPriceGroup.style.display = 'none';
+    }
+
+    renderModelChips();
+    updateDynamicTexts();
+    generateAndRender();
+    showToast(`⚡ Schnellvorlage "${preset.name}" geladen!`);
+}
+
 function bindEvents() {
+    // Theme Switcher Buttons
+    elements.themeButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const theme = e.currentTarget.getAttribute('data-theme');
+            state.currentTheme = theme;
+            elements.themeButtons.forEach(b => b.classList.remove('active'));
+            e.currentTarget.classList.add('active');
+            generateAndRender();
+            showToast(`🎨 Farbschema "${theme.toUpperCase()}" aktiviert!`);
+        });
+    });
+
     // Brand or Repair change triggers text updates
     elements.brandSelect.addEventListener('change', () => {
         handleBrandChange();
+        renderModelChips();
         updateDynamicTexts();
         generateAndRender();
     });
@@ -130,6 +224,10 @@ function bindEvents() {
         elements.upsellPriceInput,
         elements.upsellTitleInput,
         elements.upsellDescInput,
+        elements.beforeTitleInput,
+        elements.beforeDescInput,
+        elements.afterTitleInput,
+        elements.afterDescInput,
         elements.dynFeatures,
         elements.dynFaq1,
         elements.dynTransparency,
@@ -166,6 +264,18 @@ function bindEvents() {
         generateAndRender();
     });
 
+    // Before/After toggle change
+    if (elements.beforeAfterToggleSelect && elements.baSettingsGroup) {
+        elements.beforeAfterToggleSelect.addEventListener('change', () => {
+            if (elements.beforeAfterToggleSelect.value === 'yes') {
+                elements.baSettingsGroup.style.display = 'block';
+            } else {
+                elements.baSettingsGroup.style.display = 'none';
+            }
+            generateAndRender();
+        });
+    }
+
     // Video toggle change
     if (elements.videoToggleSelect && elements.videoSettingsGroup) {
         elements.videoToggleSelect.addEventListener('change', () => {
@@ -193,6 +303,14 @@ function bindEvents() {
         elements.btnCopyCodeBottom.addEventListener('click', () => {
             copyToClipboard(state.currentHtml, '✅ eBay HTML-Code kopiert!');
         });
+    }
+
+    // Download HTML Buttons
+    if (elements.btnDownloadHtmlTop) {
+        elements.btnDownloadHtmlTop.addEventListener('click', downloadHtmlFile);
+    }
+    if (elements.btnDownloadHtmlBottom) {
+        elements.btnDownloadHtmlBottom.addEventListener('click', downloadHtmlFile);
     }
 
     // Tab Switching
@@ -251,6 +369,14 @@ function updateDynamicTexts() {
         trans = tpl.samsung_transparency;
     }
 
+    // Before/After customization
+    if (tpl.beforeAfter) {
+        elements.beforeTitleInput.value = tpl.beforeAfter.beforeTitle;
+        elements.beforeDescInput.value = tpl.beforeAfter.beforeDesc;
+        elements.afterTitleInput.value = tpl.beforeAfter.afterTitle;
+        elements.afterDescInput.value = tpl.beforeAfter.afterDesc;
+    }
+
     elements.dynFeatures.value = features;
     elements.dynFaq1.value = tpl.faq1 || "";
     elements.dynTransparency.value = trans || "";
@@ -298,6 +424,7 @@ function generateAndRender() {
     const repairName = selectedRepairOption ? selectedRepairOption.text : "Reparatur";
 
     const config = {
+        themeId: state.currentTheme,
         brand: elements.brandSelect.value,
         model: elements.modelInput.value.trim(),
         repairTypeId: elements.repairTypeSelect.value,
@@ -312,6 +439,12 @@ function generateAndRender() {
         upsellTitle: elements.upsellTitleInput.value.trim(),
         upsellDesc: elements.upsellDescInput.value.trim(),
         
+        beforeAfterToggle: elements.beforeAfterToggleSelect ? elements.beforeAfterToggleSelect.value : "yes",
+        beforeTitle: elements.beforeTitleInput ? elements.beforeTitleInput.value.trim() : "",
+        beforeDesc: elements.beforeDescInput ? elements.beforeDescInput.value.trim() : "",
+        afterTitle: elements.afterTitleInput ? elements.afterTitleInput.value.trim() : "",
+        afterDesc: elements.afterDescInput ? elements.afterDescInput.value.trim() : "",
+
         formToggle: elements.formToggleSelect.value,
         formLink: elements.formLinkInput.value.trim(),
         
@@ -354,14 +487,14 @@ function renderPreviewIframe(html) {
     const iframe = elements.previewIframe;
     if (!iframe) return;
 
-    // Use srcdoc or fallback to document write
+    // Use srcdoc with dark sleek background
     iframe.srcdoc = `<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { margin: 0; padding: 20px; background: #000; font-family: sans-serif; display: flex; justify-content: center; }
+        body { margin: 0; padding: 20px; background: #08080c; font-family: sans-serif; display: flex; justify-content: center; }
     </style>
 </head>
 <body>
@@ -397,6 +530,24 @@ function setPreviewDevice(device) {
     });
 
     elements.previewViewport.className = `preview-viewport ${device}`;
+}
+
+function downloadHtmlFile() {
+    const brand = elements.brandSelect.value.toLowerCase();
+    const model = elements.modelInput.value.trim().toLowerCase().replace(/\s+/g, '-');
+    const repair = elements.repairTypeSelect.value;
+    const filename = `ebay-template-${brand}-${model}-${repair}.html`;
+
+    const blob = new Blob([state.currentHtml], { type: 'text/html;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+
+    showToast(`💾 Datei "${filename}" heruntergeladen!`);
 }
 
 function copyToClipboard(text, message) {

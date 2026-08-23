@@ -29,6 +29,24 @@
                 <span class="logo-badge">Generator Pro</span>
             </div>
 
+            <!-- Quick 1-Click Repair Presets -->
+            <div class="presets-section">
+                <div class="presets-title">⚡ 1-Klick Schnellvorlagen</div>
+                <div id="presetsContainer" class="presets-grid">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+
+            <!-- Theme Color Selector -->
+            <div class="control-group">
+                <label>🎨 eBay Design-Farbthema</label>
+                <div class="theme-selector-box">
+                    <button type="button" class="btn-theme-swatch active" data-theme="gold">👑 Gold</button>
+                    <button type="button" class="btn-theme-swatch" data-theme="blue">💎 Blue</button>
+                    <button type="button" class="btn-theme-swatch" data-theme="emerald">🌿 Emerald</button>
+                </div>
+            </div>
+
             <!-- SEO Title Optimizer Box -->
             <div class="seo-box">
                 <div class="seo-header">
@@ -62,8 +80,12 @@
                 </div>
 
                 <div class="control-group">
-                    <label for="modelInput">Modell (z.B. iPhone 13 Pro, S23 Ultra)</label>
-                    <input type="text" id="modelInput" value="iPhone 13 Pro">
+                    <label for="modelInput">Modell</label>
+                    <input type="text" id="modelInput" value="iPhone 14 Pro">
+                    <!-- Quick Model Chips -->
+                    <div id="modelChipsContainer" class="chips-row">
+                        <!-- Populated dynamically based on brand -->
+                    </div>
                 </div>
 
                 <div class="row-2">
@@ -118,9 +140,44 @@
                 </div>
             </div>
 
-            <!-- Section 3: Dynamic Texts & Quality -->
+            <!-- Section 3: Before / After Visual Showcase -->
             <div class="form-section">
-                <div class="section-header">⚙️ 3. Dynamische Leistungsbeschreibungen</div>
+                <div class="section-header">✨ 3. Vorher / Nachher Vergleich</div>
+                
+                <div class="control-group">
+                    <label for="beforeAfterToggle">Vergleichsbereich im Angebot anzeigen?</label>
+                    <select id="beforeAfterToggle">
+                        <option value="yes">✅ Ja, Vorher/Nachher anzeigen</option>
+                        <option value="no">❌ Nein, ausblenden</option>
+                    </select>
+                </div>
+
+                <div id="baSettingsGroup">
+                    <div class="control-group">
+                        <label for="inputBeforeTitle">Vorher: Zustandstitel</label>
+                        <input type="text" id="inputBeforeTitle" value="Glas gesplittert & Streifen im Bild">
+                    </div>
+
+                    <div class="control-group">
+                        <label for="inputBeforeDesc">Vorher: Fehlerbeschreibung</label>
+                        <input type="text" id="inputBeforeDesc" value="Touch reagiert verzögert, Schnittgefahr durch Splitter, unschöne Risse.">
+                    </div>
+
+                    <div class="control-group">
+                        <label for="inputAfterTitle">Nachher: Zustandstitel</label>
+                        <input type="text" id="inputAfterTitle" value="Kristallklares Premium-Display">
+                    </div>
+
+                    <div class="control-group">
+                        <label for="inputAfterDesc">Nachher: Ergebnisbeschreibung</label>
+                        <input type="text" id="inputAfterDesc" value="Brillante Farben, makelloses Glas, ultraschnelle Touch-Reaktion und saubere Passform.">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 4: Dynamic Texts & Quality -->
+            <div class="form-section">
+                <div class="section-header">⚙️ 4. Dynamische Leistungsbeschreibungen</div>
                 
                 <div class="control-group">
                     <label for="dynFeatures">Im Service enthalten (HTML Liste &lt;li&gt;)</label>
@@ -143,44 +200,9 @@
                 </div>
             </div>
 
-            <!-- Section 4: Reviews -->
+            <!-- Section 5: Video Showcase -->
             <div class="form-section">
-                <div class="section-header">⭐ 4. Kundenbewertungen</div>
-                
-                <div class="control-group">
-                    <label>Bewertung 1</label>
-                    <textarea id="review1Text" rows="2"></textarea>
-                    <input type="text" id="review1Author" placeholder="Käufername (z.B. Michael T.)" style="margin-top: 5px;">
-                </div>
-
-                <div class="control-group">
-                    <label>Bewertung 2</label>
-                    <textarea id="review2Text" rows="2"></textarea>
-                    <input type="text" id="review2Author" placeholder="Käufername (z.B. Sarah K.)" style="margin-top: 5px;">
-                </div>
-            </div>
-
-            <!-- Section 5: Reparaturschein / Links -->
-            <div class="form-section">
-                <div class="section-header">🔗 5. Reparaturschein &amp; Formular</div>
-                
-                <div class="control-group">
-                    <label for="formToggle">Reparaturschein im Ablauf anzeigen?</label>
-                    <select id="formToggle">
-                        <option value="yes">✅ Ja, Reparaturschein-Button anzeigen</option>
-                        <option value="no">❌ Nein, nur einfachen Texthinweis anzeigen</option>
-                    </select>
-                </div>
-
-                <div class="control-group">
-                    <label for="inputFormLink">Reparaturschein PDF-Link (GitHub Pages)</label>
-                    <input type="text" id="inputFormLink" value="https://mustafamuhammed29.github.io/handyland-generator/reparaturschein.pdf">
-                </div>
-            </div>
-
-            <!-- Section 6: Video Showcase -->
-            <div class="form-section">
-                <div class="section-header">🎬 6. Werkstatt-Video (Einblick)</div>
+                <div class="section-header">🎬 5. Werkstatt-Video (Einblick)</div>
                 
                 <div class="control-group">
                     <label for="videoToggle">Video-Bereich im Angebot anzeigen?</label>
@@ -221,6 +243,41 @@
                 </div>
             </div>
 
+            <!-- Section 6: Reviews -->
+            <div class="form-section">
+                <div class="section-header">⭐ 6. Kundenbewertungen</div>
+                
+                <div class="control-group">
+                    <label>Bewertung 1</label>
+                    <textarea id="review1Text" rows="2"></textarea>
+                    <input type="text" id="review1Author" placeholder="Käufername (z.B. Michael T.)" style="margin-top: 5px;">
+                </div>
+
+                <div class="control-group">
+                    <label>Bewertung 2</label>
+                    <textarea id="review2Text" rows="2"></textarea>
+                    <input type="text" id="review2Author" placeholder="Käufername (z.B. Sarah K.)" style="margin-top: 5px;">
+                </div>
+            </div>
+
+            <!-- Section 7: Reparaturschein / Links -->
+            <div class="form-section">
+                <div class="section-header">🔗 7. Reparaturschein &amp; Formular</div>
+                
+                <div class="control-group">
+                    <label for="formToggle">Reparaturschein im Ablauf anzeigen?</label>
+                    <select id="formToggle">
+                        <option value="yes">✅ Ja, Reparaturschein-Button anzeigen</option>
+                        <option value="no">❌ Nein, nur einfachen Texthinweis anzeigen</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="inputFormLink">Reparaturschein PDF-Link (GitHub Pages)</label>
+                    <input type="text" id="inputFormLink" value="https://mustafamuhammed29.github.io/handyland-generator/reparaturschein.pdf">
+                </div>
+            </div>
+
             <!-- Submit Action -->
             <button type="button" id="btnGenerate" class="btn-generate">
                 🚀 eBay HTML Aktualisieren
@@ -255,6 +312,10 @@
                         <button type="button" class="btn-device" data-device="mobile" title="Smartphone Ansicht">📲 Mobile</button>
                     </div>
 
+                    <button type="button" id="btnDownloadHtmlTop" class="btn-action-download" title="HTML Datei herunterladen">
+                        💾 HTML Datei
+                    </button>
+
                     <button type="button" id="btnCopyCodeTop" class="btn-action-primary">
                         📋 Code Kopieren
                     </button>
@@ -280,9 +341,14 @@
                             <span class="compliance-pill">
                                 🛡️ 100% eBay Richtlinienkonform: Pure HTML &amp; Embedded CSS (Kein JavaScript)
                             </span>
-                            <button type="button" id="btnCopyCodeBottom" class="btn-action-primary">
-                                📋 HTML Code in Zwischenablage kopieren
-                            </button>
+                            <div style="display: flex; gap: 10px;">
+                                <button type="button" id="btnDownloadHtmlBottom" class="btn-action-download">
+                                    💾 Als .html herunterladen
+                                </button>
+                                <button type="button" id="btnCopyCodeBottom" class="btn-action-primary">
+                                    📋 HTML Code kopieren
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
