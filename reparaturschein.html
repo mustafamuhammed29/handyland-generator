@@ -3,21 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>HandyLand Heidelberg - Reparatur-Begleitschein (A4 Formular)</title>
-    <meta name="description" content="Reparatur-Begleitschein für Einsendungen an HandyLand Heidelberg. Bitte ausfüllen und dem Paket beilegen.">
-    <link rel="stylesheet" href="css/print-form.css">
+    <meta name="description" content="Interaktiver Reparatur-Begleitschein für Einsendungen an HandyLand Heidelberg. Direkt digital ausfüllen und drucken oder dem Paket beilegen.">
+    <link rel="stylesheet" href="css/print-form.css?v=2.0">
 </head>
 <body>
 
-    <!-- Floating Quick Print Button for Web Users -->
+    <!-- Floating Quick Action Bar for Web Users -->
     <div class="web-actions">
-        <button type="button" class="btn-print" onclick="window.print()">
-            🖨️ Formular jetzt drucken (A4)
+        <a href="index.html" class="btn-print" style="background: #1f2937; color: #fff; text-decoration: none;">
+            🔙 Zum Generator
+        </a>
+        <button type="button" class="btn-print" style="background: #f59e0b; color: #000;" id="btnResetForm">
+            🔄 Leeren
+        </button>
+        <button type="button" class="btn-print" id="btnPrintForm">
+            🖨️ Drucken / Als PDF speichern
         </button>
     </div>
 
-    <!-- DIN A4 Sheet -->
-    <div class="sheet-container">
+    <!-- DIN A4 Sheet Container -->
+    <form class="sheet-container" id="repairForm" onsubmit="return false;">
         
         <div>
             <!-- Header -->
@@ -37,7 +46,7 @@
                 <div class="guide-icon">⚠️</div>
                 <div class="guide-text">
                     <h4>Wichtiger Hinweis für eine zügige Bearbeitung (12-24h Express):</h4>
-                    <p>Bitte fülle dieses Formular leserlich in Druckbuchstaben aus und lege es deinem versicherten Paket bei. Bitte <strong>kein Zubehör</strong> (Ladekabel, Hüllen, Originalkartons, SIM-Karten) mitsenden.</p>
+                    <p>Fülle dieses Formular bitte direkt hier <strong>digital oder handschriftlich</strong> aus und lege es deinem versicherten Paket bei. Bitte <strong>kein Zubehör</strong> (Ladekabel, Hüllen, Originalkartons, SIM-Karten) mitsenden.</p>
                 </div>
             </div>
 
@@ -49,33 +58,33 @@
                     <div class="section-title">👤 1. Absender / Kundendaten</div>
                     
                     <div class="form-row">
-                        <label>Vor- &amp; Nachname:</label>
-                        <div class="fill-line" id="fieldCustomerName"></div>
+                        <label for="fieldCustomerName">Vor- &amp; Nachname:</label>
+                        <input type="text" id="fieldCustomerName" class="form-input" placeholder="z.B. Max Mustermann">
                     </div>
                     
                     <div class="form-row">
-                        <label>eBay-Nutzername:</label>
-                        <div class="fill-line" id="fieldEbayUser"></div>
+                        <label for="fieldEbayUser">eBay-Nutzername:</label>
+                        <input type="text" id="fieldEbayUser" class="form-input" placeholder="z.B. max_ebay24">
                     </div>
 
                     <div class="form-row">
-                        <label>Straße &amp; Hausnr.:</label>
-                        <div class="fill-line" id="fieldAddress"></div>
+                        <label for="fieldAddress">Straße &amp; Hausnr.:</label>
+                        <input type="text" id="fieldAddress" class="form-input" placeholder="z.B. Musterstr. 12">
                     </div>
 
                     <div class="form-row">
-                        <label>PLZ &amp; Wohnort:</label>
-                        <div class="fill-line" id="fieldZipCity"></div>
+                        <label for="fieldZipCity">PLZ &amp; Wohnort:</label>
+                        <input type="text" id="fieldZipCity" class="form-input" placeholder="z.B. 69126 Heidelberg">
                     </div>
 
                     <div class="form-row">
-                        <label>Mobil / WhatsApp:</label>
-                        <div class="fill-line" id="fieldPhone"></div>
+                        <label for="fieldPhone">Mobil / WhatsApp:</label>
+                        <input type="text" id="fieldPhone" class="form-input" placeholder="z.B. 0176 12345678">
                     </div>
 
                     <div class="form-row">
-                        <label>E-Mail-Adresse:</label>
-                        <div class="fill-line" id="fieldEmail"></div>
+                        <label for="fieldEmail">E-Mail-Adresse:</label>
+                        <input type="email" id="fieldEmail" class="form-input" placeholder="z.B. max@beispiel.de">
                     </div>
                 </div>
 
@@ -84,18 +93,18 @@
                     <div class="section-title">📱 2. Gerätedaten &amp; Entsperrcode</div>
                     
                     <div class="form-row">
-                        <label>Marke &amp; Modell:</label>
-                        <div class="fill-line" id="fieldModel"></div>
+                        <label for="fieldModel">Marke &amp; Modell:</label>
+                        <input type="text" id="fieldModel" class="form-input" placeholder="z.B. Apple iPhone 14 Pro">
                     </div>
 
                     <div class="form-row">
-                        <label>Farbe des Geräts:</label>
-                        <div class="fill-line" id="fieldColor"></div>
+                        <label for="fieldColor">Farbe des Geräts:</label>
+                        <input type="text" id="fieldColor" class="form-input" placeholder="z.B. Dunkellila / Schwarz">
                     </div>
 
                     <div class="form-row">
-                        <label>Geräte-PIN / Code:</label>
-                        <div class="fill-line" id="fieldPin"></div>
+                        <label for="fieldPin">Geräte-PIN / Code:</label>
+                        <input type="text" id="fieldPin" class="form-input" placeholder="Für Endkontrolle nach Reparatur">
                     </div>
 
                     <div style="margin-top: 6px; display: flex; justify-content: space-between; align-items: center;">
@@ -115,9 +124,9 @@
                         </div>
                     </div>
 
-                    <div class="check-item" style="margin-top: 4px;">
-                        <span class="check-square" id="checkReset"></span>
-                        <span>Gerät wurde vorab zurückgesetzt / ohne Sperre</span>
+                    <div class="check-item" style="margin-top: 6px;">
+                        <input type="checkbox" id="checkReset">
+                        <label for="checkReset">Gerät wurde vorab zurückgesetzt / ohne Sperre</label>
                     </div>
                 </div>
 
@@ -128,17 +137,35 @@
                 <div class="section-title">🛠️ 3. Gebuchte Reparaturleistung &amp; Fehlerangabe</div>
                 
                 <div class="check-grid">
-                    <div class="check-item"><span class="check-square" id="chkDisplay"></span> <span>Display / Touchscreen defekt</span></div>
-                    <div class="check-item"><span class="check-square" id="chkBattery"></span> <span>Akku schwach / entlädt schnell</span></div>
-                    <div class="check-item"><span class="check-square" id="chkCharging"></span> <span>Ladebuchse / Wackelkontakt</span></div>
-                    <div class="check-item"><span class="check-square" id="chkBackcover"></span> <span>Backcover / Rückglas gesprungen</span></div>
-                    <div class="check-item"><span class="check-square" id="chkCamera"></span> <span>Kamera unscharf / Glas defekt</span></div>
-                    <div class="check-item"><span class="check-square" id="chkUpsell"></span> <span>Zusatz: Panzerglas Montage gebucht</span></div>
+                    <div class="check-item">
+                        <input type="checkbox" id="chkDisplay">
+                        <label for="chkDisplay">Display / Touchscreen defekt</label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="chkBattery">
+                        <label for="chkBattery">Akku schwach / entlädt schnell</label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="chkCharging">
+                        <label for="chkCharging">Ladebuchse / Wackelkontakt</label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="chkBackcover">
+                        <label for="chkBackcover">Backcover / Rückglas gesprungen</label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="chkCamera">
+                        <label for="chkCamera">Kamera unscharf / Glas defekt</label>
+                    </div>
+                    <div class="check-item">
+                        <input type="checkbox" id="chkUpsell">
+                        <label for="chkUpsell">Zusatz: Panzerglas Montage gebucht</label>
+                    </div>
                 </div>
 
                 <div style="margin-top: 10px;">
-                    <label style="font-size: 11px; font-weight: bold;">Zusätzliche Fehlerbeschreibung / Bemerkungen des Kunden:</label>
-                    <div class="fault-box" id="fieldNotes"></div>
+                    <label for="fieldNotes" style="font-size: 11px; font-weight: bold; display: block;">Zusätzliche Fehlerbeschreibung / Bemerkungen:</label>
+                    <textarea id="fieldNotes" class="form-textarea" placeholder="Beschreibe hier kurz eventuelle Besonderheiten oder weitere Defekte..."></textarea>
                 </div>
             </div>
 
@@ -169,7 +196,7 @@
 
                 <div class="signature-grid">
                     <div class="sign-box">
-                        <div class="sign-line" id="fieldDate"></div>
+                        <input type="text" id="fieldDate" class="form-input" style="text-align: center;" value="Heidelberg, 24.08.2026">
                         <div class="sign-label">Ort, Datum</div>
                     </div>
                     <div class="sign-box">
@@ -185,52 +212,64 @@
             HandyLand Heidelberg • Inh. Alsafi Nawfal • Hertzstr. 1, 69126 Heidelberg • USt-IdNr.: DE 406785869 • Stand: 2026
         </div>
 
-    </div>
+    </form>
 
-    <!-- Script to Auto-Fill form fields from URL params (if generated via Generator) -->
+    <!-- Script to Auto-Fill & Manage Form -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);
             
-            const setText = (id, val) => {
-                if (val && document.getElementById(id)) {
-                    document.getElementById(id).textContent = val;
-                    document.getElementById(id).style.fontWeight = 'bold';
-                    document.getElementById(id).style.color = '#111827';
+            const setValue = (id, val) => {
+                const el = document.getElementById(id);
+                if (el && val) {
+                    el.value = val;
                 }
             };
 
-            const setChecked = (id, condition) => {
-                if (condition && document.getElementById(id)) {
-                    document.getElementById(id).textContent = '✔';
-                    document.getElementById(id).style.textAlign = 'center';
-                    document.getElementById(id).style.lineHeight = '14px';
-                    document.getElementById(id).style.fontWeight = 'bold';
+            const setCheckbox = (id, condition) => {
+                const el = document.getElementById(id);
+                if (el && condition) {
+                    el.checked = true;
                 }
             };
 
-            setText('fieldCustomerName', params.get('name'));
-            setText('fieldEbayUser', params.get('ebayUser'));
-            setText('fieldAddress', params.get('address'));
-            setText('fieldZipCity', params.get('zipCity'));
-            setText('fieldPhone', params.get('phone'));
-            setText('fieldEmail', params.get('email'));
-            setText('fieldModel', params.get('model'));
-            setText('fieldColor', params.get('color'));
-            setText('fieldPin', params.get('pin'));
-            setText('fieldNotes', params.get('notes'));
-            setText('fieldDate', params.get('date'));
+            setValue('fieldCustomerName', params.get('name'));
+            setValue('fieldEbayUser', params.get('ebayUser'));
+            setValue('fieldAddress', params.get('address'));
+            setValue('fieldZipCity', params.get('zipCity'));
+            setValue('fieldPhone', params.get('phone'));
+            setValue('fieldEmail', params.get('email'));
+            setValue('fieldModel', params.get('model'));
+            setValue('fieldColor', params.get('color'));
+            setValue('fieldPin', params.get('pin'));
+            setValue('fieldNotes', params.get('notes'));
+            
+            const today = new Date().toLocaleDateString('de-DE');
+            setValue('fieldDate', params.get('date') || `Heidelberg, ${today}`);
 
             const repairType = params.get('repair');
-            if (repairType === 'display') setChecked('chkDisplay', true);
-            if (repairType === 'battery') setChecked('chkBattery', true);
-            if (repairType === 'charging') setChecked('chkCharging', true);
-            if (repairType === 'backcover') setChecked('chkBackcover', true);
-            if (repairType === 'camera') setChecked('chkCamera', true);
-            if (params.get('upsell') === 'yes') setChecked('chkUpsell', true);
+            if (repairType === 'display') setCheckbox('chkDisplay', true);
+            if (repairType === 'battery') setCheckbox('chkBattery', true);
+            if (repairType === 'charging') setCheckbox('chkCharging', true);
+            if (repairType === 'backcover') setCheckbox('chkBackcover', true);
+            if (repairType === 'camera') setCheckbox('chkCamera', true);
+            if (params.get('upsell') === 'yes') setCheckbox('chkUpsell', true);
+
+            // Print button handler
+            document.getElementById('btnPrintForm').addEventListener('click', () => {
+                window.print();
+            });
+
+            // Reset button handler
+            document.getElementById('btnResetForm').addEventListener('click', () => {
+                if (confirm('Möchtest du alle Eingaben im Formular leeren?')) {
+                    document.getElementById('repairForm').reset();
+                    setValue('fieldDate', `Heidelberg, ${today}`);
+                }
+            });
 
             if (params.get('print') === '1') {
-                setTimeout(() => window.print(), 300);
+                setTimeout(() => window.print(), 400);
             }
         });
     </script>

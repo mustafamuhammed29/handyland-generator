@@ -167,11 +167,11 @@ body {
     gap: 6px;
 }
 
-/* Form lines for manual handwriting */
+/* Form lines & interactive inputs */
 .form-row {
     margin-bottom: 8px;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     gap: 8px;
 }
 .form-row label {
@@ -179,41 +179,72 @@ body {
     font-weight: 700;
     white-space: nowrap;
     min-width: 110px;
+    cursor: pointer;
 }
-.fill-line {
+.form-input {
     flex: 1;
-    border-bottom: 1px solid #999;
-    height: 18px;
+    border: none;
+    border-bottom: 1.5px solid #666;
+    background: rgba(240, 244, 248, 0.7);
+    padding: 3px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    color: #111827;
+    outline: none;
+    transition: all 0.2s;
+    border-radius: 3px 3px 0 0;
+}
+.form-input:focus {
+    background: #ffffff;
+    border-bottom: 2px solid #25D366;
+    box-shadow: 0 2px 8px rgba(37, 211, 102, 0.25);
 }
 
 /* Checkbox group */
 .check-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 6px;
+    gap: 8px;
     margin-top: 8px;
 }
 .check-item {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     font-size: 11.5px;
 }
-.check-square {
-    width: 14px;
-    height: 14px;
-    border: 1px solid #444;
-    display: inline-block;
-    border-radius: 2px;
+.check-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #25D366;
+    flex-shrink: 0;
+}
+.check-item label {
+    cursor: pointer;
+    font-weight: 500;
 }
 
 /* Large fault description box */
-.fault-box {
-    border: 1px solid #bbb;
-    height: 60px;
+.form-textarea {
+    width: 100%;
+    border: 1.5px solid #bbb;
+    height: 62px;
     margin-top: 6px;
     border-radius: 4px;
-    background: #fafafa;
+    padding: 6px 8px;
+    font-family: inherit;
+    font-size: 11.5px;
+    outline: none;
+    resize: none;
+    background: rgba(240, 244, 248, 0.7);
+    color: #111;
+}
+.form-textarea:focus {
+    background: #ffffff;
+    border-color: #25D366;
+    box-shadow: 0 2px 8px rgba(37, 211, 102, 0.2);
 }
 
 /* Address / Shipping Destination Box */
@@ -300,8 +331,19 @@ body {
         box-shadow: none;
         border-radius: 0;
     }
+    .form-input {
+        background: transparent !important;
+        border-bottom: 1px solid #333 !important;
+        padding: 0 2px !important;
+        box-shadow: none !important;
+    }
+    .form-textarea {
+        background: transparent !important;
+        border: 1px solid #666 !important;
+        box-shadow: none !important;
+    }
     @page {
         size: A4 portrait;
-        margin: 12mm 15mm;
+        margin: 10mm 15mm;
     }
 }
