@@ -4,8 +4,8 @@
  * preset loading, theme switching, file downloads, and state synchronization.
  */
 
-import { REPAIR_DATA } from './data/repair-data.js';
-import { generateEbayHtml } from './ebay-template.js';
+import { REPAIR_DATA } from './data/repair-data.js?v=3.0';
+import { generateEbayHtml } from './ebay-template.js?v=3.0';
 
 // Application State
 const state = {
