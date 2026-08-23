@@ -43,6 +43,7 @@ export function generateEbayHtml(config) {
         afterDesc = "",
         matrixToggle = "yes", // 'yes' | 'no'
         matrixRows = null, // Custom array from UI [{series, models, status}]
+        appleOemToggle = "yes", // 'yes' | 'no'
         qrToggle = "yes", // 'yes' | 'no'
         sealToggle = "yes", // 'yes' | 'no'
         featuresHtml = "",
@@ -329,6 +330,30 @@ export function generateEbayHtml(config) {
             <div class="hl-note-icon">📌</div>
             <div class="hl-note-text">
                 <strong>Zusatzhinweis:</strong> ${escapeHtml(customNotes)}
+            </div>
+        </div>`;
+    }
+
+    // VIP Original Apple Battery Card HTML
+    let appleOemHtml = '';
+    if (appleOemToggle === 'yes' && (brand === 'Apple' || repairTypeId === 'battery')) {
+        const waOemMsg = encodeURIComponent(`Hallo HandyLand Heidelberg! Ich interessiere mich für einen originalen Apple-Akku direkt vom Hersteller für mein ${brand} ${model}. Bitte um ein unverbindliches Angebot.`);
+        const waOemUrl = `https://wa.me/${shop.whatsappNumber}?text=${waOemMsg}`;
+
+        appleOemHtml = `
+        <div class="hl-apple-oem-card">
+            <div class="hl-oem-header">
+                <span class="hl-oem-badge">👑 VIP-OPTION AUF ANFRAGE</span>
+                <span class="hl-oem-icon">🍏</span>
+            </div>
+            <div class="hl-oem-title">Du wünschst einen originalen Apple-Akku vom Hersteller?</div>
+            <p class="hl-oem-desc">
+                Auf Kundenwunsch können wir für dein <strong>${escapeHtml(brand)} ${escapeHtml(model)}</strong> auch <strong>originale Apple-Batterien direkt von der Muttergesellschaft</strong> beziehen &amp; fachgerecht kalibrieren (ohne Fehlermeldung &amp; mit 100% Kapazitätsanzeige). Kontaktiere uns hierzu einfach kurz unverbindlich per WhatsApp!
+            </p>
+            <div class="hl-oem-action">
+                <a href="${waOemUrl}" target="_blank" class="hl-oem-btn">
+                    💬 Original Apple Akku per WhatsApp anfragen ➔
+                </a>
             </div>
         </div>`;
     }
@@ -1061,6 +1086,65 @@ export function generateEbayHtml(config) {
         line-height: 1.4;
     }
 
+    /* VIP Original Apple Battery Card */
+    .hl-apple-oem-card {
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(20, 20, 30, 0.9) 100%);
+        border: 1.5px solid var(--hl-primary);
+        border-radius: 12px;
+        padding: 18px 22px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    }
+    .hl-oem-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .hl-oem-badge {
+        background: var(--hl-gradient);
+        color: #000000;
+        font-size: 11px;
+        font-weight: 900;
+        padding: 3px 10px;
+        border-radius: 12px;
+        letter-spacing: 0.5px;
+    }
+    .hl-oem-icon {
+        font-size: 22px;
+    }
+    .hl-oem-title {
+        font-size: 16px;
+        font-weight: 800;
+        color: #ffffff;
+        margin-bottom: 6px;
+    }
+    .hl-oem-desc {
+        font-size: 13px;
+        color: #d0d0dc;
+        line-height: 1.5;
+        margin-bottom: 14px;
+    }
+    .hl-oem-action {
+        text-align: right;
+    }
+    .hl-oem-btn {
+        display: inline-block;
+        background: #25D366;
+        color: #000000;
+        font-weight: 800;
+        font-size: 13px;
+        padding: 9px 20px;
+        border-radius: 20px;
+        text-decoration: none;
+        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+        transition: all 0.2s ease;
+    }
+    .hl-oem-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(37, 211, 102, 0.5);
+    }
+
     /* Timeline Process */
     .hl-timeline {
         display: flex;
@@ -1557,6 +1641,9 @@ export function generateEbayHtml(config) {
 
         <!-- German Trust & Warranty Seal Bar -->
         ${trustSealHtml}
+
+        <!-- Original Apple Battery VIP Option -->
+        ${appleOemHtml}
 
         <!-- Before / After Visual Comparison -->
         ${beforeAfterHtml}

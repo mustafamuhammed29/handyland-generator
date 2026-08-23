@@ -79,6 +79,7 @@ function cacheElements() {
         dynFeatures: document.getElementById('dynFeatures'),
         dynFaq1: document.getElementById('dynFaq1'),
         dynTransparency: document.getElementById('dynTransparency'),
+        appleOemToggleSelect: document.getElementById('appleOemToggle'),
         customNotes: document.getElementById('customNotes'),
         
         // Video Showcase
@@ -593,6 +594,7 @@ function bindEvents() {
         elements.dynFeatures,
         elements.dynFaq1,
         elements.dynTransparency,
+        elements.appleOemToggleSelect,
         elements.customNotes,
         elements.review1Text,
         elements.review1Author,
@@ -873,6 +875,7 @@ function generateAndRender() {
         featuresHtml: elements.dynFeatures.value,
         faq1Text: elements.dynFaq1.value.trim(),
         transparencyText: elements.dynTransparency.value.trim(),
+        appleOemToggle: elements.appleOemToggleSelect ? elements.appleOemToggleSelect.value : "yes",
         customNotes: elements.customNotes ? elements.customNotes.value.trim() : "",
         
         review1: {
