@@ -1,0 +1,20 @@
+{
+  "name": "handyland-ebay-generator",
+  "version": "1.0.0",
+  "description": "HandyLand eBay Template Generator Pro & Printable Repair Form",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "ebay",
+    "template",
+    "generator",
+    "handyland",
+    "repair"
+  ],
+  "author": "HandyLand Heidelberg",
+  "license": "MIT"
+}

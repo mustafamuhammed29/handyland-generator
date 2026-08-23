@@ -1,0 +1,307 @@
+/* ==========================================================================
+   HandyLand Heidelberg - Reparaturschein / Begleitschein Print Stylesheet
+   Optimized for standard DIN A4 Single Page Print & Digital View
+   ========================================================================== */
+
+:root {
+    --primary-color: #111111;
+    --accent-gold: #c59b27;
+    --border-color: #333333;
+    --light-bg: #f8f9fa;
+    --text-color: #111111;
+    --text-muted: #555555;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #e5e7eb;
+    color: var(--text-color);
+    line-height: 1.4;
+    font-size: 13px;
+    padding: 30px 10px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Floating Action Bar on Web (Hidden on Print) */
+.web-actions {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 12px;
+    z-index: 1000;
+}
+.btn-print {
+    background: #25D366;
+    color: #000000;
+    border: none;
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 800;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.btn-print:hover {
+    transform: scale(1.05);
+    background: #1fae51;
+}
+
+/* A4 Sheet Container */
+.sheet-container {
+    width: 210mm;
+    min-height: 297mm;
+    background: #ffffff;
+    padding: 15mm 18mm;
+    border-radius: 6px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Header */
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 12px;
+    margin-bottom: 14px;
+}
+.header-brand {
+    display: flex;
+    flex-direction: column;
+}
+.header-brand h1 {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--primary-color);
+    letter-spacing: -0.5px;
+}
+.header-brand h1 span {
+    color: var(--accent-gold);
+}
+.header-brand p {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+.header-doc-title {
+    text-align: right;
+}
+.header-doc-title h2 {
+    font-size: 18px;
+    text-transform: uppercase;
+    color: var(--primary-color);
+    letter-spacing: 1px;
+}
+.header-doc-title span {
+    font-size: 11px;
+    background: var(--primary-color);
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+/* Alert / Guide box */
+.guide-box {
+    background-color: var(--light-bg);
+    border: 1px dashed var(--border-color);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.guide-icon {
+    font-size: 26px;
+}
+.guide-text h4 {
+    font-size: 13px;
+    color: #b91c1c;
+    margin-bottom: 2px;
+}
+.guide-text p {
+    font-size: 11.5px;
+    color: var(--text-muted);
+}
+
+/* Form Grid */
+.form-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+.box-section {
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 12px;
+}
+.section-title {
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Form lines for manual handwriting */
+.form-row {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+}
+.form-row label {
+    font-size: 11.5px;
+    font-weight: 700;
+    white-space: nowrap;
+    min-width: 110px;
+}
+.fill-line {
+    flex: 1;
+    border-bottom: 1px solid #999;
+    height: 18px;
+}
+
+/* Checkbox group */
+.check-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-top: 8px;
+}
+.check-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+}
+.check-square {
+    width: 14px;
+    height: 14px;
+    border: 1px solid #444;
+    display: inline-block;
+    border-radius: 2px;
+}
+
+/* Large fault description box */
+.fault-box {
+    border: 1px solid #bbb;
+    height: 60px;
+    margin-top: 6px;
+    border-radius: 4px;
+    background: #fafafa;
+}
+
+/* Address / Shipping Destination Box */
+.dest-box {
+    background: #f1f5f9;
+    border: 1.5px solid var(--primary-color);
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.dest-info h3 {
+    font-size: 13.5px;
+    color: var(--primary-color);
+    margin-bottom: 4px;
+}
+.dest-info p {
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+/* Pattern / Code box */
+.pattern-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 16px);
+    gap: 12px;
+    justify-content: center;
+    padding: 8px;
+}
+.pattern-dot {
+    width: 14px;
+    height: 14px;
+    border: 2px solid #333;
+    border-radius: 50%;
+}
+
+/* Signature section */
+.signature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+}
+.sign-box {
+    text-align: center;
+}
+.sign-line {
+    border-bottom: 1px solid #444;
+    height: 25px;
+    margin-bottom: 4px;
+}
+.sign-label {
+    font-size: 10.5px;
+    color: var(--text-muted);
+}
+
+/* Footer note */
+.form-footer {
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+    text-align: center;
+    font-size: 10px;
+    color: var(--text-muted);
+}
+
+/* ================= PRINT SPECIFICS ================= */
+@media print {
+    body {
+        background: #ffffff;
+        padding: 0;
+        margin: 0;
+    }
+    .web-actions {
+        display: none !important;
+    }
+    .sheet-container {
+        width: 100%;
+        min-height: auto;
+        padding: 0;
+        box-shadow: none;
+        border-radius: 0;
+    }
+    @page {
+        size: A4 portrait;
+        margin: 12mm 15mm;
+    }
+}
