@@ -5,8 +5,8 @@
  * customer slip auto-filling, theme switching, and file downloads.
  */
 
-import { REPAIR_DATA } from './data/repair-data.js?v=3.5';
-import { generateEbayHtml } from './ebay-template.js?v=3.5';
+import { REPAIR_DATA } from './data/repair-data.js?v=5.0';
+import { generateEbayHtml } from './ebay-template.js?v=5.0';
 
 // Application State
 const state = {
@@ -45,6 +45,17 @@ function cacheElements() {
         modelChipsContainer: document.getElementById('modelChipsContainer'),
         keywordsChipsContainer: document.getElementById('keywordsChipsContainer'),
         btnCopyKeywords: document.getElementById('btnCopyKeywords'),
+
+        // Mode Toggles
+        genericModeToggle: document.getElementById('genericModeToggle'),
+        ebayComplianceToggle: document.getElementById('ebayComplianceToggle'),
+
+        // Free Promo Gifts Controls
+        freeGiftsControlBox: document.getElementById('freeGiftsControlBox'),
+        masterGiftsToggle: document.getElementById('masterGiftsToggle'),
+        giftCleaning: document.getElementById('giftCleaning'),
+        giftCover: document.getElementById('giftCover'),
+        giftLensGlass: document.getElementById('giftLensGlass'),
 
         // Inputs
         brandSelect: document.getElementById('brandInput'),
@@ -153,7 +164,7 @@ function populateSelectOptions() {
 function renderQuickPresets() {
     if (!elements.presetsContainer) return;
     elements.presetsContainer.innerHTML = REPAIR_DATA.quickPresets.map(p => `
-        <button type="button" class="btn-preset" data-preset-id="${p.id}">
+        <button type="button" class="btn-preset ${p.featured ? 'featured' : ''}" data-preset-id="${p.id}">
             ${p.name}
         </button>
     `).join('');
@@ -176,6 +187,20 @@ function loadPreset(presetId) {
     elements.priceInput.value = preset.price;
     elements.upsellTypeSelect.value = preset.upsellType;
     elements.upsellPriceInput.value = preset.upsellPrice;
+
+    // Handle generic mode, eBay compliance, and free gifts presets
+    if (elements.genericModeToggle) {
+        elements.genericModeToggle.checked = preset.genericMode !== undefined ? preset.genericMode : false;
+    }
+    if (elements.ebayComplianceToggle) {
+        elements.ebayComplianceToggle.checked = preset.ebayCompliance !== undefined ? preset.ebayCompliance : true;
+    }
+    if (preset.freeGifts) {
+        if (elements.masterGiftsToggle) elements.masterGiftsToggle.checked = true;
+        if (elements.giftCleaning) elements.giftCleaning.checked = true;
+        if (elements.giftCover) elements.giftCover.checked = true;
+        if (elements.giftLensGlass) elements.giftLensGlass.checked = true;
+    }
 
     if (preset.upsellType === 'paid') {
         elements.upsellPriceGroup.classList.remove('hidden');
@@ -357,24 +382,55 @@ function renderSeoKeywords() {
 // ================= KLEINANZEIGEN.DE PLAIN-TEXT GENERATOR =================
 function generateKleinanzeigenText(config) {
     const shop = REPAIR_DATA.shopInfo;
-    const waText = encodeURIComponent(`Hallo HandyLand Heidelberg! Ich habe euer Inserat auf Kleinanzeigen gesehen: ${config.brand} ${config.model} (${config.repairName}).`);
+    const isGeneric = config.genericMode || config.brand === 'Universal';
+    const cleanRepairName = (config.repairName || '').replace(/[^\w\s\/\-\&äöüÄÖÜß]/g, '').trim();
+    const waDeviceStr = isGeneric 
+        ? `Smartphone-Reparatur (${cleanRepairName})`
+        : `${config.brand} ${config.model} (${cleanRepairName})`;
+
+    const waText = encodeURIComponent(`Hallo HandyLand Heidelberg! Ich habe euer Inserat auf Kleinanzeigen gesehen: ${waDeviceStr}. Könnt ihr mir bitte weiterhelfen?`);
     const waUrl = `https://wa.me/${shop.whatsappNumber}?text=${waText}`;
+
+    let giftsSection = '';
+    const isEligibleCategory = ['display', 'battery', 'backcover', 'charging'].includes(config.repairTypeId);
+    if (config.freeGifts && isEligibleCategory) {
+        let giftsList = [];
+        if (config.freeGifts.cleaning !== false) {
+            giftsList.push("✔ 🧼 Professionelle Außenreinigung des Geräts (Gehäuse, Lautsprechergitter & Ladebuchse sauber & desinfiziert)");
+        }
+        if (config.freeGifts.cover !== false) {
+            if (config.repairTypeId === 'display') {
+                giftsList.push("✔ 🛡️ Premium 9H Panzerglas Displayschutz (wird direkt fachgerecht & blasenfrei auf dem neuen Display montiert)");
+            } else {
+                giftsList.push("✔ 🛡️ Premium 9H Panzerglas Displayschutz (falls bereits intakt vorhanden, als neues Extra-Glas beigelegt)");
+            }
+        }
+        if (config.freeGifts.lensGlass !== false) {
+            giftsList.push("✔ 📸 Kamera-Linsenschutz Schutzglas (falls bereits intakt vorhanden, als neues Extra-Glas beigelegt)");
+        }
+        if (giftsList.length > 0) {
+            giftsSection = `\n═══════════════════════════════════════════════\n🎁 3 FESTE GRATIS-AKTIONEN INKLUSIVE:\n═══════════════════════════════════════════════\n${giftsList.join('\n')}\n`;
+        }
+    }
+
+    const deviceLabel = isGeneric ? 'Alle Smartphone-Modelle & Marken (Universal)' : `${config.brand} ${config.model}`;
+    const priceLabel = isGeneric ? 'Siehe Modellauswahl / Varianten (inkl. 19% MwSt.)' : `${config.price} (inkl. 19% MwSt.)`;
 
     return `⚡ HandyLand Heidelberg • Professionelle Smartphone Reparatur ⚡
 ═══════════════════════════════════════════════
 
-📱 GERÄT: ${config.brand} ${config.model}
+📱 GERÄT: ${deviceLabel}
 🛠️ REPARATURART: ${config.repairName}
-💶 PREIS: ${config.price} (inkl. 19% MwSt.)
+💶 PREIS: ${priceLabel}
 🛡️ GARANTIE: ${config.warrantyMonths} Monate Meister-Garantie
 ⚡ DAUER: Express Bearbeitung (${config.processingTime})
-
+${giftsSection}
 ═══════════════════════════════════════════════
 ⭐ UNSERE LEISTUNGEN & VORTEILE:
 ═══════════════════════════════════════════════
 ✔ Erstklassige Ersatzteile in geprüfter Meisterqualität
 ✔ 100% DATENSCHUTZ: Deine Fotos, WhatsApp-Chats & Daten bleiben sicher erhalten
-✔ DHL Express Rückversand versichert mit Sendungsverfolgung
+✔ DHL Express Rückversand versichert mit Sendungsverfolgabe
 ✔ Auch persönliche Abgabe & Abholung in unserer Werkstatt in Heidelberg möglich!
 ✔ Offizielle Rechnung mit ausgewiesener MwSt. (19%)
 
@@ -393,10 +449,11 @@ Inh. Alsafi Nawfal
 Hertzstr. 1
 69126 Heidelberg
 
-💬 WhatsApp Express-Hotline: ${shop.phone}
-🔗 Direktkontakt: ${waUrl}
+💬 WhatsApp Support: https://wa.me/${shop.whatsappNumber}
+📞 Telefon / Hotline: ${shop.phone}
 ✉️ E-Mail: ${shop.email}
-🏛️ USt-IdNr.: ${shop.vatId}`;
+🏛️ USt-IdNr.: ${shop.vatId}
+🌐 eBay Shop: ${shop.ebayShopUrl}`;
 }
 
 // ================= COMPATIBILITY MATRIX MANAGER =================
@@ -517,30 +574,45 @@ function bindEvents() {
         elements.btnAddMatrixRow.addEventListener('click', addMatrixRow);
     }
 
-    // Matrix Toggle change
-    if (elements.matrixToggleSelect && elements.matrixEditorBox) {
-        elements.matrixToggleSelect.addEventListener('change', () => {
-            if (elements.matrixToggleSelect.value === 'yes') {
-                elements.matrixEditorBox.classList.remove('hidden');
-            } else {
-                elements.matrixEditorBox.classList.add('hidden');
-            }
+    // Generic Mode Toggle
+    if (elements.genericModeToggle) {
+        elements.genericModeToggle.addEventListener('change', () => {
+            updateDynamicTexts();
             generateAndRender();
+            showToast(elements.genericModeToggle.checked ? '🔒 Generischer Modus aktiv (ohne Modell/Preis im Text)!' : '🔓 Standard-Modus (mit Modellname) aktiv.');
         });
     }
 
-    // Save Custom Template Button
-    if (elements.btnSaveTemplate) {
-        elements.btnSaveTemplate.addEventListener('click', saveCustomTemplate);
-    }
-
-    // Copy Keywords Button
-    if (elements.btnCopyKeywords) {
-        elements.btnCopyKeywords.addEventListener('click', () => {
-            const tags = renderSeoKeywords();
-            copyToClipboard(tags, '🏷️ eBay Suchbegriffe (Tags) kopiert!');
+    // eBay Compliance Toggle
+    if (elements.ebayComplianceToggle) {
+        elements.ebayComplianceToggle.addEventListener('change', () => {
+            generateAndRender();
+            showToast(elements.ebayComplianceToggle.checked ? '🚫 eBay-Konformitätsmodus aktiv (WhatsApp ausgeblendet).' : '💬 Voller Modus inkl. WhatsApp-Links aktiv.');
         });
     }
+
+    // Master Free Gifts Toggle
+    if (elements.masterGiftsToggle) {
+        elements.masterGiftsToggle.addEventListener('change', () => {
+            const checked = elements.masterGiftsToggle.checked;
+            if (elements.giftCleaning) elements.giftCleaning.checked = checked;
+            if (elements.giftCover) elements.giftCover.checked = checked;
+            if (elements.giftLensGlass) elements.giftLensGlass.checked = checked;
+            generateAndRender();
+            showToast(checked ? '🎁 Alle 3 Gratis-Geschenke aktiviert!' : '🎁 Gratis-Geschenke deaktiviert.');
+        });
+    }
+
+    // Individual Free Gifts Checkboxes
+    [elements.giftCleaning, elements.giftCover, elements.giftLensGlass].forEach(chk => {
+        if (chk) {
+            chk.addEventListener('change', () => {
+                const allChecked = elements.giftCleaning.checked && elements.giftCover.checked && elements.giftLensGlass.checked;
+                if (elements.masterGiftsToggle) elements.masterGiftsToggle.checked = allChecked;
+                generateAndRender();
+            });
+        }
+    });
 
     // Theme Switcher Buttons
     elements.themeButtons.forEach(btn => {
@@ -619,8 +691,7 @@ function bindEvents() {
 
     // Upsell type change
     elements.upsellTypeSelect.addEventListener('change', () => {
-        const type = elements.upsellTypeSelect.value;
-        if (type === 'paid') {
+        if (elements.upsellTypeSelect.value === 'paid') {
             elements.upsellPriceGroup.classList.remove('hidden');
         } else {
             elements.upsellPriceGroup.classList.add('hidden');
@@ -628,13 +699,13 @@ function bindEvents() {
         generateAndRender();
     });
 
-    // Before/After toggle change
+    // Before/After toggle
     if (elements.beforeAfterToggleSelect && elements.baSettingsGroup) {
         elements.beforeAfterToggleSelect.addEventListener('change', () => {
             if (elements.beforeAfterToggleSelect.value === 'yes') {
-                elements.baSettingsGroup.style.display = 'block';
+                elements.baSettingsGroup.classList.remove('hidden');
             } else {
-                elements.baSettingsGroup.style.display = 'none';
+                elements.baSettingsGroup.classList.add('hidden');
             }
             generateAndRender();
         });
@@ -644,71 +715,81 @@ function bindEvents() {
     if (elements.videoToggleSelect && elements.videoSettingsGroup) {
         elements.videoToggleSelect.addEventListener('change', () => {
             if (elements.videoToggleSelect.value === 'yes') {
-                elements.videoSettingsGroup.style.display = 'block';
+                elements.videoSettingsGroup.classList.remove('hidden');
             } else {
-                elements.videoSettingsGroup.style.display = 'none';
+                elements.videoSettingsGroup.classList.add('hidden');
             }
             generateAndRender();
         });
     }
 
-    // Copy SEO Title
-    elements.btnCopySeo.addEventListener('click', () => {
-        copyToClipboard(elements.seoTitleInput.value, '🎯 eBay SEO-Titel kopiert!');
+    // Logo mode change
+    elements.logoModeSelect.addEventListener('change', () => {
+        if (elements.logoModeSelect.value === 'custom') {
+            elements.logoUrlInput.classList.remove('hidden');
+        } else {
+            elements.logoUrlInput.classList.add('hidden');
+        }
+        generateAndRender();
     });
 
-    // Copy Code Buttons
-    if (elements.btnCopyCodeTop) {
-        elements.btnCopyCodeTop.addEventListener('click', () => {
-            copyToClipboard(state.currentHtml, '✅ eBay HTML-Code kopiert!');
-        });
-    }
-    if (elements.btnCopyCodeBottom) {
-        elements.btnCopyCodeBottom.addEventListener('click', () => {
-            copyToClipboard(state.currentHtml, '✅ eBay HTML-Code kopiert!');
-        });
-    }
+    // Form toggle change
+    elements.formToggleSelect.addEventListener('change', () => {
+        if (elements.formToggleSelect.value === 'yes') {
+            elements.formLinkInput.classList.remove('hidden');
+        } else {
+            elements.formLinkInput.classList.add('hidden');
+        }
+        generateAndRender();
+    });
 
-    // Copy Kleinanzeigen Text Button
-    if (elements.btnCopyKleinanzeigen) {
-        elements.btnCopyKleinanzeigen.addEventListener('click', () => {
-            copyToClipboard(state.currentKleinanzeigenText, '📱 Kleinanzeigen.de Textbeschreibung kopiert!');
-        });
-    }
+    // Generate Button Action
+    elements.btnGenerate.addEventListener('click', () => {
+        generateAndRender();
+        showToast('🚀 HTML-Code & Live-Vorschau neu gerendert!');
+    });
 
-    // Download HTML Buttons
-    if (elements.btnDownloadHtmlTop) {
-        elements.btnDownloadHtmlTop.addEventListener('click', downloadHtmlFile);
-    }
-    if (elements.btnDownloadHtmlBottom) {
-        elements.btnDownloadHtmlBottom.addEventListener('click', downloadHtmlFile);
-    }
-
-    // Tab Switching (Preview vs Code vs Kleinanzeigen)
+    // Tabs switching
     elements.tabPreviewBtn.addEventListener('click', () => switchTab('preview'));
     elements.tabCodeBtn.addEventListener('click', () => switchTab('code'));
     if (elements.tabKleinanzeigenBtn) {
         elements.tabKleinanzeigenBtn.addEventListener('click', () => switchTab('kleinanzeigen'));
     }
 
-    // Customer Pre-fill Form Button
-    if (elements.btnOpenFilledForm) {
-        elements.btnOpenFilledForm.addEventListener('click', openPreFilledSlip);
-    }
-
     // Device Switcher
     elements.deviceButtons.forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const device = e.currentTarget.getAttribute('data-device');
-            setPreviewDevice(device);
+            const dev = e.currentTarget.getAttribute('data-device');
+            setPreviewDevice(dev);
         });
     });
 
-    // Big Generate Button
-    elements.btnGenerate.addEventListener('click', () => {
-        generateAndRender();
-        showToast('🚀 eBay Vorlage & Kleinanzeigen Text aktualisiert!');
+    // Copy to clipboard actions
+    elements.btnCopyCodeTop.addEventListener('click', () => {
+        copyToClipboard(state.currentHtml, '📋 Vollständiger eBay HTML-Code kopiert!');
     });
+    elements.btnCopyCodeBottom.addEventListener('click', () => {
+        copyToClipboard(state.currentHtml, '📋 Vollständiger eBay HTML-Code kopiert!');
+    });
+
+    if (elements.btnCopyKleinanzeigen) {
+        elements.btnCopyKleinanzeigen.addEventListener('click', () => {
+            copyToClipboard(state.currentKleinanzeigenText, '📱 Kleinanzeigen-Text kopiert!');
+        });
+    }
+
+    elements.btnCopySeo.addEventListener('click', () => {
+        copyToClipboard(elements.seoTitleInput.value, '🔍 eBay SEO Titel kopiert!');
+    });
+
+    // Download HTML file actions
+    elements.btnDownloadHtmlTop.addEventListener('click', downloadHtmlFile);
+    elements.btnDownloadHtmlBottom.addEventListener('click', downloadHtmlFile);
+
+    // Customer Form Auto-filler
+    if (elements.btnOpenFilledForm) {
+        elements.btnOpenFilledForm.addEventListener('click', openPreFilledSlip);
+    }
 }
 
 function openPreFilledSlip() {
@@ -719,9 +800,9 @@ function openPreFilledSlip() {
     const phone = elements.custPhone ? elements.custPhone.value.trim() : '';
     const pin = elements.custPin ? elements.custPin.value.trim() : '';
     const notes = elements.custNotes ? elements.custNotes.value.trim() : '';
-    const brand = elements.brandSelect.value;
-    const model = elements.modelInput.value.trim();
-    const repair = elements.repairTypeSelect.value;
+    const brand = elements.brandSelect ? elements.brandSelect.value : 'Apple';
+    const model = elements.modelInput ? elements.modelInput.value.trim() : '';
+    const repair = elements.repairTypeSelect ? elements.repairTypeSelect.value : 'display';
     const today = new Date().toLocaleDateString('de-DE');
 
     const params = new URLSearchParams({
@@ -763,11 +844,14 @@ function handleRepairTypeChange() {
 function updateDynamicTexts() {
     const typeId = elements.repairTypeSelect.value;
     const brandId = elements.brandSelect.value;
+    const isGeneric = (elements.genericModeToggle && elements.genericModeToggle.checked) || brandId === 'Universal';
     const tpl = REPAIR_DATA.templates[typeId] || REPAIR_DATA.templates.battery;
 
     // Feature list customization
     let features = tpl.features;
-    if (brandId === 'Apple' && tpl.apple_features) {
+    if (isGeneric && tpl.generic_features) {
+        features = tpl.generic_features;
+    } else if (brandId === 'Apple' && tpl.apple_features) {
         features = tpl.apple_features;
     } else if (brandId === 'Samsung' && tpl.samsung_features) {
         features = tpl.samsung_features;
@@ -775,10 +859,30 @@ function updateDynamicTexts() {
 
     // Transparency customization
     let trans = tpl.transparency;
-    if (brandId === 'Apple' && tpl.apple_transparency) {
+    if (isGeneric && tpl.generic_transparency) {
+        trans = tpl.generic_transparency;
+    } else if (brandId === 'Apple' && tpl.apple_transparency) {
         trans = tpl.apple_transparency;
     } else if (brandId === 'Samsung' && tpl.samsung_transparency) {
         trans = tpl.samsung_transparency;
+    }
+
+    // Free gifts control box visibility & price input hint
+    if (elements.freeGiftsControlBox) {
+        const isEligibleCategory = ['display', 'battery', 'backcover', 'charging'].includes(typeId);
+        if (isEligibleCategory) {
+            elements.freeGiftsControlBox.style.display = 'block';
+        } else {
+            elements.freeGiftsControlBox.style.display = 'none';
+        }
+    }
+
+    if (elements.priceInput) {
+        if (isGeneric) {
+            elements.priceInput.placeholder = "Varianten-Preis (laut eBay Dropdown)";
+        } else {
+            elements.priceInput.placeholder = "z.B. 69,00 €";
+        }
     }
 
     // Before/After customization
@@ -813,7 +917,12 @@ function updateSeoTitle() {
     const typeObj = REPAIR_DATA.repairTypes.find(r => r.id === typeId);
     const keyword = typeObj ? typeObj.seoKeyword : "Reparatur";
 
-    let title = `${brand} ${model} ${keyword} Reparatur | Express & Garantie`;
+    let title = '';
+    if (brand === 'Universal') {
+        title = `Smartphone ${keyword} Reparatur Express | 12 Monate Garantie Meisterwerkstatt`;
+    } else {
+        title = `${brand} ${model} ${keyword} Reparatur | Express & Garantie`;
+    }
     
     // eBay item title limit is 80 chars
     const charCount = title.length;
@@ -836,6 +945,15 @@ function generateAndRender() {
     const selectedRepairOption = elements.repairTypeSelect.options[elements.repairTypeSelect.selectedIndex];
     const repairName = selectedRepairOption ? selectedRepairOption.text : "Reparatur";
 
+    const isGeneric = (elements.genericModeToggle && elements.genericModeToggle.checked) || (elements.brandSelect.value === 'Universal');
+    const isEbayCompliance = elements.ebayComplianceToggle ? elements.ebayComplianceToggle.checked : true;
+
+    const freeGiftsConfig = {
+        cleaning: elements.giftCleaning ? elements.giftCleaning.checked : true,
+        cover: elements.giftCover ? elements.giftCover.checked : true,
+        lensGlass: elements.giftLensGlass ? elements.giftLensGlass.checked : true
+    };
+
     const config = {
         themeId: state.currentTheme,
         logoMode: elements.logoModeSelect ? elements.logoModeSelect.value : "badge",
@@ -849,6 +967,10 @@ function generateAndRender() {
         warrantyMonths: elements.warrantyInput.value.trim(),
         processingTime: elements.processingTimeInput.value.trim(),
         
+        genericMode: isGeneric,
+        ebayComplianceMode: isEbayCompliance,
+        freeGifts: freeGiftsConfig,
+
         upsellType: elements.upsellTypeSelect.value,
         upsellPrice: elements.upsellPriceInput.value.trim(),
         upsellTitle: elements.upsellTitleInput.value.trim(),

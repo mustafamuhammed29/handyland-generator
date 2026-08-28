@@ -41,8 +41,40 @@ export const REPAIR_DATA = {
         }
     },
 
+    // Free Promotional Gifts (Fixed items for display, battery, backcover, charging)
+    freeGifts: [
+        { 
+            id: "cleaning", 
+            title: "Professionelle Außenreinigung des Geräts", 
+            desc: "Hygienische Reinigung des Gehäuses, der Lautsprechergitter & Ladebuchse - kostenlos inklusive", 
+            icon: "🧼", 
+            defaultChecked: true 
+        },
+        { 
+            id: "cover", 
+            title: "Premium 9H Panzerglas (Displayschutz)", 
+            descDisplay: "Wird nach Display-Tausch direkt fachgerecht & blasenfrei montiert",
+            descOther: "Falls bereits intakt vorhanden, legen wir das neue Panzerglas dem Paket bei",
+            icon: "🛡️", 
+            defaultChecked: true 
+        },
+        { 
+            id: "lensGlass", 
+            title: "Kamera-Schutzglas (Linsen-Schutzfolie)", 
+            desc: "Schützt Kameralinsen (falls intakt vorhanden, wird das Schutzglas beigelegt)", 
+            icon: "📸", 
+            defaultChecked: true 
+        }
+    ],
+
     // Brands with popular quick-selection chips
     brands: [
+        { 
+            id: "Universal", 
+            name: "🌐 Universal (Alle Marken)", 
+            defaultModel: "Alle Modelle & Marken",
+            quickModels: ["Alle Smartphones", "Apple & Samsung", "Xiaomi & Google", "Universal"]
+        },
         { 
             id: "Apple", 
             name: "Apple", 
@@ -90,6 +122,72 @@ export const REPAIR_DATA = {
     // Quick 1-Click Repair Presets
     quickPresets: [
         {
+            id: "ebay_universal",
+            name: "🌐 eBay Universal-Vorlage (Display/Akku/Backcover/Ladebuchse)",
+            brand: "Universal",
+            model: "Alle Modelle & Marken",
+            repairType: "display",
+            price: "69,00 €",
+            upsellType: "free",
+            upsellPrice: "+ 0,00 €",
+            genericMode: true,
+            ebayCompliance: true,
+            freeGifts: true,
+            featured: true
+        },
+        {
+            id: "universal_display",
+            name: "📱 Universal Display Tausch",
+            brand: "Universal",
+            model: "Alle Modelle & Marken",
+            repairType: "display",
+            price: "89,00 €",
+            upsellType: "free",
+            upsellPrice: "+ 0,00 €",
+            genericMode: true,
+            ebayCompliance: true,
+            freeGifts: true
+        },
+        {
+            id: "universal_battery",
+            name: "🔋 Universal Akku Service",
+            brand: "Universal",
+            model: "Alle Modelle & Marken",
+            repairType: "battery",
+            price: "59,00 €",
+            upsellType: "free",
+            upsellPrice: "+ 0,00 €",
+            genericMode: true,
+            ebayCompliance: true,
+            freeGifts: true
+        },
+        {
+            id: "universal_backcover",
+            name: "🛠️ Universal Backcover Glas",
+            brand: "Universal",
+            model: "Alle Modelle & Marken",
+            repairType: "backcover",
+            price: "69,00 €",
+            upsellType: "free",
+            upsellPrice: "+ 0,00 €",
+            genericMode: true,
+            ebayCompliance: true,
+            freeGifts: true
+        },
+        {
+            id: "universal_charging",
+            name: "🔌 Universal USB-C Ladebuchse",
+            brand: "Universal",
+            model: "Alle Modelle & Marken",
+            repairType: "charging",
+            price: "49,00 €",
+            upsellType: "free",
+            upsellPrice: "+ 0,00 €",
+            genericMode: true,
+            ebayCompliance: true,
+            freeGifts: true
+        },
+        {
             id: "apple_display",
             name: "📱 iPhone Display Express",
             brand: "Apple",
@@ -97,7 +195,10 @@ export const REPAIR_DATA = {
             repairType: "display",
             price: "129,00 €",
             upsellType: "paid",
-            upsellPrice: "+ 15,00 €"
+            upsellPrice: "+ 15,00 €",
+            genericMode: false,
+            ebayCompliance: true,
+            freeGifts: true
         },
         {
             id: "apple_battery",
@@ -107,7 +208,10 @@ export const REPAIR_DATA = {
             repairType: "battery",
             price: "69,00 €",
             upsellType: "free",
-            upsellPrice: "+ 0,00 €"
+            upsellPrice: "+ 0,00 €",
+            genericMode: false,
+            ebayCompliance: true,
+            freeGifts: true
         },
         {
             id: "samsung_display",
@@ -117,7 +221,10 @@ export const REPAIR_DATA = {
             repairType: "display",
             price: "159,00 €",
             upsellType: "paid",
-            upsellPrice: "+ 15,00 €"
+            upsellPrice: "+ 15,00 €",
+            genericMode: false,
+            ebayCompliance: true,
+            freeGifts: true
         },
         {
             id: "samsung_battery",
@@ -127,7 +234,10 @@ export const REPAIR_DATA = {
             repairType: "battery",
             price: "59,00 €",
             upsellType: "none",
-            upsellPrice: "+ 15,00 €"
+            upsellPrice: "+ 15,00 €",
+            genericMode: false,
+            ebayCompliance: true,
+            freeGifts: true
         },
         {
             id: "charging_port",
@@ -137,7 +247,10 @@ export const REPAIR_DATA = {
             repairType: "charging",
             price: "59,00 €",
             upsellType: "none",
-            upsellPrice: "+ 15,00 €"
+            upsellPrice: "+ 15,00 €",
+            genericMode: false,
+            ebayCompliance: true,
+            freeGifts: true
         },
         {
             id: "backcover_glass",
@@ -147,7 +260,10 @@ export const REPAIR_DATA = {
             repairType: "backcover",
             price: "79,00 €",
             upsellType: "free",
-            upsellPrice: "+ 0,00 €"
+            upsellPrice: "+ 0,00 €",
+            genericMode: false,
+            ebayCompliance: true,
+            freeGifts: true
         }
     ],
 
@@ -163,13 +279,23 @@ export const REPAIR_DATA = {
 
     templates: {
         battery: {
-            features: `<li>Neuer Premium-Ersatzakku (100% Kapazität & volle Zyklenleistung)</li>
-<li>Fachgerechter Ausbau des alten Akkus & umweltgerechtes Recycling</li>
-<li>Professionelle Verklebung mit Original-Spezialklebestreifen</li>
-<li>Prüfung von Ladeelektronik, Stromaufnahme & Grundfunktionen</li>
-<li>Sichere, antistatische Verpackung für den schnellen Rückversand</li>`,
+            features: `<li><strong>Neuer Premium Li-Ion Ersatzakku:</strong> 100% Neuzustand, volle Ladekapazität &amp; maximale Zyklenfestigkeit</li>
+<li><strong>Fachgerechte Demontage:</strong> Schonender Ausbau des alten Akkus &amp; umweltgerechtes Recycling (BattG)</li>
+<li><strong>Originalgetreue Spezialverklebung:</strong> Sicherer Halt durch elastische Akku-Klebestreifen (kein Verrutschen)</li>
+<li><strong>Elektronik- &amp; Sicherheitsprüfung:</strong> Messung von Ladekurve, Ruhestrom, Spannungsstabilität &amp; Temperatur</li>
+<li><strong>100% Datenschutz-Garantie:</strong> Kein Werksreset nötig – alle Fotos, Chats &amp; Apps bleiben vollständig erhalten</li>
+<li><strong>Umfassender 15-Punkte Endtest:</strong> Gründliche Endkontrolle aller Gerätefunktionen vor dem Versand</li>
+<li><strong>Sicherer DHL Express-Rückversand:</strong> Antistatische Polsterverpackung &amp; lückenlose Sendungsverfolgung</li>`,
+            generic_features: `<li><strong>Neuer Premium Li-Ion Ersatzakku:</strong> 100% Neuzustand, volle Ladekapazität &amp; maximale Zyklenfestigkeit</li>
+<li><strong>Fachgerechte Demontage:</strong> Schonender Ausbau des alten Akkus &amp; umweltgerechtes Recycling (BattG)</li>
+<li><strong>Originalgetreue Spezialverklebung:</strong> Sicherer Halt durch elastische Akku-Klebestreifen (kein Verrutschen)</li>
+<li><strong>Elektronik- &amp; Sicherheitsprüfung:</strong> Messung von Ladekurve, Ruhestrom, Spannungsstabilität &amp; Temperatur</li>
+<li><strong>100% Datenschutz-Garantie:</strong> Kein Werksreset nötig – alle Fotos, Chats &amp; Apps bleiben vollständig erhalten</li>
+<li><strong>Umfassender 15-Punkte Endtest:</strong> Gründliche Endkontrolle aller Basiskomponenten deines Smartphones</li>
+<li><strong>Sicherer DHL Express-Rückversand:</strong> Antistatische Polsterverpackung &amp; lückenlose Sendungsverfolgung</li>`,
             faq1: "Nein! Bei einem regulären Akkutausch bleiben all deine persönlichen Daten, Bilder, Chats und Apps vollständig erhalten. Wir führen keinen Werksreset durch.",
             transparency: "Je nach Modell und Hersteller kann nach dem Akkutausch in den Systemeinstellungen ein Hinweis zur Batterie angezeigt werden. Dies ist technisch bedingt völlig normal und beeinträchtigt weder Akkulaufzeit noch Ladeleistung.",
+            generic_transparency: "Je nach Modell und Hersteller kann nach dem Akkutausch in den Systemeinstellungen ein Hinweis zur Batterie angezeigt werden. Dies ist technisch bedingt völlig normal und beeinträchtigt weder Akkulaufzeit noch Ladeleistung.",
             apple_transparency: "Bei Apple iPhones (ab Modell Xs/Xr) wird nach dem Tausch herstellerbedingt die Meldung 'Wichtige Batterienachricht' angezeigt und die prozentuale Maximalkapazität in den Einstellungen ausgeblendet. Die tatsächliche Leistung und Qualität unseres Premium-Akkus ist davon zu 100% unberührt.",
             beforeAfter: {
                 beforeTitle: "Akku schwach & entlädt rasant",
@@ -177,27 +303,39 @@ export const REPAIR_DATA = {
                 afterTitle: "100% volle Akku-Power",
                 afterDesc: "Volle Tageslaufzeit wie am ersten Tag, maximale Spitzenleistung und stabiler Betrieb."
             },
-            review1: { text: '"Sehr professionell und blitzschnell repariert. Mein iPhone-Akku hält wieder wie am ersten Tag. Klare Empfehlung!"', author: "Michael T." },
+            review1: { text: '"Sehr professionell und blitzschnell repariert. Mein Akku hält wieder wie am ersten Tag. Klare Empfehlung!"', author: "Michael T." },
             review2: { text: '"Handy war nach nur 2 Tagen repariert zurück. Extrem transparente Abwicklung und top Kundenservice!"', author: "Sarah K." }
         },
         display: {
-            features: `<li>Neues Premium-Display (Kräftige Farbwiedergabe & präzise Touch-Reaktion)</li>
-<li>Fachgerechter Ausbau & rückstandsfreie Rahmenreinigung</li>
-<li>Saubere Übernahme aller Sensoren, Hörmuschel & Frontkamera</li>
-<li>Prüfung auf Pixelfehler, Helligkeit und Multitouch-Funktion</li>
-<li>Sichere, stoßfeste Verpackung für den Rückversand</li>`,
-            apple_features: `<li>Neues Premium-Display (OLED / Retina LCD je nach Modell)</li>
-<li>Übernahme der True-Tone Funktion (sofern technisch auslesbar)</li>
-<li>Face-ID & Frontsensorik bleiben zu 100% voll funktionsfähig</li>
-<li>Präziser Einbau mit neuem Staub- & Spritzwasserschutz-Kleberand</li>
-<li>Sichere Verpackung für den versicherten Rückversand</li>`,
-            samsung_features: `<li>Neues Premium-Display (Dynamic AMOLED / Super AMOLED Qualität)</li>
-<li>In-Display Fingerabdrucksensor wird sorgfältig kalibriert & getestet</li>
-<li>Brillante Farben, 120Hz/60Hz Unterstützung und hohe Leuchtkraft</li>
-<li>Fachgerechter Einbau durch erfahrene Techniker</li>
-<li>Sichere Verpackung für den versicherten Rückversand</li>`,
+            features: `<li><strong>Neues Premium-Display:</strong> Kristallklare Auflösung, leuchtstarke Farben &amp; verzögerungsfreie Multitouch-Reaktion</li>
+<li><strong>Präzise Fachmontage:</strong> Schonender Ausbau &amp; rückstandsfreie Gehäusereinigung für perfekte Passform</li>
+<li><strong>Vollständige Sensorübernahme:</strong> Saubere Übernahme aller Sensoren, Hörmuschel, Frontkamera &amp; Biometrie</li>
+<li><strong>Staub- &amp; Spritzwasserschutz:</strong> Neuer passgenauer Rahmen-Dichtkleber für optimalen Schutz</li>
+<li><strong>Labor-Prüfung auf Pixelfehler:</strong> Gründlicher Test auf Helligkeit, Ausleuchtung, Kontrast &amp; Multitouch</li>
+<li><strong>100% Datenschutz-Garantie:</strong> Reparatur ohne Datenverlust – all deine Bilder, Apps &amp; Daten bleiben sicher</li>
+<li><strong>Stoßfester DHL Express-Versand:</strong> Hochwertige Polsterverpackung &amp; versicherter Rückversand mit Tracking</li>`,
+            generic_features: `<li><strong>Neues Premium-Display:</strong> Kristallklare Auflösung, leuchtstarke Farben &amp; verzögerungsfreie Multitouch-Reaktion</li>
+<li><strong>Präzise Fachmontage:</strong> Schonender Ausbau &amp; rückstandsfreie Gehäusereinigung für perfekte Passform</li>
+<li><strong>Vollständige Sensorübernahme:</strong> Saubere Übernahme aller Sensoren, Hörmuschel, Frontkamera &amp; Biometrie</li>
+<li><strong>Staub- &amp; Spritzwasserschutz:</strong> Neuer passgenauer Rahmen-Dichtkleber für optimalen Schutz</li>
+<li><strong>Labor-Prüfung auf Pixelfehler:</strong> Gründlicher Test auf Helligkeit, Ausleuchtung, Kontrast &amp; Multitouch</li>
+<li><strong>100% Datenschutz-Garantie:</strong> Reparatur ohne Datenverlust – all deine Bilder, Apps &amp; Daten bleiben sicher</li>
+<li><strong>Stoßfester DHL Express-Versand:</strong> Hochwertige Polsterverpackung &amp; versicherter Rückversand mit Tracking</li>`,
+            apple_features: `<li><strong>Neues Premium-Display (OLED / Retina):</strong> Brillante Farben, exakter Kontrast &amp; 120Hz/60Hz Bildwiederholrate</li>
+<li><strong>True-Tone &amp; Sensorübernahme:</strong> Übernahme der True-Tone Funktion (sofern auslesbar) sowie Face-ID Sensorik</li>
+<li><strong>Staub- &amp; Spritzwasserschutz:</strong> Originalgetreue Neuverklebung des Rahmendichtungsrings</li>
+<li><strong>Präzise Kalibrierung &amp; Endtest:</strong> 15-Punkte Test auf Touch-Genauigkeit, Helligkeitssensor &amp; Farbhomogenität</li>
+<li><strong>100% Datensicherheit:</strong> Kein Datenverlust während des gesamten Reparaturvorgangs</li>
+<li><strong>Sicherer DHL Express-Rückversand:</strong> Versicherungsschutz &amp; Live-Sendungsverfolgung inklusive</li>`,
+            samsung_features: `<li><strong>Neues Dynamic / Super AMOLED Display:</strong> Perfekte Schwarzwerte, 120Hz Scrolling &amp; hohe Helligkeit</li>
+<li><strong>Fingerabdruck- &amp; Sensorabstimmung:</strong> Sorgfältige Kalibrierung des In-Display Fingerprint-Sensors</li>
+<li><strong>Fachgerechte Rahmenpassung:</strong> Richten des Gehäuserahmens bei leichten Verformungen für minimale Spaltmaße</li>
+<li><strong>Vollständige Labor-Endprüfung:</strong> Touch-Rastertest, Pixelfehlerprüfung &amp; Multitouch-Validierung</li>
+<li><strong>100% Datenschutz-Garantie:</strong> Deine Fotos, WhatsApp-Chats &amp; Kontakte bleiben vollständig erhalten</li>
+<li><strong>DHL Express-Rückversand:</strong> Sichere Spezialverpackung &amp; Trackingnummer</li>`,
             faq1: "Nein, deine Daten (Fotos, WhatsApp-Verläufe, Apps) bleiben beim Displaywechsel zu 100% auf dem Gerät erhalten. Wir führen keinen Reset durch.",
             transparency: "Bitte beachte: Bei starken Sturzschäden mit verzogenem Gehäuserahmen richten wir den Rahmen bestmöglich aus, um minimale Spaltmaße zu gewährleisten.",
+            generic_transparency: "Wir verwenden ausschließlich geprüfte Premium-Displays in Erstausrüsterqualität, die maximale Farbtreue und exzellente Touch-Reaktion für dein Gerät garantieren. Bei Sturzschäden richten wir den Rahmen bestmöglich aus.",
             apple_transparency: "Bei Apple iPhones (ab Modell 11) kann nach dem Tausch eine 'Wichtige Displaynachricht' (Hinweis auf unbekanntes Bauteil) in den iOS-Einstellungen erscheinen. Dies ist eine herstellerspezifische Meldung und beeinträchtigt die erstklassige Funktion in keiner Weise.",
             samsung_transparency: "Wir verwenden ausschließlich geprüfte Premium-Displays, die höchste Farbtreue bieten und perfekt mit dem Fingerabdrucksensor deines Samsung Galaxy harmonieren.",
             beforeAfter: {
@@ -210,16 +348,28 @@ export const REPAIR_DATA = {
             review2: { text: '"Mein Display war komplett zersplittert. Nach 24 Stunden hatte ich das Tracking für den Rückversand. Perfekt!"', author: "Laura M." }
         },
         charging: {
-            features: `<li>Neue Premium-Ladebuchse / USB-C / Lightning Flex-Connector</li>
-<li>Gründliche Reinigung der internen Anschlüsse &amp; Lautsprechergitter</li>
-<li>Umfassende Prüfung der Schnellladefunktion (Fast Charge / PD)</li>
-<li>Überprüfung von Datenübertragung &amp; Mikrofonfunktion</li>`,
-            apple_features: `<li>Neuer Lightning / USB-C Ladeanschluss Flex-Connector in Erstausrüsterqualität</li>
-<li>Unterstützung für schnelles Apple PD Fast Charging</li>
-<li>Prüfung von Mikrofon, Lautsprecherkontakt &amp; Antennenverbindung</li>
-<li>Sichere Verpackung für den versicherten DHL Rückversand</li>`,
+            features: `<li><strong>Neues Premium-Ladebuchsen Flex-Modul:</strong> USB-C / Lightning / Micro-USB in Erstausrüsterqualität</li>
+<li><strong>Fast-Charging Unterstützung:</strong> Volle Power für PD Fast Charge, QuickCharge &amp; stabilen Ladestrom</li>
+<li><strong>Tiefenreinigung des Anschlusskanals:</strong> Entfernung von Mikro-Staub an Ladebuchse &amp; Lautsprecherauslässen</li>
+<li><strong>Signal- &amp; Audioprüfung:</strong> Gründlicher Funktionstest von Datenübertragung, Mikrofon, Lautsprecher &amp; Antennen</li>
+<li><strong>Mechanischer Steckertest:</strong> Perfekter, wackelfreier Halt des Ladekabels mit sattem Einrasten</li>
+<li><strong>100% Datenschutz-Garantie:</strong> Reparatur ohne Datenlöschung oder Reset – alle Daten bleiben sicher</li>
+<li><strong>Sicherer DHL Express-Rückversand:</strong> Schnelle Rücksendung im antistatischen Sicherheitskarton</li>`,
+            generic_features: `<li><strong>Neues Premium-Ladebuchsen Flex-Modul:</strong> USB-C / Lightning / Micro-USB in Erstausrüsterqualität</li>
+<li><strong>Fast-Charging Unterstützung:</strong> Volle Power für PD Fast Charge, QuickCharge &amp; stabilen Ladestrom</li>
+<li><strong>Tiefenreinigung des Anschlusskanals:</strong> Entfernung von Mikro-Staub an Ladebuchse &amp; Lautsprecherauslässen</li>
+<li><strong>Signal- &amp; Audioprüfung:</strong> Gründlicher Funktionstest von Datenübertragung, Mikrofon, Lautsprecher &amp; Antennen</li>
+<li><strong>Mechanischer Steckertest:</strong> Perfekter, wackelfreier Halt des Ladekabels mit sattem Einrasten</li>
+<li><strong>100% Datenschutz-Garantie:</strong> Reparatur ohne Datenlöschung oder Reset – alle Daten bleiben sicher</li>
+<li><strong>Sicherer DHL Express-Rückversand:</strong> Schnelle Rücksendung im antistatischen Sicherheitskarton</li>`,
+            apple_features: `<li><strong>Neuer Lightning / USB-C Ladeanschluss:</strong> Hochwertiger Flex-Connector in Erstausrüsterqualität</li>
+<li><strong>Unterstützung für Apple Fast-Charging:</strong> Schnelle Energieaufnahme und verlässliche Datenübertragung</li>
+<li><strong>Audio- &amp; Mikrofonabstimmung:</strong> Überprüfung von Gesprächsmikrofon, Lautsprecherkontakten &amp; Antennenmodulen</li>
+<li><strong>100% Datenschutz:</strong> Alle Fotos, Kontakte und Apps bleiben vollständig auf deinem iPhone erhalten</li>
+<li><strong>DHL Express-Rückversand:</strong> Versichert im gepolsterten Karton mit Trackingnummer</li>`,
             faq1: "Keine Sorge, beim Wechsel der Ladebuchse gehen keinerlei persönliche Daten verloren.",
-            transparency: "Oft ist die Ladebuchse nur stark verschmutzt. Wir prüfen das Bauteil zuerst gründlich. Sollte nur eine professionelle Reinigung nötig sein, informieren wir dich transparent!",
+            transparency: "Oft ist die Ladebuchse nur stark verschmutzt. Wir prüfen das Bauteil vorab gründlich. Sollte nur eine professionelle Reinigung nötig sein, informieren wir dich transparent!",
+            generic_transparency: "Oft ist die Ladebuchse nur stark verschmutzt. Wir prüfen das Bauteil vorab gründlich. Sollte nur eine professionelle Tiefenreinigung nötig sein, informieren wir dich transparent!",
             beforeAfter: {
                 beforeTitle: "Wackelkontakt & Ladeabbrüche",
                 beforeDesc: "Kabel rutscht heraus, Handy lädt nur in bestimmten Winkeln oder gar nicht mehr.",
@@ -230,16 +380,28 @@ export const REPAIR_DATA = {
             review2: { text: '"Schnell repariert, kompetente Rückmeldung per Nachricht. Preis-Leistung unschlagbar!"', author: "Kaan Y." }
         },
         backcover: {
-            features: `<li>Neues Premium-Rückglas / Backcover in exakter Originalfarbe</li>
-<li>Präzise, rückstandslose Entfernung des beschädigten Glases</li>
-<li>Spezialverklebung unter kontrolliertem Druck für nahtlosen Sitz</li>
-<li>Reinigung und Prüfung der rückseitigen Kameras und des Blitzes</li>`,
-            apple_features: `<li>Neues Premium-Rückglas in Original Apple Farbvarianten</li>
-<li>Schonende Laser- bzw. Kälteentfernung des gesplitterten Glases</li>
-<li>Präzise Spezialverklebung für nahtlose Passform und originale Spaltmaße</li>
-<li>Kamera-Linsen und MagSafe-Ladespule bleiben 100% geschützt</li>`,
+            features: `<li><strong>Neues Premium-Backcover:</strong> Makelloses Glas / Gehäuserückseite in exakter Original-Optik &amp; Farbton</li>
+<li><strong>Schonende Altglasentfernung:</strong> Präzise, rückstandslose Beseitigung aller Splitter ohne Gehäusebeschädigung</li>
+<li><strong>Hochfeste Spezialverklebung:</strong> Kontrollierter Anpressdruck für nahtlose Passform und originale Spaltmaße</li>
+<li><strong>Linsen- &amp; Spulenschutz:</strong> Gründliche Reinigung der rückseitigen Kameralinsen, Blitz &amp; Induktionsladespule</li>
+<li><strong>Rahmen- &amp; Dichtigkeitskontrolle:</strong> Prüfung des gesamten Gehäuses auf Verzug, Dichtigkeit &amp; Stabilität</li>
+<li><strong>100% Datenschutz-Garantie:</strong> Kein Werksreset – deine persönlichen Daten bleiben zu 100% unberührt</li>
+<li><strong>Gepolsterter DHL Express-Versand:</strong> Sicher verpackt mit versicherter Sendungsverfolgung</li>`,
+            generic_features: `<li><strong>Neues Premium-Backcover:</strong> Makelloses Glas / Gehäuserückseite in passgenauer Ausführung &amp; Originaloptik</li>
+<li><strong>Schonende Altglasentfernung:</strong> Präzise, rückstandslose Beseitigung aller Splitter ohne Gehäusebeschädigung</li>
+<li><strong>Hochfeste Spezialverklebung:</strong> Kontrollierter Anpressdruck für nahtlose Passform und originale Spaltmaße</li>
+<li><strong>Linsen- &amp; Spulenschutz:</strong> Gründliche Reinigung der rückseitigen Kameralinsen, Blitz &amp; Induktionsladespule</li>
+<li><strong>Rahmen- &amp; Dichtigkeitskontrolle:</strong> Prüfung des gesamten Gehäuses auf Verzug, Dichtigkeit &amp; Stabilität</li>
+<li><strong>100% Datenschutz-Garantie:</strong> Kein Werksreset – deine persönlichen Daten bleiben zu 100% unberührt</li>
+<li><strong>Gepolsterter DHL Express-Versand:</strong> Sicher verpackt mit versicherter Sendungsverfolgung</li>`,
+            apple_features: `<li><strong>Neues Premium-Rückglas in Original Apple Farbvarianten:</strong> Brillante, kratzfeste Glasoberfläche</li>
+<li><strong>Schonende Kälte- bzw. Laserentfernung:</strong> Rückstandsfreie Splitterbeseitigung ohne Hitzeeinfluss auf Akku &amp; Logikboard</li>
+<li><strong>Präzise Passform für MagSafe:</strong> Volle Ladeleistung und starker Halt für induktives MagSafe-Zubehör</li>
+<li><strong>100% Datensicherheit:</strong> Deine Daten bleiben während der Reparatur sicher auf dem Gerät</li>
+<li><strong>DHL Express-Rückversand:</strong> Transportsicher verpackt mit Sendungsverfolgung</li>`,
             faq1: "Deine Daten bleiben vollständig unberührt. Die Reparatur betrifft ausschließlich das äußere Gehäuseglas.",
             transparency: "Aufgrund der werkseitigen Versiegelungsverfahren kann die herstellerseitige IP-Wasserdichtigkeit nach einem Gehäuseschaden und Tausch nicht mehr garantiert werden. Vor Spritzwasser ist das Gerät jedoch geschützt.",
+            generic_transparency: "Aufgrund der werkseitigen Versiegelungsverfahren kann die herstellerseitige IP-Wasserdichtigkeit nach einem Gehäuseschaden und Tausch nicht mehr garantiert werden. Vor Spritzwasser ist das Gerät jedoch geschützt.",
             beforeAfter: {
                 beforeTitle: "Rückseite zersplittert & scharfkantig",
                 beforeDesc: "Scherben lösen sich, unansehnliche Risse und Verletzungsgefahr an den Händen.",
@@ -250,10 +412,12 @@ export const REPAIR_DATA = {
             review2: { text: '"Hervorragende Arbeit. Man sieht absolut keinen Unterschied. Vielen Dank an das HandyLand-Team!"', author: "Markus H." }
         },
         camera: {
-            features: `<li>Neues Original-Qualität Kameramodul (Hauptkamera)</li>
-<li>Autofokus-, Bildstabilisator- & Zoom-Test nach dem Einbau</li>
-<li>Professionelle Reinigung der inneren Kameraglas-Linsen</li>
-<li>Funktionsprüfung aller Foto- und Videomodi</li>`,
+            features: `<li><strong>Neues Original-Qualität Kameramodul:</strong> Hauptkamera / Weitwinkel in erstklassiger Bildqualität</li>
+<li><strong>Autofokus- &amp; OIS-Prüfung:</strong> Kalibrierung von optischem Bildstabilisator &amp; Makrofokus nach dem Einbau</li>
+<li><strong>Reinraum-Linsenreinigung:</strong> Gründliche Beseitigung von Staub und Partikeln auf den inneren Linsen</li>
+<li><strong>15-Punkte Funktionstest:</strong> Test aller Foto-, Video-, Porträt- und Nachtmodi unter verschiedenen Lichtverhältnissen</li>
+<li><strong>100% Datenschutz:</strong> All deine privaten Aufnahmen &amp; Daten bleiben sicher auf dem Gerät</li>
+<li><strong>Sicherer DHL Express-Rückversand:</strong> Gepolsterte Schutzverpackung mit Sendungsnummer</li>`,
             faq1: "Deine Fotos, Videos und persönlichen Daten bleiben beim Kameratausch zu 100% erhalten.",
             transparency: "Hinweis: Sollte das äußere Kameraglas auf der Rückseite ebenfalls Risse aufweisen, muss dieses separat getauscht werden, um das neue Modul vor Staub und Feuchtigkeit zu schützen.",
             apple_transparency: "Bei neueren iPhone-Modellen (ab Modell 12) kann nach dem Kameratausch ein Systemhinweis in den iOS-Einstellungen bzgl. des getauschten Kamerabauteils erscheinen. Die Kamerafunktion arbeitet einwandfrei.",
@@ -267,10 +431,12 @@ export const REPAIR_DATA = {
             review2: { text: '"Schnelle Reparatur und sehr freundliche Kommunikation. 5 Sterne verdient!"', author: "Ali K." }
         },
         speaker: {
-            features: `<li>Neues Premium-Hörmuschel- oder Lautsprechermodul</li>
-<li>Entfernung von Staub- und Schmutzablagerungen im Akustikkanal</li>
-<li>Klang-, Lautstärke- und Frequenztest bei maximalem Pegel</li>
-<li>Prüfung der Freisprech- und Mikrofonfunktion</li>`,
+            features: `<li><strong>Neues Premium-Hörmuschel- / Lautsprechermodul:</strong> Klarer, kraftvoller Stereoklang</li>
+<li><strong>Akustikkanal-Reinigung:</strong> Gründliche Beseitigung von Staub- und Schmutzablagerungen in den Gittern</li>
+<li><strong>Frequenz- &amp; Lautstärketest:</strong> Prüfung bei maximalem Pegel ohne Scheppern oder Verzerrungen</li>
+<li><strong>Mikrofon- &amp; Freisprechprüfung:</strong> Test der Echounterdrückung und Sprachverständlichkeit</li>
+<li><strong>100% Datensicherheit:</strong> Deine privaten Daten bleiben während der Reparatur sicher erhalten</li>
+<li><strong>Schneller DHL Express-Rückversand:</strong> Sicher verpackt mit Sendungsverfolgung</li>`,
             faq1: "Deine Daten bleiben während der Audioreparatur vollkommen unverändert und sicher auf dem Gerät.",
             transparency: "Häufig sind nur die feinen Schutzgitter der Hörmuschel verstopft. Wir testen das Modul vorab und tauschen nur, was wirklich nötig ist.",
             beforeAfter: {
@@ -283,10 +449,12 @@ export const REPAIR_DATA = {
             review2: { text: '"Schnell, unkompliziert und zuverlässig. Mein Lautsprecher funktioniert wieder wie neu."', author: "Nadine B." }
         },
         water: {
-            features: `<li>Vollständige Demontage und mikroskopische Schadensanalyse</li>
-<li>Professionelle Ultraschallbad-Reinigung der Hauptplatine</li>
-<li>Befreiung von Korrosion, Kurzschlüssen und Rückständen</li>
-<li>Detaillierter Kostenvoranschlag für eventuell benötigte Bauteile</li>`,
+            features: `<li><strong>Vollständige Demontage:</strong> Schonende Öffnung und mikroskopische Schadensanalyse aller Module</li>
+<li><strong>Spezial-Ultraschallbad-Reinigung:</strong> Beseitigung von Korrosion, Mineralrückständen &amp; Kurzschlüssen</li>
+<li><strong>Platinen-Trocknung &amp; Messtechnik:</strong> Kontrolle von Leiterbahnen, SMD-Bauteilen &amp; Strompfaden</li>
+<li><strong>Datenrettungs-Fokus:</strong> Höchste Priorität auf den Erhalt deiner persönlichen Bilder &amp; Daten</li>
+<li><strong>Transparenter Prüfbericht:</strong> Detaillierter Zustandsbericht &amp; Kostenvoranschlag für eventuelle Zusatzteile</li>
+<li><strong>Sicherer DHL Express-Rückversand:</strong> Transportsichere Polsterung mit Sendungsverfolgung</li>`,
             faq1: "Bei Wasserschäden hat die Rettung deiner persönlichen Daten oberste Priorität. Wir setzen alles daran, deine Daten unberührt zu sichern.",
             transparency: "Bei Wasserschäden handelt es sich um eine fundierte Reinigungs- und Diagnoseleistung. Eine Erfolgsgarantie auf dauerhaften Weiterbetrieb kann bei Flüssigkeitsschäden physikalisch nicht gegeben werden.",
             beforeAfter: {

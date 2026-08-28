@@ -941,6 +941,232 @@ body {
     background: var(--gold-primary);
 }
 
+/* ==========================================================================
+   New Modes: Generic & eBay Compliance Toggle Switches
+   ========================================================================== */
+.modes-toggle-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.toggle-card-box {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.05) 0%, rgba(20, 20, 30, 0.6) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 10px 12px;
+    transition: var(--transition);
+}
+
+.toggle-card-box:hover {
+    border-color: rgba(212, 175, 55, 0.4);
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(20, 20, 30, 0.8) 100%);
+}
+
+.generic-toggle-box {
+    border-left: 3px solid var(--gold-primary);
+}
+
+.ebay-compliance-box {
+    border-left: 3px solid var(--accent-green);
+    background: linear-gradient(135deg, rgba(37, 211, 102, 0.05) 0%, rgba(20, 20, 30, 0.6) 100%);
+}
+
+.ebay-compliance-box:hover {
+    border-color: rgba(37, 211, 102, 0.4);
+    border-left-color: var(--accent-green);
+}
+
+.switch-control-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.custom-switch-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.switch-slider {
+    position: relative;
+    display: inline-block;
+    width: 38px;
+    height: 22px;
+    background-color: #262638;
+    border-radius: 20px;
+    transition: var(--transition);
+    flex-shrink: 0;
+    margin-top: 2px;
+    border: 1px solid #38384e;
+}
+
+.switch-slider::before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    transition: var(--transition);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.custom-switch-input:checked + .switch-slider {
+    background: var(--gold-gradient);
+    border-color: var(--gold-primary);
+}
+
+.ebay-compliance-box .custom-switch-input:checked + .switch-slider {
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    border-color: #25D366;
+}
+
+.custom-switch-input:checked + .switch-slider::before {
+    transform: translateX(16px);
+    background-color: #000000;
+}
+
+.switch-text-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.switch-title {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 0.2px;
+}
+
+.switch-desc {
+    font-size: 10.5px;
+    color: var(--text-muted);
+    line-height: 1.35;
+}
+
+/* ==========================================================================
+   Fixed Promotional Free Gifts Control Box
+   ========================================================================== */
+.free-gifts-control-box {
+    background: linear-gradient(135deg, rgba(37, 211, 102, 0.06) 0%, rgba(15, 15, 22, 0.9) 100%);
+    border: 1.5px solid rgba(37, 211, 102, 0.35);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+}
+
+.gifts-box-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(37, 211, 102, 0.2);
+}
+
+.gifts-title-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.gifts-main-title {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 0.3px;
+}
+
+.badge-promo-free {
+    background: rgba(37, 211, 102, 0.2);
+    color: #25D366;
+    border: 1px solid rgba(37, 211, 102, 0.5);
+    font-size: 9.5px;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 12px;
+    text-transform: uppercase;
+}
+
+.master-gifts-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 700;
+    color: #a0e0b0;
+    user-select: none;
+}
+
+.master-gifts-toggle input[type="checkbox"] {
+    accent-color: #25D366;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+
+.gifts-checkbox-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.gift-checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11.5px;
+    color: #e0e0ea;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 7px 10px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+    line-height: 1.35;
+}
+
+.gift-checkbox-item:hover {
+    background: rgba(37, 211, 102, 0.1);
+    border-color: rgba(37, 211, 102, 0.3);
+}
+
+.gift-checkbox-item input[type="checkbox"] {
+    accent-color: #25D366;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* Featured Preset Button */
+.btn-preset.featured {
+    grid-column: span 2;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(37, 211, 102, 0.15) 100%);
+    border: 1.5px solid var(--gold-primary);
+    color: #ffffff;
+    font-weight: 800;
+    padding: 9px 12px;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+}
+
+.btn-preset.featured:hover {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.35) 0%, rgba(37, 211, 102, 0.25) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
+}
+
 /* Mobile Responsiveness for Dashboard itself */
 @media (max-width: 900px) {
     .app-container {
@@ -956,3 +1182,4 @@ body {
         height: 50vh;
     }
 }
+

@@ -24,6 +24,9 @@ export function generateEbayHtml(config) {
         shippingCost = "6,99 € (versichert mit DHL & Tracking)",
         warrantyMonths = "12",
         processingTime = "12-24h",
+        genericMode = false, // 'Generic Mode' (no specific model/price in body texts)
+        ebayComplianceMode = true, // 'eBay Compliance Mode' (hide WhatsApp/external links in HTML)
+        freeGifts = { cleaning: true, cover: true, lensGlass: true }, // Fixed 3 free promo gifts
         upsellType = "none", // 'none' | 'paid' | 'free'
         upsellPrice = "+ 15,00 €",
         upsellTitle = "Premium Panzerglas Schutz",
@@ -108,15 +111,19 @@ export function generateEbayHtml(config) {
         </div>`;
     }
 
-    // Timeline Step 2 (Formular oder Zettel)
+    // Timeline Step 2 (Formular oder Zettel) - Generic vs Specific model phrasing
     let timelineStep2Html = '';
+    const timelineDeviceText = (genericMode || brand === 'Universal') 
+        ? "dein <strong>Smartphone</strong>" 
+        : `dein <strong>${escapeHtml(brand)} ${escapeHtml(model)}</strong>`;
+
     if (formToggle === 'yes') {
         timelineStep2Html = `
         <div class="hl-timeline-item">
             <div class="hl-timeline-badge">2</div>
             <div class="hl-timeline-body">
-                <div class="hl-timeline-title">Formular & Sicher Verpacken</div>
-                <p class="hl-timeline-desc">Verpacke dein <strong>${escapeHtml(brand)} ${escapeHtml(model)}</strong> sicher und gepolstert (bitte ohne Originalverpackung oder Ladekabel).</p>
+                <div class="hl-timeline-title">Formular &amp; Sicher Verpacken</div>
+                <p class="hl-timeline-desc">Verpacke ${timelineDeviceText} sicher und gepolstert (bitte ohne Originalverpackung oder Ladekabel).</p>
                 <div class="hl-form-box">
                     <div class="hl-form-header">
                         <span class="hl-form-icon">📄</span>
@@ -126,7 +133,7 @@ export function generateEbayHtml(config) {
                         </div>
                     </div>
                     <a href="${escapeHtml(formLink)}" target="_blank" class="hl-form-btn">
-                        🖨️ Reparaturschein öffnen & drucken
+                        🖨️ Reparaturschein öffnen &amp; drucken
                     </a>
                 </div>
             </div>
@@ -136,11 +143,14 @@ export function generateEbayHtml(config) {
         <div class="hl-timeline-item">
             <div class="hl-timeline-badge">2</div>
             <div class="hl-timeline-body">
-                <div class="hl-timeline-title">Sicher Verpacken & Einsenden</div>
-                <p class="hl-timeline-desc">Verpacke dein <strong>${escapeHtml(brand)} ${escapeHtml(model)}</strong> sicher in Luftpolsterfolie. Lege bitte einen Zettel mit deinem <strong>eBay-Nutzernamen</strong>, deiner <strong>Telefonnummer</strong> und dem <strong>Entsperrcode</strong> (Muster/PIN) für die Endprüfung bei.</p>
+                <div class="hl-timeline-title">Sicher Verpacken &amp; Einsenden</div>
+                <p class="hl-timeline-desc">Verpacke ${timelineDeviceText} sicher in Luftpolsterfolie. Lege bitte einen Zettel mit deinem <strong>eBay-Nutzernamen</strong>, deiner <strong>Telefonnummer</strong> und dem <strong>Entsperrcode</strong> (Muster/PIN) für die Endprüfung bei.</p>
             </div>
         </div>`;
     }
+
+    // Service Features List (Pure Technical Features)
+    const finalFeaturesHtml = featuresHtml || '';
 
     // Video Showcase Section HTML
     let videoHtml = '';
@@ -218,10 +228,17 @@ export function generateEbayHtml(config) {
         </div>`;
     }
 
-    // Dynamic WhatsApp Pre-filled URL & QR Code
-    const waText = encodeURIComponent(`Hallo HandyLand Heidelberg! Ich interessiere mich für die eBay-Reparatur: ${brand} ${model} (${repairName}). Könnt ihr mir bitte weiterhelfen?`);
+    // Dynamic Contact Links & Cards (eBay Compliance vs WhatsApp)
+    const isGenericContact = (genericMode || brand === 'Universal' || !model || model.trim() === '' || brand === '');
+    const cleanRepairName = (repairName || '').replace(/[^\w\s\/\-\&äöüÄÖÜß]/g, '').trim();
+    const waDeviceStr = isGenericContact 
+        ? `Smartphone-Reparatur (${cleanRepairName})`
+        : `${brand} ${model} (${cleanRepairName})`;
+
+    const waText = encodeURIComponent(`Hallo HandyLand Heidelberg! Ich interessiere mich für eure eBay-Reparatur: ${waDeviceStr}. Könnt ihr mir bitte weiterhelfen?`);
     const waLink = `https://wa.me/${shop.whatsappNumber}?text=${waText}`;
     const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&margin=8&data=${encodeURIComponent(waLink)}`;
+    const ebayMsgUrl = `https://www.ebay.de/cnt/InterfereGate?sspagename=null&finduser=handylandheidelberg`;
 
     // German Trust & Warranty Seal Bar
     let trustSealHtml = '';
@@ -276,13 +293,15 @@ export function generateEbayHtml(config) {
             </tr>
         `).join('');
 
+        const matrixBrandTitle = (genericMode || brand === 'Universal') ? 'alle gängigen' : escapeHtml(brand);
+
         matrixHtml = `
         <div class="hl-matrix-wrapper">
             <details class="hl-matrix-details">
                 <summary class="hl-matrix-summary">
                     <div class="hl-matrix-summary-title">
                         <span class="hl-matrix-icon">📱</span>
-                        <span>Kompatible <strong>${escapeHtml(brand)}</strong> Modelle &amp; Baureihen (Qualitätsübersicht)</span>
+                        <span>Kompatible <strong>${matrixBrandTitle}</strong> Modelle &amp; Baureihen (Qualitätsübersicht)</span>
                     </div>
                     <div class="hl-summary-badge">
                         <span class="hl-badge-text">Liste ausklappen</span>
@@ -308,7 +327,7 @@ export function generateEbayHtml(config) {
                         </table>
                     </div>
                     <div class="hl-matrix-disclaimer">
-                        ⚖️ <strong>Transparenzhinweis:</strong> Sofern nicht ausdrücklich anders vermerkt, handelt es sich um geprüfte Neuteile in Erstausrüsterqualität (keine original ${escapeHtml(brand)}-Bauteile). Alle Markennamen dienen ausschließlich der Beschreibung der Kompatibilität.
+                        ⚖️ <strong>Transparenzhinweis:</strong> Sofern nicht ausdrücklich anders vermerkt, handelt es sich um geprüfte Neuteile in Erstausrüsterqualität. Alle Markennamen dienen ausschließlich der Beschreibung der Kompatibilität.
                     </div>
                 </div>
             </details>
@@ -334,11 +353,13 @@ export function generateEbayHtml(config) {
         </div>`;
     }
 
-    // VIP Original Apple Battery Card HTML (Active strictly for Apple + Battery repair)
+    // VIP Original Apple Battery Card HTML (Active strictly for Apple + Battery repair, not in generic mode)
     let appleOemHtml = '';
-    if (appleOemToggle === 'yes' && brand === 'Apple' && repairTypeId === 'battery') {
-        const waOemMsg = encodeURIComponent(`Hallo HandyLand Heidelberg! Ich interessiere mich für einen originalen Apple-Akku direkt vom Hersteller für mein ${brand} ${model}. Bitte um ein unverbindliches Angebot.`);
-        const waOemUrl = `https://wa.me/${shop.whatsappNumber}?text=${waOemMsg}`;
+    if (!genericMode && brand !== 'Universal' && appleOemToggle === 'yes' && brand === 'Apple' && repairTypeId === 'battery') {
+        const appleOemBtnText = ebayComplianceMode 
+            ? '📩 Original Apple Akku via eBay anfragen ➔' 
+            : '💬 Original Apple Akku per WhatsApp anfragen ➔';
+        const appleOemBtnLink = ebayComplianceMode ? ebayMsgUrl : waLink;
 
         appleOemHtml = `
         <div class="hl-apple-oem-card">
@@ -348,32 +369,202 @@ export function generateEbayHtml(config) {
             </div>
             <div class="hl-oem-title">Du wünschst einen originalen Apple-Akku vom Hersteller?</div>
             <p class="hl-oem-desc">
-                Auf Kundenwunsch können wir für dein <strong>${escapeHtml(brand)} ${escapeHtml(model)}</strong> auch <strong>originale Apple-Batterien direkt von der Muttergesellschaft</strong> beziehen &amp; fachgerecht kalibrieren (ohne Fehlermeldung &amp; mit 100% Kapazitätsanzeige). Kontaktiere uns hierzu einfach kurz unverbindlich per WhatsApp!
+                Auf Kundenwunsch können wir für dein <strong>${escapeHtml(brand)} ${escapeHtml(model)}</strong> auch <strong>originale Apple-Batterien direkt von der Muttergesellschaft</strong> beziehen &amp; fachgerecht kalibrieren (ohne Fehlermeldung &amp; mit 100% Kapazitätsanzeige). Kontaktiere uns hierzu einfach kurz unverbindlich!
             </p>
             <div class="hl-oem-action">
-                <a href="${waOemUrl}" target="_blank" class="hl-oem-btn">
-                    💬 Original Apple Akku per WhatsApp anfragen ➔
+                <a href="${appleOemBtnLink}" target="_blank" class="hl-oem-btn">
+                    ${appleOemBtnText}
                 </a>
             </div>
         </div>`;
+    }
+
+    // Interactive Live Support Card (eBay Message Card vs WhatsApp Card)
+    let liveSupportCardHtml = '';
+    const supportCardTitle = (genericMode || brand === 'Universal') 
+        ? "Fragen zur Reparatur deines Smartphones?" 
+        : `Fragen zur Reparatur für ${escapeHtml(brand)} ${escapeHtml(model)}?`;
+
+    if (ebayComplianceMode) {
+        liveSupportCardHtml = `
+        <div class="hl-ebay-contact-card">
+            <div class="hl-wa-info">
+                <div class="hl-ebay-avatar">📩</div>
+                <div class="hl-wa-text">
+                    <h4>${supportCardTitle}</h4>
+                    <p>Kontaktiere uns direkt über das offizielle eBay-Nachrichtensystem! Unser Werkstatt-Team antwortet dir blitzschnell vor und nach dem Kauf.</p>
+                </div>
+            </div>
+            <div class="hl-wa-actions">
+                <a href="${ebayMsgUrl}" target="_blank" class="hl-ebay-btn">
+                    📩 eBay Nachricht senden ➔
+                </a>
+            </div>
+        </div>`;
+    } else {
+        liveSupportCardHtml = `
+        <div class="hl-whatsapp-card">
+            <div class="hl-wa-info">
+                <div class="hl-wa-avatar">💬</div>
+                <div class="hl-wa-text">
+                    <h4>${supportCardTitle}</h4>
+                    <p>Schreib uns direkt auf WhatsApp! Unser Techniker berät dich kostenlos und unverbindlich vor dem Kauf.</p>
+                </div>
+            </div>
+            <div class="hl-wa-actions">
+                ${qrImgHtml}
+                <a href="${waLink}" target="_blank" class="hl-wa-btn">
+                    💬 WhatsApp Chat ➔
+                </a>
+            </div>
+        </div>`;
+    }
+
+    // Footer Contact Pill (eBay Compliance vs WhatsApp)
+    let footerContactPillHtml = '';
+    if (ebayComplianceMode) {
+        footerContactPillHtml = `
+        <a href="${ebayMsgUrl}" target="_blank" class="hl-contact-pill">
+            <div class="hl-contact-ico hl-ico-mail">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#58a6ff" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z"/></svg>
+            </div>
+            <div class="hl-contact-details">
+                <span class="hl-contact-label">eBay Kundenservice</span>
+                <span class="hl-contact-val">Nachrichtensystem</span>
+            </div>
+        </a>`;
+    } else {
+        footerContactPillHtml = `
+        <a href="${waLink}" target="_blank" class="hl-contact-pill">
+            <div class="hl-contact-ico hl-ico-wa">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#25D366" xmlns="http://www.w3.org/2000/svg"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.04 14.69 2 12.04 2ZM12.04 20.15C10.56 20.15 9.11 19.76 7.85 19.01L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 14.99 3.8 13.47 3.8 11.91C3.8 7.37 7.5 3.67 12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15ZM16.56 14.37C16.31 14.25 15.09 13.65 14.86 13.57C14.64 13.48 14.47 13.44 14.31 13.69C14.14 13.94 13.66 14.5 13.51 14.67C13.37 14.83 13.22 14.86 12.97 14.73C12.72 14.61 11.92 14.35 10.97 13.5C10.23 12.84 9.73 12.02 9.58 11.77C9.44 11.52 9.57 11.39 9.69 11.26C9.8 11.15 9.94 10.97 10.06 10.83C10.19 10.69 10.23 10.58 10.31 10.42C10.39 10.25 10.35 10.11 10.29 9.98C10.23 9.86 9.73 8.63 9.53 8.12C9.32 7.63 9.12 7.69 8.97 7.69C8.82 7.68 8.66 7.68 8.49 7.68C8.32 7.68 8.06 7.74 7.83 7.99C7.6 8.24 6.96 8.84 6.96 10.05C6.96 11.27 7.85 12.44 7.97 12.61C8.1 12.77 9.72 15.28 12.21 16.35C12.8 16.61 13.26 16.76 13.62 16.88C14.22 17.07 14.76 17.04 15.19 16.98C15.68 16.9 16.69 16.36 16.9 15.77C17.11 15.19 17.11 14.69 17.05 14.59C16.99 14.49 16.81 14.49 16.56 14.37Z"/></svg>
+            </div>
+            <div class="hl-contact-details">
+                <span class="hl-contact-label">WhatsApp Hotline</span>
+                <span class="hl-contact-val">${escapeHtml(shop.phone)}</span>
+            </div>
+        </a>`;
+    }
+
+    // Price Column Box (Generic Mode / Multiple Models vs Single Fixed Price)
+    const isGenericPrice = (genericMode || brand === 'Universal' || !price || price.trim() === '');
+    let priceCardTitle = 'Reparaturpreis';
+    let priceBoxHtml = '';
+    let priceChecklistHtml = '';
+
+    if (isGenericPrice) {
+        priceCardTitle = 'Preise &amp; Konditionen';
+        priceBoxHtml = `
+        <div class="hl-price-box hl-price-box-generic">
+            <span class="hl-price-num hl-price-variant-title">Preise siehe Auswahl oben</span>
+            <span class="hl-price-sub">Wähle dein Modell oben im eBay-Menü • inkl. 19% MwSt.</span>
+        </div>`;
+        priceChecklistHtml = `
+        <ul class="hl-checklist">
+            <li><strong>Modellauswahl:</strong> Faire Festpreise je nach gewähltem Smartphone-Modell</li>
+            <li><strong>Rückversand:</strong> ${escapeHtml(shippingCost)}</li>
+            <li><strong>Vor-Ort Abholung:</strong> Kostenlos in Heidelberg möglich</li>
+            <li><strong>Transparenz:</strong> 100% Festpreisgarantie – keine versteckten Kosten!</li>
+        </ul>`;
+    } else {
+        priceBoxHtml = `
+        <div class="hl-price-box">
+            <span class="hl-price-num">${escapeHtml(price)}</span>
+            <span class="hl-price-sub">inkl. 19% MwSt.</span>
+        </div>`;
+        priceChecklistHtml = `
+        <ul class="hl-checklist">
+            <li><strong>Rückversand:</strong> ${escapeHtml(shippingCost)}</li>
+            <li><strong>Vor-Ort Abholung:</strong> Kostenlos in Heidelberg möglich</li>
+            <li><strong>Transparenz:</strong> Keine versteckten Zusatzkosten!</li>
+        </ul>`;
+    }
+
+    // Free Promotional Gifts Component (Placed in left column 'Preise & Konditionen')
+    let freeGiftsBoxHtml = '';
+    const isEligibleCategory = ['display', 'battery', 'backcover', 'charging'].includes(repairTypeId);
+
+    if (freeGifts && isEligibleCategory) {
+        let giftsCardsHtml = '';
+
+        // Gift 1: Außenreinigung (mit Erläuterung)
+        if (freeGifts.cleaning !== false) {
+            giftsCardsHtml += `
+            <div class="hl-gift-promo-card">
+                <div class="hl-gift-promo-top">
+                    <span class="hl-gift-promo-icon">🧼</span>
+                    <div class="hl-gift-promo-info">
+                        <div class="hl-gift-promo-title">
+                            <span>Professionelle Außenreinigung</span>
+                            <span class="hl-gift-badge-pill">GRATIS</span>
+                        </div>
+                        <div class="hl-gift-promo-desc">
+                            Hygienische Reinigung &amp; Desinfektion des Gehäuses, Entfernung von Ablagerungen an Lautsprechergittern, Hörmuschel &amp; Ladebuchse.
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        // Gift 2: Panzerglas / Displayschutz (Condition: Display replacement vs other repairs)
+        if (freeGifts.cover !== false) {
+            const screenProtectorDesc = (repairTypeId === 'display')
+                ? "Wird nach erfolgreichem Display-Tausch direkt fachgerecht, staub- und blasenfrei auf deinem neuen Bildschirm montiert."
+                : "Neu &amp; passgenau. <em>Hinweis:</em> Befindet sich bereits ein intaktes Schutzglas auf deinem Smartphone, belassen wir dieses und legen das neue Premium-Panzerglas kostenlos im Paket bei.";
+
+            giftsCardsHtml += `
+            <div class="hl-gift-promo-card">
+                <div class="hl-gift-promo-top">
+                    <span class="hl-gift-promo-icon">🛡️</span>
+                    <div class="hl-gift-promo-info">
+                        <div class="hl-gift-promo-title">
+                            <span>Premium 9H Panzerglas (Displayschutz)</span>
+                            <span class="hl-gift-badge-pill">GRATIS</span>
+                        </div>
+                        <div class="hl-gift-promo-desc">${screenProtectorDesc}</div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        // Gift 3: Kamera-Schutzglas (Linsen-Schutzfolie)
+        if (freeGifts.lensGlass !== false) {
+            giftsCardsHtml += `
+            <div class="hl-gift-promo-card">
+                <div class="hl-gift-promo-top">
+                    <span class="hl-gift-promo-icon">📸</span>
+                    <div class="hl-gift-promo-info">
+                        <div class="hl-gift-promo-title">
+                            <span>Kamera-Linsenschutz (Schutzglas)</span>
+                            <span class="hl-gift-badge-pill">GRATIS</span>
+                        </div>
+                        <div class="hl-gift-promo-desc">
+                            Schützt die empfindlichen Kameralinsen vor Kratzern. <em>Hinweis:</em> Falls bereits ein intakter Linsenschutz vorhanden ist, legen wir das neue Schutzglas kostenlos im Paket bei.
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        if (giftsCardsHtml.trim().length > 0) {
+            freeGiftsBoxHtml = `
+            <div class="hl-free-gifts-container">
+                <div class="hl-gifts-header">
+                    <span class="hl-gifts-badge">🎁 3 FESTE GRATIS-AKTIONEN INKLUSIVE</span>
+                </div>
+                ${giftsCardsHtml}
+            </div>`;
+        }
     }
 
     // Final eBay Safe Standalone HTML
     return `<!-- ================================================================= -->
 <!-- HandyLand eBay Listing Template Pro (Zero-JS / Pure HTML+CSS)    -->
 <!-- ================================================================= -->
-<div class="hl-wrapper" id="hl-top">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
     /* CSS Scoped & Embedded inside container - Pure CSS3 / No external dependencies */
     .hl-wrapper {
-        --hl-primary: ${theme.primary};
-        --hl-light: ${theme.light};
-        --hl-dark: ${theme.dark};
-        --hl-gradient: ${theme.gradient};
-        --hl-accent-bg: ${theme.accentBg};
-        --hl-border: ${theme.border};
-        --hl-glow: ${theme.glow};
-
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         max-width: 960px;
         margin: 0 auto;
@@ -413,6 +604,7 @@ export function generateEbayHtml(config) {
         font-size: 12.5px;
         flex-wrap: wrap;
         gap: 8px;
+        color: #f0f0f0;
     }
     .hl-status-live {
         display: inline-flex;
@@ -438,8 +630,9 @@ export function generateEbayHtml(config) {
         background: linear-gradient(180deg, #181822 0%, #0d0d12 100%);
         padding: 38px 20px;
         text-align: center;
-        border-bottom: 2px solid var(--hl-primary);
+        border-bottom: 2px solid ${theme.primary};
         position: relative;
+        color: #ffffff;
     }
     .hl-logo-wrapper {
         margin-bottom: 18px;
@@ -453,7 +646,7 @@ export function generateEbayHtml(config) {
         align-items: center;
         gap: 16px;
         background: rgba(0, 0, 0, 0.65);
-        border: 1px solid var(--hl-border);
+        border: 1px solid ${theme.border};
         padding: 10px 24px;
         border-radius: 40px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
@@ -483,13 +676,13 @@ export function generateEbayHtml(config) {
         line-height: 1.1;
     }
     .hl-brand-heading span {
-        color: var(--hl-primary);
+        color: ${theme.primary};
     }
     .hl-brand-subheading {
         font-size: 9.5px;
         font-weight: 800;
         letter-spacing: 1.5px;
-        color: var(--hl-light);
+        color: ${theme.light};
         margin-top: 3px;
     }
     .hl-brand-heading-large {
@@ -499,20 +692,20 @@ export function generateEbayHtml(config) {
         color: #ffffff;
     }
     .hl-brand-heading-large span {
-        color: var(--hl-primary);
+        color: ${theme.primary};
     }
     .hl-brand-subheading-large {
         font-size: 11px;
         font-weight: 800;
         letter-spacing: 2px;
-        color: var(--hl-light);
+        color: ${theme.light};
         margin-top: 4px;
     }
     .hl-header-tagline {
         display: inline-block;
-        background: var(--hl-accent-bg);
-        color: var(--hl-primary);
-        border: 1px solid var(--hl-primary);
+        background: ${theme.accentBg};
+        color: ${theme.primary};
+        border: 1px solid ${theme.primary};
         padding: 5px 16px;
         border-radius: 20px;
         font-size: 12px;
@@ -530,7 +723,7 @@ export function generateEbayHtml(config) {
         letter-spacing: -0.5px;
     }
     .hl-header h1 span {
-        color: var(--hl-primary);
+        color: ${theme.primary};
     }
     .hl-header-subtitle {
         font-size: 16.5px;
@@ -546,6 +739,7 @@ export function generateEbayHtml(config) {
         padding: 16px 12px;
         flex-wrap: wrap;
         gap: 10px;
+        color: #f0f0f0;
     }
     .hl-trust-item {
         display: flex;
@@ -554,7 +748,7 @@ export function generateEbayHtml(config) {
         padding: 4px 10px;
         font-size: 13px;
         font-weight: 700;
-        color: var(--hl-light);
+        color: ${theme.light};
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
@@ -565,6 +759,8 @@ export function generateEbayHtml(config) {
     /* Content Area */
     .hl-content {
         padding: 30px 25px;
+        background-color: #0f0f13;
+        color: #f0f0f0;
     }
 
     /* Grid layout */
@@ -572,10 +768,13 @@ export function generateEbayHtml(config) {
         display: flex;
         gap: 20px;
         margin-bottom: 25px;
+        align-items: stretch;
     }
     .hl-col {
         flex: 1;
         min-width: 0;
+        display: flex;
+        flex-direction: column;
     }
 
     /* Cards */
@@ -585,6 +784,9 @@ export function generateEbayHtml(config) {
         border-radius: 12px;
         padding: 24px;
         height: 100%;
+        display: flex;
+        flex-direction: column;
+        color: #f0f0f0;
     }
     .hl-card-header {
         display: flex;
@@ -600,24 +802,35 @@ export function generateEbayHtml(config) {
     .hl-card-title {
         font-size: 18.5px;
         font-weight: 800;
-        color: var(--hl-primary);
+        color: ${theme.primary};
     }
 
     /* Price Box */
     .hl-price-box {
-        background: var(--hl-gradient);
+        background: ${theme.gradient};
         color: #000000;
         border-radius: 10px;
         padding: 20px;
         text-align: center;
         margin-bottom: 16px;
-        box-shadow: var(--hl-glow);
+        box-shadow: ${theme.glow};
+    }
+    .hl-price-box.hl-price-box-generic {
+        padding: 16px 14px;
     }
     .hl-price-num {
         font-size: 36px;
         font-weight: 900;
         display: block;
         line-height: 1.1;
+        color: #000000;
+    }
+    .hl-price-variant-title {
+        font-size: 20px !important;
+        line-height: 1.25 !important;
+        letter-spacing: -0.2px;
+        margin-bottom: 4px;
+        color: #000000;
     }
     .hl-price-sub {
         font-size: 13px;
@@ -625,18 +838,20 @@ export function generateEbayHtml(config) {
         text-transform: uppercase;
         letter-spacing: 0.5px;
         opacity: 0.9;
+        color: #000000;
     }
 
     /* Feature List */
     .hl-checklist {
         list-style: none;
         margin: 15px 0;
+        padding: 0;
     }
     .hl-checklist li {
         position: relative;
         padding-left: 28px;
         margin-bottom: 11px;
-        font-size: 14.5px;
+        font-size: 14px;
         color: #e4e4ee;
         line-height: 1.45;
     }
@@ -645,7 +860,7 @@ export function generateEbayHtml(config) {
         position: absolute;
         left: 0;
         top: 0;
-        color: var(--hl-primary);
+        color: ${theme.primary};
         font-weight: 900;
         font-size: 15px;
     }
@@ -661,8 +876,8 @@ export function generateEbayHtml(config) {
         gap: 15px;
     }
     .hl-upsell-paid {
-        background: var(--hl-accent-bg);
-        border: 1px dashed var(--hl-primary);
+        background: ${theme.accentBg};
+        border: 1px dashed ${theme.primary};
     }
     .hl-upsell-free {
         background: rgba(37, 211, 102, 0.1);
@@ -671,7 +886,7 @@ export function generateEbayHtml(config) {
     .hl-upsell-badge {
         font-size: 11px;
         font-weight: 800;
-        color: var(--hl-primary);
+        color: ${theme.primary};
         margin-bottom: 4px;
     }
     .hl-badge-green {
@@ -694,10 +909,10 @@ export function generateEbayHtml(config) {
         font-size: 16px;
         font-weight: 900;
         background: #000000;
-        color: var(--hl-primary);
+        color: ${theme.primary};
         padding: 8px 16px;
         border-radius: 20px;
-        border: 1px solid var(--hl-primary);
+        border: 1px solid ${theme.primary};
         white-space: nowrap;
     }
     .hl-tag-free {
@@ -706,16 +921,63 @@ export function generateEbayHtml(config) {
         border: none;
     }
 
+    /* 15-Punkte Meister-Prüfung Quality Box */
+    .hl-service-quality-box {
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(20, 20, 28, 0.9) 100%);
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        border-radius: 10px;
+        padding: 13px 15px;
+        margin-top: 14px;
+        margin-bottom: 14px;
+    }
+    .hl-quality-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 9px;
+    }
+    .hl-quality-icon {
+        font-size: 20px;
+        line-height: 1;
+        flex-shrink: 0;
+    }
+    .hl-quality-title {
+        font-size: 13px;
+        font-weight: 800;
+        color: ${theme.primary};
+        letter-spacing: 0.3px;
+    }
+    .hl-quality-subtitle {
+        font-size: 11px;
+        color: #a0a0b0;
+        margin-top: 1px;
+    }
+    .hl-quality-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .hl-q-tag {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(212, 175, 55, 0.2);
+        color: #e0e0ec;
+        font-size: 10.5px;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: 6px;
+        white-space: nowrap;
+    }
+
     /* Transparency Box */
     .hl-transparency {
-        background: var(--hl-accent-bg);
-        border-left: 3px solid var(--hl-primary);
+        background: ${theme.accentBg};
+        border-left: 3px solid ${theme.primary};
         padding: 14px 16px;
         border-radius: 0 8px 8px 0;
-        margin-top: 16px;
+        margin-top: auto;
     }
     .hl-transparency h5 {
-        color: var(--hl-primary);
+        color: ${theme.primary};
         font-size: 13.5px;
         margin-bottom: 4px;
         font-weight: 800;
@@ -759,6 +1021,7 @@ export function generateEbayHtml(config) {
         border-radius: 10px;
         padding: 20px 16px;
         text-align: center;
+        color: #f0f0f0;
     }
     .hl-ba-before {
         border-color: rgba(239, 68, 68, 0.3);
@@ -813,7 +1076,7 @@ export function generateEbayHtml(config) {
     .hl-ba-arrow {
         width: 44px;
         height: 44px;
-        background: var(--hl-gradient);
+        background: ${theme.gradient};
         color: #000;
         border-radius: 50%;
         display: flex;
@@ -821,14 +1084,90 @@ export function generateEbayHtml(config) {
         justify-content: center;
         font-size: 18px;
         font-weight: 900;
-        box-shadow: var(--hl-glow);
+        box-shadow: ${theme.glow};
     }
     .hl-ba-arrow-text {
         font-size: 10.5px;
         font-weight: 800;
-        color: var(--hl-primary);
+        color: ${theme.primary};
         text-transform: uppercase;
         letter-spacing: 0.5px;
+    }
+
+    /* Free Promotional Gifts Box inside Preise & Konditionen */
+    .hl-free-gifts-container {
+        margin-top: 18px;
+        padding-top: 16px;
+        border-top: 1px dashed rgba(212, 175, 55, 0.35);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .hl-gifts-header {
+        margin-bottom: 2px;
+    }
+    .hl-gifts-badge {
+        display: inline-block;
+        background: linear-gradient(135deg, rgba(37, 211, 102, 0.2) 0%, rgba(18, 140, 126, 0.2) 100%);
+        border: 1px solid rgba(37, 211, 102, 0.5);
+        color: #25D366;
+        font-size: 11px;
+        font-weight: 900;
+        padding: 4px 10px;
+        border-radius: 20px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+    .hl-gift-promo-card {
+        background: rgba(37, 211, 102, 0.05);
+        border: 1px solid rgba(37, 211, 102, 0.25);
+        border-radius: 10px;
+        padding: 12px 14px;
+        transition: all 0.2s ease;
+    }
+    .hl-gift-promo-top {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    .hl-gift-promo-icon {
+        font-size: 22px;
+        line-height: 1;
+        flex-shrink: 0;
+        margin-top: 1px;
+    }
+    .hl-gift-promo-info {
+        flex: 1;
+    }
+    .hl-gift-promo-title {
+        font-size: 13.5px;
+        font-weight: 800;
+        color: #ffffff;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .hl-gift-badge-pill {
+        background: #25D366;
+        color: #000000;
+        font-size: 9px;
+        font-weight: 900;
+        padding: 2px 6px;
+        border-radius: 8px;
+        letter-spacing: 0.5px;
+    }
+    .hl-gift-promo-desc {
+        font-size: 11.5px;
+        color: #b0b0be;
+        line-height: 1.45;
+    }
+    .hl-gift-promo-desc em {
+        color: ${theme.primary};
+        font-style: normal;
+        font-weight: 700;
     }
 
     /* WhatsApp Interactive Live Support Card */
@@ -843,6 +1182,51 @@ export function generateEbayHtml(config) {
         justify-content: space-between;
         gap: 20px;
         animation: hlPulseGlow 3s infinite ease-in-out;
+    }
+
+    /* eBay Compliant Contact Card */
+    .hl-ebay-contact-card {
+        background: linear-gradient(135deg, rgba(88, 166, 255, 0.1) 0%, rgba(20, 20, 30, 0.9) 100%);
+        border: 1px solid rgba(88, 166, 255, 0.35);
+        border-radius: 12px;
+        padding: 22px 24px;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+    }
+    .hl-ebay-avatar {
+        width: 52px;
+        height: 52px;
+        background: linear-gradient(135deg, #58a6ff 0%, #1f6feb 100%);
+        color: #ffffff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        flex-shrink: 0;
+        box-shadow: 0 4px 15px rgba(88, 166, 255, 0.3);
+    }
+    .hl-ebay-btn {
+        background: linear-gradient(135deg, #58a6ff 0%, #1f6feb 100%);
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: 800;
+        font-size: 13.5px;
+        padding: 12px 22px;
+        border-radius: 30px;
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 15px rgba(88, 166, 255, 0.35);
+        transition: all 0.2s ease;
+    }
+    .hl-ebay-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(88, 166, 255, 0.5);
     }
     .hl-wa-info {
         display: flex;
@@ -926,7 +1310,7 @@ export function generateEbayHtml(config) {
     }
     .hl-seal-item {
         background: #12121a;
-        border: 1px solid var(--hl-border);
+        border: 1px solid ${theme.border};
         border-radius: 10px;
         padding: 14px 16px;
         display: flex;
@@ -939,8 +1323,8 @@ export function generateEbayHtml(config) {
         width: 42px;
         height: 42px;
         border-radius: 50%;
-        background: var(--hl-accent-bg);
-        border: 1px solid var(--hl-primary);
+        background: ${theme.accentBg};
+        border: 1px solid ${theme.primary};
         display: flex;
         align-items: center;
         justify-content: center;
@@ -949,7 +1333,7 @@ export function generateEbayHtml(config) {
     .hl-seal-title {
         font-size: 12px;
         font-weight: 900;
-        color: var(--hl-primary);
+        color: ${theme.primary};
         letter-spacing: 0.5px;
     }
     .hl-seal-sub {
@@ -966,12 +1350,12 @@ export function generateEbayHtml(config) {
         width: 100%;
         border-radius: 12px;
         overflow: hidden;
-        border: 1px solid var(--hl-border);
+        border: 1px solid ${theme.border};
         background: #111118;
         transition: all 0.3s ease;
     }
     .hl-matrix-details:hover {
-        border-color: var(--hl-primary);
+        border-color: ${theme.primary};
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
     .hl-matrix-summary {
@@ -990,11 +1374,11 @@ export function generateEbayHtml(config) {
         display: none;
     }
     .hl-matrix-summary:hover {
-        background: var(--hl-accent-bg);
+        background: ${theme.accentBg};
     }
     .hl-matrix-details[open] .hl-matrix-summary {
-        background: var(--hl-accent-bg);
-        border-bottom: 1px solid var(--hl-primary);
+        background: ${theme.accentBg};
+        border-bottom: 1px solid ${theme.primary};
     }
     .hl-matrix-summary-title {
         display: flex;
@@ -1002,7 +1386,7 @@ export function generateEbayHtml(config) {
         gap: 12px;
         font-size: 16px;
         font-weight: 800;
-        color: var(--hl-light);
+        color: ${theme.light};
     }
     .hl-matrix-icon {
         font-size: 20px;
@@ -1013,9 +1397,9 @@ export function generateEbayHtml(config) {
         gap: 8px;
         font-size: 12px;
         font-weight: 800;
-        color: var(--hl-primary);
+        color: ${theme.primary};
         background: rgba(0, 0, 0, 0.4);
-        border: 1px solid var(--hl-primary);
+        border: 1px solid ${theme.primary};
         padding: 6px 14px;
         border-radius: 20px;
     }
@@ -1048,10 +1432,10 @@ export function generateEbayHtml(config) {
     }
     .hl-matrix-table th {
         background: #171722;
-        color: var(--hl-primary);
+        color: ${theme.primary};
         padding: 10px 14px;
         font-weight: 800;
-        border-bottom: 2px solid var(--hl-primary);
+        border-bottom: 2px solid ${theme.primary};
     }
     .hl-matrix-table td {
         padding: 10px 14px;
@@ -1089,7 +1473,7 @@ export function generateEbayHtml(config) {
     /* VIP Original Apple Battery Card */
     .hl-apple-oem-card {
         background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(20, 20, 30, 0.9) 100%);
-        border: 1.5px solid var(--hl-primary);
+        border: 1.5px solid ${theme.primary};
         border-radius: 12px;
         padding: 18px 22px;
         margin-bottom: 25px;
@@ -1102,7 +1486,7 @@ export function generateEbayHtml(config) {
         margin-bottom: 10px;
     }
     .hl-oem-badge {
-        background: var(--hl-gradient);
+        background: ${theme.gradient};
         color: #000000;
         font-size: 11px;
         font-weight: 900;
@@ -1159,8 +1543,8 @@ export function generateEbayHtml(config) {
         width: 34px;
         height: 34px;
         background: #111;
-        border: 2px solid var(--hl-primary);
-        color: var(--hl-primary);
+        border: 2px solid ${theme.primary};
+        color: ${theme.primary};
         font-weight: 900;
         font-size: 14px;
         border-radius: 50%;
@@ -1175,7 +1559,7 @@ export function generateEbayHtml(config) {
     .hl-timeline-title {
         font-size: 15.5px;
         font-weight: 800;
-        color: var(--hl-light);
+        color: ${theme.light};
         margin-bottom: 4px;
     }
     .hl-timeline-desc {
@@ -1184,8 +1568,8 @@ export function generateEbayHtml(config) {
         line-height: 1.45;
     }
     .hl-form-box {
-        background: var(--hl-accent-bg);
-        border: 1px solid var(--hl-border);
+        background: ${theme.accentBg};
+        border: 1px solid ${theme.border};
         border-radius: 10px;
         padding: 15px;
         margin-top: 12px;
@@ -1200,7 +1584,7 @@ export function generateEbayHtml(config) {
         font-size: 24px;
     }
     .hl-form-header h5 {
-        color: var(--hl-primary);
+        color: ${theme.primary};
         font-size: 14px;
         margin-bottom: 3px;
         font-weight: 800;
@@ -1284,7 +1668,7 @@ export function generateEbayHtml(config) {
     .hl-play-btn-circle {
         width: 64px;
         height: 64px;
-        background: var(--hl-gradient);
+        background: ${theme.gradient};
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -1292,7 +1676,7 @@ export function generateEbayHtml(config) {
         color: #000000;
         font-size: 24px;
         font-weight: 900;
-        box-shadow: var(--hl-glow);
+        box-shadow: ${theme.glow};
     }
     .hl-play-btn-text {
         background: rgba(0, 0, 0, 0.85);
@@ -1301,7 +1685,7 @@ export function generateEbayHtml(config) {
         border-radius: 20px;
         font-size: 13px;
         font-weight: 800;
-        border: 1px solid var(--hl-primary);
+        border: 1px solid ${theme.primary};
         letter-spacing: 0.5px;
     }
 
@@ -1317,8 +1701,8 @@ export function generateEbayHtml(config) {
         padding: 20px;
     }
     .hl-comp-us {
-        background: var(--hl-accent-bg);
-        border: 1px solid var(--hl-border);
+        background: ${theme.accentBg};
+        border: 1px solid ${theme.border};
     }
     .hl-comp-other {
         background: #131318;
@@ -1334,13 +1718,14 @@ export function generateEbayHtml(config) {
         border-bottom: 1px solid #2e2e3e;
     }
     .hl-comp-us .hl-comp-head {
-        color: var(--hl-primary);
+        color: ${theme.primary};
     }
     .hl-comp-other .hl-comp-head {
         color: #888898;
     }
     .hl-comp-list {
         list-style: none;
+        padding: 0;
     }
     .hl-comp-list li {
         font-size: 13.5px;
@@ -1348,6 +1733,7 @@ export function generateEbayHtml(config) {
         display: flex;
         gap: 10px;
         line-height: 1.4;
+        color: #d0d0dc;
     }
     .hl-check { color: #25D366; font-weight: bold; }
     .hl-cross { color: #ff4d4d; font-weight: bold; }
@@ -1402,7 +1788,7 @@ export function generateEbayHtml(config) {
         padding: 14px 18px;
         font-size: 14.5px;
         font-weight: 800;
-        color: var(--hl-light);
+        color: ${theme.light};
         cursor: pointer;
         outline: none;
     }
@@ -1436,14 +1822,15 @@ export function generateEbayHtml(config) {
     .hl-review-author {
         font-size: 12.5px;
         font-weight: 800;
-        color: var(--hl-primary);
+        color: ${theme.primary};
     }
 
     /* Footer / Impressum */
     .hl-footer {
         background: #08080b;
-        border-top: 2px solid var(--hl-primary);
+        border-top: 2px solid ${theme.primary};
         padding: 30px 24px;
+        color: #f0f0f0;
     }
     .hl-footer-grid {
         display: flex;
@@ -1456,7 +1843,7 @@ export function generateEbayHtml(config) {
         min-width: 220px;
     }
     .hl-footer-col h4 {
-        color: var(--hl-primary);
+        color: ${theme.primary};
         font-size: 14px;
         text-transform: uppercase;
         letter-spacing: 0.8px;
@@ -1477,7 +1864,7 @@ export function generateEbayHtml(config) {
         transition: all 0.2s;
     }
     .hl-contact-pill:hover {
-        border-color: var(--hl-primary);
+        border-color: ${theme.primary};
         background: rgba(255, 255, 255, 0.06);
     }
     .hl-contact-ico {
@@ -1515,7 +1902,7 @@ export function generateEbayHtml(config) {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        background: var(--hl-gradient);
+        background: ${theme.gradient};
         color: #000000;
         font-weight: 800;
         font-size: 12.5px;
@@ -1535,9 +1922,9 @@ export function generateEbayHtml(config) {
 
     /* Responsive adjustments */
     @media (max-width: 768px) {
-        .hl-grid-2, .hl-comparison-grid, .hl-trust-banners, .hl-footer-grid, .hl-ba-grid, .hl-whatsapp-card {
-            flex-direction: column;
-            gap: 15px;
+        .hl-grid-2, .hl-comparison-grid, .hl-trust-banners, .hl-footer-grid, .hl-ba-grid, .hl-whatsapp-card, .hl-ebay-contact-card {
+            flex-direction: column !important;
+            gap: 15px !important;
         }
         .hl-ba-arrow {
             transform: rotate(90deg);
@@ -1546,13 +1933,15 @@ export function generateEbayHtml(config) {
             font-size: 24px;
         }
         .hl-content {
-            padding: 20px 15px;
+            padding: 20px 14px;
         }
     }
 </style>
 
+<div class="hl-wrapper" id="hl-top" style="background-color: #0f0f13 !important; color: #f0f0f0 !important; max-width: 960px; margin: 0 auto; border: 1px solid #2a2a35; border-radius: 16px; overflow: hidden; display: block; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 1.6;">
+
     <!-- Live Workshop Status Bar -->
-    <div class="hl-status-bar">
+    <div class="hl-status-bar" style="background: #15151c; border-bottom: 1px solid #282834; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; flex-wrap: wrap; gap: 8px; color: #f0f0f0;">
         <div class="hl-status-live">
             <span class="hl-pulse-dot"></span>
             <span>Fachwerkstatt Heidelberg: Jetzt geöffnet &amp; Express-Eingang aktiv</span>
@@ -1563,56 +1952,67 @@ export function generateEbayHtml(config) {
     </div>
 
     <!-- Header -->
-    <div class="hl-header">
+    <div class="hl-header" style="background: linear-gradient(180deg, #181822 0%, #0d0d12 100%); padding: 38px 20px; text-align: center; border-bottom: 2px solid ${theme.primary}; position: relative; color: #ffffff;">
         ${logoHtml}
-        <div class="hl-header-tagline">Fachwerkstatt &amp; Express Einsendeservice</div>
+        <div class="hl-header-tagline">${(genericMode || brand === 'Universal') ? 'Meisterwerkstatt &amp; Express Einsendeservice für dein Smartphone' : 'Fachwerkstatt &amp; Express Einsendeservice'}</div>
         <h1>Premium <span>${escapeHtml(repairName)}</span></h1>
-        <p class="hl-header-subtitle">Fachgerechte Reparatur für ${escapeHtml(brand)} ${escapeHtml(model)}</p>
+        <p class="hl-header-subtitle">${(genericMode || brand === 'Universal') ? 'Fachgerechte Express-Reparatur für alle gängigen Smartphone-Modelle &amp; Marken' : `Fachgerechte Reparatur für ${escapeHtml(brand)} ${escapeHtml(model)}`}</p>
     </div>
 
     <!-- Trust Badges -->
-    <div class="hl-trust-bar">
+    <div class="hl-trust-bar" style="display: flex; justify-content: space-around; background: #14141c; border-bottom: 1px solid #262632; padding: 16px 12px; flex-wrap: wrap; gap: 10px; color: #f0f0f0;">
         <div class="hl-trust-item"><span class="hl-trust-icon">⚡</span> ${escapeHtml(processingTime)} Express</div>
         <div class="hl-trust-item"><span class="hl-trust-icon">🛡️</span> ${escapeHtml(warrantyMonths)} Monate Garantie</div>
         <div class="hl-trust-item"><span class="hl-trust-icon">🔒</span> Daten bleiben erhalten</div>
         <div class="hl-trust-item"><span class="hl-trust-icon">📦</span> Sicherer DHL Rückversand</div>
     </div>
 
-    <div class="hl-content">
+    <div class="hl-content" style="padding: 30px 25px; background-color: #0f0f13; color: #f0f0f0;">
         ${customNotesHtml}
 
         <!-- Top Section: Price & Features -->
         <div class="hl-grid-2">
             <!-- Price Column -->
             <div class="hl-col">
-                <div class="hl-card">
+                <div class="hl-card" style="background: #16161e; border: 1px solid #2a2a38; border-radius: 12px; padding: 24px; color: #f0f0f0; display: flex; flex-direction: column; height: 100%;">
                     <div class="hl-card-header">
                         <span class="hl-card-icon">💶</span>
-                        <div class="hl-card-title">Reparaturpreis</div>
+                        <div class="hl-card-title">${priceCardTitle}</div>
                     </div>
-                    <div class="hl-price-box">
-                        <span class="hl-price-num">${escapeHtml(price)}</span>
-                        <span class="hl-price-sub">inkl. 19% MwSt.</span>
-                    </div>
-                    <ul class="hl-checklist">
-                        <li><strong>Rückversand:</strong> ${escapeHtml(shippingCost)}</li>
-                        <li><strong>Vor-Ort Abholung:</strong> Kostenlos in Heidelberg möglich</li>
-                        <li><strong>Transparenz:</strong> Keine versteckten Zusatzkosten!</li>
-                    </ul>
+                    ${priceBoxHtml}
+                    ${priceChecklistHtml}
+                    ${freeGiftsBoxHtml}
                     ${promoHtml}
                 </div>
             </div>
 
             <!-- Features Column -->
             <div class="hl-col">
-                <div class="hl-card">
+                <div class="hl-card" style="background: #16161e; border: 1px solid #2a2a38; border-radius: 12px; padding: 24px; color: #f0f0f0; display: flex; flex-direction: column; height: 100%;">
                     <div class="hl-card-header">
                         <span class="hl-card-icon">✨</span>
                         <div class="hl-card-title">Im Service enthalten</div>
                     </div>
                     <ul class="hl-checklist">
-                        ${featuresHtml}
+                        ${finalFeaturesHtml}
                     </ul>
+                    <div class="hl-service-quality-box">
+                        <div class="hl-quality-header">
+                            <span class="hl-quality-icon">🔬</span>
+                            <div>
+                                <div class="hl-quality-title">15-Punkte Meister-Prüfung inklusive</div>
+                                <div class="hl-quality-subtitle">Vor &amp; nach jeder Reparatur vollständig im Prüflabor getestet</div>
+                            </div>
+                        </div>
+                        <div class="hl-quality-tags">
+                            <span class="hl-q-tag">✔ Touch &amp; Display</span>
+                            <span class="hl-q-tag">✔ Ladeelektronik</span>
+                            <span class="hl-q-tag">✔ Sensoren &amp; Kameras</span>
+                            <span class="hl-q-tag">✔ Akku-Spannung</span>
+                            <span class="hl-q-tag">✔ Mikrofon &amp; Audio</span>
+                            <span class="hl-q-tag">✔ WLAN &amp; Netzsignal</span>
+                        </div>
+                    </div>
                     <div class="hl-transparency">
                         <h5>ℹ️ Transparenzhinweis</h5>
                         <p>${escapeHtml(transparencyText)}</p>
@@ -1651,25 +2051,11 @@ export function generateEbayHtml(config) {
         <!-- Compatibility Matrix -->
         ${matrixHtml}
 
-        <!-- WhatsApp Quick Live Chat Card with QR Code -->
-        <div class="hl-whatsapp-card">
-            <div class="hl-wa-info">
-                <div class="hl-wa-avatar">💬</div>
-                <div class="hl-wa-text">
-                    <h4>Fragen zum ${escapeHtml(brand)} ${escapeHtml(model)}?</h4>
-                    <p>Schreib uns direkt auf WhatsApp! Unser Techniker berät dich kostenlos und unverbindlich vor dem Kauf.</p>
-                </div>
-            </div>
-            <div class="hl-wa-actions">
-                ${qrImgHtml}
-                <a href="${waLink}" target="_blank" class="hl-wa-btn">
-                    💬 WhatsApp Chat ➔
-                </a>
-            </div>
-        </div>
+        <!-- Live Support Card (eBay Message vs WhatsApp) -->
+        ${liveSupportCardHtml}
 
         <!-- Step-by-Step Timeline Process -->
-        <div class="hl-card" style="margin-bottom: 25px;">
+        <div class="hl-card" style="background: #16161e; border: 1px solid #2a2a38; border-radius: 12px; padding: 24px; color: #f0f0f0; margin-bottom: 25px;">
             <div class="hl-card-header">
                 <span class="hl-card-icon">🚀</span>
                 <div class="hl-card-title">So einfach funktioniert die Reparatur</div>
@@ -1689,7 +2075,7 @@ export function generateEbayHtml(config) {
                     <div class="hl-timeline-badge">3</div>
                     <div class="hl-timeline-body">
                         <div class="hl-timeline-title">Express-Reparatur in Heidelberg</div>
-                        <p class="hl-timeline-desc">Sobald dein Paket eintrifft, reparieren unsere zertifizierten Techniker das Smartphone professionell innerhalb von ${escapeHtml(processingTime)}.</p>
+                        <p class="hl-timeline-desc">Sobald dein Paket eintrifft, reparieren unsere zertifizierten Techniker dein Smartphone professionell innerhalb von ${escapeHtml(processingTime)}.</p>
                     </div>
                 </div>
 
@@ -1713,7 +2099,7 @@ export function generateEbayHtml(config) {
                     <li><span class="hl-check">✔</span> Geprüfte Premium-Ersatzteile in Originalqualität</li>
                     <li><span class="hl-check">✔</span> ${escapeHtml(warrantyMonths)} Monate Garantie auf Funktion &amp; Bauteil</li>
                     <li><span class="hl-check">✔</span> ${escapeHtml(processingTime)} Express-Bearbeitung in eigener Werkstatt</li>
-                    <li><span class="hl-check">✔</span> Persönlicher Kundenservice via WhatsApp &amp; Mail</li>
+                    <li><span class="hl-check">✔</span> ${ebayComplianceMode ? 'Persönlicher Kundenservice via eBay Nachrichten &amp; Mail' : 'Persönlicher Kundenservice via WhatsApp &amp; Mail'}</li>
                 </ul>
             </div>
             <div class="hl-comp-col hl-comp-other">
@@ -1731,7 +2117,7 @@ export function generateEbayHtml(config) {
         <div class="hl-grid-2">
             <!-- FAQ Accordion (Pure HTML) -->
             <div class="hl-col">
-                <div class="hl-card">
+                <div class="hl-card" style="background: #16161e; border: 1px solid #2a2a38; border-radius: 12px; padding: 24px; color: #f0f0f0; display: flex; flex-direction: column; height: 100%;">
                     <div class="hl-card-header">
                         <span class="hl-card-icon">❓</span>
                         <div class="hl-card-title">Häufige Fragen (FAQ)</div>
@@ -1756,7 +2142,7 @@ export function generateEbayHtml(config) {
 
             <!-- Customer Reviews -->
             <div class="hl-col">
-                <div class="hl-card">
+                <div class="hl-card" style="background: #16161e; border: 1px solid #2a2a38; border-radius: 12px; padding: 24px; color: #f0f0f0; display: flex; flex-direction: column; height: 100%;">
                     <div class="hl-card-header">
                         <span class="hl-card-icon">⭐</span>
                         <div class="hl-card-title">Kundenbewertungen</div>
@@ -1779,7 +2165,7 @@ export function generateEbayHtml(config) {
     </div>
 
     <!-- Footer / Impressum -->
-    <div class="hl-footer">
+    <div class="hl-footer" style="background: #08080b; border-top: 2px solid ${theme.primary}; padding: 30px 24px; color: #f0f0f0;">
         <div class="hl-footer-grid">
             <div class="hl-footer-col">
                 <h4>📍 Fachwerkstatt</h4>
@@ -1797,15 +2183,7 @@ export function generateEbayHtml(config) {
 
             <div class="hl-footer-col">
                 <h4>📞 Kontakt &amp; Support</h4>
-                <a href="${waLink}" target="_blank" class="hl-contact-pill">
-                    <div class="hl-contact-ico hl-ico-wa">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="#25D366" xmlns="http://www.w3.org/2000/svg"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.04 14.69 2 12.04 2ZM12.04 20.15C10.56 20.15 9.11 19.76 7.85 19.01L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 14.99 3.8 13.47 3.8 11.91C3.8 7.37 7.5 3.67 12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15ZM16.56 14.37C16.31 14.25 15.09 13.65 14.86 13.57C14.64 13.48 14.47 13.44 14.31 13.69C14.14 13.94 13.66 14.5 13.51 14.67C13.37 14.83 13.22 14.86 12.97 14.73C12.72 14.61 11.92 14.35 10.97 13.5C10.23 12.84 9.73 12.02 9.58 11.77C9.44 11.52 9.57 11.39 9.69 11.26C9.8 11.15 9.94 10.97 10.06 10.83C10.19 10.69 10.23 10.58 10.31 10.42C10.39 10.25 10.35 10.11 10.29 9.98C10.23 9.86 9.73 8.63 9.53 8.12C9.32 7.63 9.12 7.69 8.97 7.69C8.82 7.68 8.66 7.68 8.49 7.68C8.32 7.68 8.06 7.74 7.83 7.99C7.6 8.24 6.96 8.84 6.96 10.05C6.96 11.27 7.85 12.44 7.97 12.61C8.1 12.77 9.72 15.28 12.21 16.35C12.8 16.61 13.26 16.76 13.62 16.88C14.22 17.07 14.76 17.04 15.19 16.98C15.68 16.9 16.69 16.36 16.9 15.77C17.11 15.19 17.11 14.69 17.05 14.59C16.99 14.49 16.81 14.49 16.56 14.37Z"/></svg>
-                    </div>
-                    <div class="hl-contact-details">
-                        <span class="hl-contact-label">WhatsApp Hotline</span>
-                        <span class="hl-contact-val">${escapeHtml(shop.phone)}</span>
-                    </div>
-                </a>
+                ${footerContactPillHtml}
 
                 <a href="mailto:${escapeHtml(shop.email)}" class="hl-contact-pill">
                     <div class="hl-contact-ico hl-ico-mail">
