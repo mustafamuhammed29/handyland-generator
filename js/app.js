@@ -46,9 +46,11 @@ function cacheElements() {
         keywordsChipsContainer: document.getElementById('keywordsChipsContainer'),
         btnCopyKeywords: document.getElementById('btnCopyKeywords'),
 
-        // Mode Toggles
+        // Mode Toggles & Badges
         genericModeToggle: document.getElementById('genericModeToggle'),
         ebayComplianceToggle: document.getElementById('ebayComplianceToggle'),
+        genericModelBadge: document.getElementById('genericModelBadge'),
+        genericPriceBadge: document.getElementById('genericPriceBadge'),
 
         // Free Promo Gifts Controls
         freeGiftsControlBox: document.getElementById('freeGiftsControlBox'),
@@ -358,19 +360,36 @@ function renderSeoKeywords() {
     const model = elements.modelInput.value.trim();
     const typeObj = REPAIR_DATA.repairTypes.find(r => r.id === elements.repairTypeSelect.value);
     const kw = typeObj ? typeObj.seoKeyword : "Reparatur";
+    const isGeneric = (elements.genericModeToggle && elements.genericModeToggle.checked) || brand === 'Universal';
 
-    const dynamicTags = [
-        `${brand} ${model}`,
-        `${brand} ${kw}`,
-        `${model} ${kw}`,
-        "Express Reparatur Heidelberg",
-        "12 Monate Garantie",
-        "Rechnung inkl. 19% MwSt",
-        "DHL versicherter Versand",
-        "Kein Datenverlust",
-        "HandyLand Meisterwerkstatt",
-        "Display Glas Tausch"
-    ];
+    let dynamicTags = [];
+    if (isGeneric) {
+        dynamicTags = [
+            `Smartphone ${kw}`,
+            `Handy Reparatur Express`,
+            `Alle Marken & Modelle`,
+            `Express Reparatur Heidelberg`,
+            `12 Monate Garantie`,
+            `Rechnung inkl. 19% MwSt`,
+            `DHL versicherter Versand`,
+            `Kein Datenverlust`,
+            `HandyLand Meisterwerkstatt`,
+            `Display Akku Reparatur`
+        ];
+    } else {
+        dynamicTags = [
+            `${brand} ${model}`,
+            `${brand} ${kw}`,
+            `${model} ${kw}`,
+            `Express Reparatur Heidelberg`,
+            `12 Monate Garantie`,
+            `Rechnung inkl. 19% MwSt`,
+            `DHL versicherter Versand`,
+            `Kein Datenverlust`,
+            `HandyLand Meisterwerkstatt`,
+            `Display Glas Tausch`
+        ];
+    }
 
     elements.keywordsChipsContainer.innerHTML = dynamicTags.map(t => `
         <span class="kw-chip">${t}</span>
@@ -847,6 +866,32 @@ function updateDynamicTexts() {
     const isGeneric = (elements.genericModeToggle && elements.genericModeToggle.checked) || brandId === 'Universal';
     const tpl = REPAIR_DATA.templates[typeId] || REPAIR_DATA.templates.battery;
 
+    // Visual badge indicators and input hints for generic mode
+    if (elements.genericModelBadge) {
+        elements.genericModelBadge.style.display = isGeneric ? 'inline-flex' : 'none';
+    }
+    if (elements.genericPriceBadge) {
+        elements.genericPriceBadge.style.display = isGeneric ? 'inline-flex' : 'none';
+    }
+    if (elements.modelInput) {
+        if (isGeneric) {
+            elements.modelInput.classList.add('input-generic-active');
+            elements.modelInput.placeholder = "Automatisch: Alle Modelle (Universal)";
+        } else {
+            elements.modelInput.classList.remove('input-generic-active');
+            elements.modelInput.placeholder = "z.B. iPhone 14 Pro";
+        }
+    }
+    if (elements.priceInput) {
+        if (isGeneric) {
+            elements.priceInput.classList.add('input-generic-active');
+            elements.priceInput.placeholder = "Varianten-Preis (laut eBay Dropdown)";
+        } else {
+            elements.priceInput.classList.remove('input-generic-active');
+            elements.priceInput.placeholder = "z.B. 69,00 €";
+        }
+    }
+
     // Feature list customization
     let features = tpl.features;
     if (isGeneric && tpl.generic_features) {
@@ -874,14 +919,6 @@ function updateDynamicTexts() {
             elements.freeGiftsControlBox.style.display = 'block';
         } else {
             elements.freeGiftsControlBox.style.display = 'none';
-        }
-    }
-
-    if (elements.priceInput) {
-        if (isGeneric) {
-            elements.priceInput.placeholder = "Varianten-Preis (laut eBay Dropdown)";
-        } else {
-            elements.priceInput.placeholder = "z.B. 69,00 €";
         }
     }
 
@@ -916,10 +953,11 @@ function updateSeoTitle() {
     const typeId = elements.repairTypeSelect.value;
     const typeObj = REPAIR_DATA.repairTypes.find(r => r.id === typeId);
     const keyword = typeObj ? typeObj.seoKeyword : "Reparatur";
+    const isGeneric = (elements.genericModeToggle && elements.genericModeToggle.checked) || brand === 'Universal';
 
     let title = '';
-    if (brand === 'Universal') {
-        title = `Smartphone ${keyword} Reparatur Express | 12 Monate Garantie Meisterwerkstatt`;
+    if (isGeneric) {
+        title = `Smartphone ${keyword} Reparatur Express | Alle Marken & Modelle | Garantie`;
     } else {
         title = `${brand} ${model} ${keyword} Reparatur | Express & Garantie`;
     }
