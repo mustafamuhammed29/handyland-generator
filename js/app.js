@@ -5,8 +5,8 @@
  * customer slip auto-filling, theme switching, and file downloads.
  */
 
-import { REPAIR_DATA } from './data/repair-data.js?v=9.2';
-import { generateEbayHtml } from './ebay-template.js?v=9.2';
+import { REPAIR_DATA } from './data/repair-data.js?v=9.3';
+import { generateEbayHtml } from './ebay-template.js?v=9.3';
 
 // Application State
 const state = {
@@ -70,12 +70,6 @@ function cacheElements() {
         
         logoModeSelect: document.getElementById('logoModeSelect'),
         logoUrlInput: document.getElementById('inputLogoUrl'),
-        
-        upsellTypeSelect: document.getElementById('upsellType'),
-        upsellPriceGroup: document.getElementById('promoPriceGroup'),
-        upsellPriceInput: document.getElementById('inputUpsellPrice'),
-        upsellTitleInput: document.getElementById('inputUpsellTitle'),
-        upsellDescInput: document.getElementById('inputUpsellDesc'),
         
         // Before / After & Matrix
         beforeAfterToggleSelect: document.getElementById('beforeAfterToggle'),
@@ -187,12 +181,10 @@ function loadPreset(presetId) {
     elements.modelInput.value = preset.model;
     elements.repairTypeSelect.value = preset.repairType;
     elements.priceInput.value = preset.price;
-    elements.upsellTypeSelect.value = preset.upsellType;
-    elements.upsellPriceInput.value = preset.upsellPrice;
 
     // Handle generic mode, eBay compliance, and free gifts presets
     if (elements.genericModeToggle) {
-        elements.genericModeToggle.checked = preset.genericMode !== undefined ? preset.genericMode : false;
+        elements.genericModeToggle.checked = preset.genericMode !== undefined ? preset.genericMode : true;
     }
     if (elements.ebayComplianceToggle) {
         elements.ebayComplianceToggle.checked = preset.ebayCompliance !== undefined ? preset.ebayCompliance : true;
@@ -202,12 +194,6 @@ function loadPreset(presetId) {
         if (elements.giftCleaning) elements.giftCleaning.checked = true;
         if (elements.giftCover) elements.giftCover.checked = true;
         if (elements.giftLensGlass) elements.giftLensGlass.checked = true;
-    }
-
-    if (preset.upsellType === 'paid') {
-        elements.upsellPriceGroup.classList.remove('hidden');
-    } else {
-        elements.upsellPriceGroup.classList.add('hidden');
     }
 
     renderModelChips();
@@ -255,10 +241,6 @@ function saveCustomTemplate() {
         shipping: elements.shippingCostInput.value,
         warranty: elements.warrantyInput.value,
         processing: elements.processingTimeInput.value,
-        upsellType: elements.upsellTypeSelect.value,
-        upsellPrice: elements.upsellPriceInput.value,
-        upsellTitle: elements.upsellTitleInput.value,
-        upsellDesc: elements.upsellDescInput.value,
         theme: state.currentTheme
     };
 
@@ -325,10 +307,6 @@ function applyCustomTemplate(tplId) {
     elements.shippingCostInput.value = tpl.shipping;
     elements.warrantyInput.value = tpl.warranty;
     elements.processingTimeInput.value = tpl.processing;
-    elements.upsellTypeSelect.value = tpl.upsellType;
-    elements.upsellPriceInput.value = tpl.upsellPrice;
-    elements.upsellTitleInput.value = tpl.upsellTitle;
-    elements.upsellDescInput.value = tpl.upsellDesc;
 
     if (tpl.theme) {
         state.currentTheme = tpl.theme;
@@ -708,16 +686,6 @@ function bindEvents() {
         }
     });
 
-    // Upsell type change
-    elements.upsellTypeSelect.addEventListener('change', () => {
-        if (elements.upsellTypeSelect.value === 'paid') {
-            elements.upsellPriceGroup.classList.remove('hidden');
-        } else {
-            elements.upsellPriceGroup.classList.add('hidden');
-        }
-        generateAndRender();
-    });
-
     // Before/After toggle
     if (elements.beforeAfterToggleSelect && elements.baSettingsGroup) {
         elements.beforeAfterToggleSelect.addEventListener('change', () => {
@@ -1011,11 +979,7 @@ function generateAndRender() {
         genericMode: isGeneric,
         ebayComplianceMode: isEbayCompliance,
         freeGifts: freeGiftsConfig,
-
-        upsellType: elements.upsellTypeSelect.value,
-        upsellPrice: elements.upsellPriceInput.value.trim(),
-        upsellTitle: elements.upsellTitleInput.value.trim(),
-        upsellDesc: elements.upsellDescInput.value.trim(),
+        upsellType: "none",
         
         beforeAfterToggle: elements.beforeAfterToggleSelect ? elements.beforeAfterToggleSelect.value : "yes",
         beforeTitle: elements.beforeTitleInput ? elements.beforeTitleInput.value.trim() : "",

@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     
     <!-- Dashboard Stylesheet -->
-    <link rel="stylesheet" href="css/dashboard.css?v=9.2">
+    <link rel="stylesheet" href="css/dashboard.css?v=9.3">
 </head>
 <body>
 
@@ -36,12 +36,11 @@
             <div class="quick-nav-container">
                 <nav class="quick-nav-bar" aria-label="Schnellzugriff auf Abschnitte">
                     <a href="#sec-1" class="quick-nav-pill">📦 1. Basis</a>
-                    <a href="#sec-2" class="quick-nav-pill">🎁 2. Upsell</a>
-                    <a href="#sec-3" class="quick-nav-pill">✨ 3. Modelle</a>
-                    <a href="#sec-4" class="quick-nav-pill">⚙️ 4. Texte</a>
-                    <a href="#sec-5" class="quick-nav-pill">🎬 5. Video</a>
-                    <a href="#sec-6" class="quick-nav-pill">⭐ 6. Reviews</a>
-                    <a href="#sec-7" class="quick-nav-pill">🔗 7. Schein</a>
+                    <a href="#sec-2" class="quick-nav-pill">✨ 2. Modelle</a>
+                    <a href="#sec-3" class="quick-nav-pill">⚙️ 3. Texte</a>
+                    <a href="#sec-4" class="quick-nav-pill">🎬 4. Video</a>
+                    <a href="#sec-5" class="quick-nav-pill">⭐ 5. Reviews</a>
+                    <a href="#sec-6" class="quick-nav-pill">🔗 6. Schein</a>
                 </nav>
             </div>
 
@@ -189,38 +188,9 @@
                 </div>
             </div>
 
-            <!-- Section 2: Promotion & Upsell -->
+            <!-- Section 2: Before / After & Matrix -->
             <div class="form-section" id="sec-2">
-                <div class="section-header">🎁 2. Promotion &amp; Upsell</div>
-                
-                <div class="control-group">
-                    <label for="upsellType">Zusatzangebot (z.B. Panzerglas)</label>
-                    <select id="upsellType">
-                        <option value="none">❌ Kein Zusatzangebot (Ausblenden)</option>
-                        <option value="paid">💰 Kostenpflichtiges Upgrade (Upsell)</option>
-                        <option value="free">🎁 Kostenloses Geschenk (Gratis Aktion)</option>
-                    </select>
-                </div>
-
-                <div class="control-group hidden" id="promoPriceGroup">
-                    <label for="inputUpsellPrice">Aufpreis (€)</label>
-                    <input type="text" id="inputUpsellPrice" value="+ 15,00 €">
-                </div>
-
-                <div class="control-group">
-                    <label for="inputUpsellTitle">Angebotstitel</label>
-                    <input type="text" id="inputUpsellTitle" value="Premium 9H Panzerglas Schutz">
-                </div>
-
-                <div class="control-group">
-                    <label for="inputUpsellDesc">Angebotsbeschreibung</label>
-                    <input type="text" id="inputUpsellDesc" value="Füge ein hochfestes 9H Panzerglas inkl. blasenfreier Montage hinzu.">
-                </div>
-            </div>
-
-            <!-- Section 3: Before / After & Matrix -->
-            <div class="form-section" id="sec-3">
-                <div class="section-header">✨ 3. Vergleich &amp; Modell-Tabelle</div>
+                <div class="section-header">✨ 2. Vergleich &amp; Modell-Tabelle</div>
                 
                 <div class="control-group">
                     <label for="beforeAfterToggle">Vorher/Nachher Vergleich anzeigen?</label>
@@ -275,9 +245,9 @@
                 </div>
             </div>
 
-            <!-- Section 4: Dynamic Texts & Quality -->
-            <div class="form-section" id="sec-4">
-                <div class="section-header">⚙️ 4. Dynamische Leistungsbeschreibungen</div>
+            <!-- Section 3: Dynamic Texts & Quality -->
+            <div class="form-section" id="sec-3">
+                <div class="section-header">⚙️ 3. Dynamische Leistungsbeschreibungen</div>
                 
                 <!-- Fixed Promotional Free Gifts Component (Display, Battery, Backcover, Charging) -->
                 <div class="free-gifts-control-box" id="freeGiftsControlBox">
@@ -336,9 +306,9 @@
                 </div>
             </div>
 
-            <!-- Section 5: Video Showcase -->
-            <div class="form-section" id="sec-5">
-                <div class="section-header">🎬 5. Werkstatt-Video (Einblick)</div>
+            <!-- Section 4: Video Showcase -->
+            <div class="form-section" id="sec-4">
+                <div class="section-header">🎬 4. Werkstatt-Video (Einblick)</div>
                 
                 <div class="control-group">
                     <label for="videoToggle">Video-Bereich im Angebot anzeigen?</label>
@@ -379,9 +349,9 @@
                 </div>
             </div>
 
-            <!-- Section 6: Reviews -->
-            <div class="form-section" id="sec-6">
-                <div class="section-header">⭐ 6. Kundenbewertungen</div>
+            <!-- Section 5: Reviews -->
+            <div class="form-section" id="sec-5">
+                <div class="section-header">⭐ 5. Kundenbewertungen</div>
                 
                 <div class="control-group">
                     <label for="review1Text">Bewertung 1 (Text &amp; Käufername)</label>
@@ -396,9 +366,9 @@
                 </div>
             </div>
 
-            <!-- Section 7: Reparaturschein / Links & Customer Pre-fill -->
-            <div class="form-section" id="sec-7">
-                <div class="section-header">🔗 7. Reparaturschein &amp; Vorausfüllen</div>
+            <!-- Section 6: Reparaturschein / Links & Customer Pre-fill -->
+            <div class="form-section" id="sec-6">
+                <div class="section-header">🔗 6. Reparaturschein &amp; Vorausfüllen</div>
                 
                 <div class="control-group">
                     <label for="formToggle">Reparaturschein im Ablauf anzeigen?</label>
@@ -542,6 +512,6 @@
     </div>
 
     <!-- Main Module Script -->
-    <script type="module" src="js/app.js?v=9.2"></script>
+    <script type="module" src="js/app.js?v=9.3"></script>
 </body>
 </html>

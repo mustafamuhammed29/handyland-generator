@@ -9,7 +9,7 @@
  * - Prefix all CSS selectors with `.hl-` to prevent styling conflicts inside eBay's page container.
  */
 
-import { REPAIR_DATA } from './data/repair-data.js?v=9.2';
+import { REPAIR_DATA } from './data/repair-data.js?v=9.3';
 
 export function generateEbayHtml(config) {
     const {
@@ -84,30 +84,6 @@ export function generateEbayHtml(config) {
         <div class="hl-logo-wrapper">
             <div class="hl-brand-heading-large">⚡ HANDY<span>LAND</span></div>
             <div class="hl-brand-subheading-large">FACHWERKSTATT HEIDELBERG</div>
-        </div>`;
-    }
-
-    // Promotion / Upsell Box HTML
-    let promoHtml = '';
-    if (upsellType === 'paid') {
-        promoHtml = `
-        <div class="hl-upsell-box hl-upsell-paid">
-            <div class="hl-upsell-content">
-                <div class="hl-upsell-badge">🌟 EMPFOHLENES UPGRADE</div>
-                <h4>${escapeHtml(upsellTitle)}</h4>
-                <p>${escapeHtml(upsellDesc)}</p>
-            </div>
-            <div class="hl-upsell-price-tag">${escapeHtml(upsellPrice)}</div>
-        </div>`;
-    } else if (upsellType === 'free') {
-        promoHtml = `
-        <div class="hl-upsell-box hl-upsell-free">
-            <div class="hl-upsell-content">
-                <div class="hl-upsell-badge hl-badge-green">🎁 UNSER GESCHENK AN DICH</div>
-                <h4>${escapeHtml(upsellTitle)} (Kostenlos)</h4>
-                <p>${escapeHtml(upsellDesc || "Du erhältst ein Premium Panzerglas inkl. professioneller Montage komplett gratis zu dieser Reparatur dazu.")}</p>
-            </div>
-            <div class="hl-upsell-price-tag hl-tag-free">GRATIS</div>
         </div>`;
     }
 
@@ -1985,7 +1961,6 @@ export function generateEbayHtml(config) {
                     ${priceBoxHtml}
                     ${priceChecklistHtml}
                     ${freeGiftsBoxHtml}
-                    ${promoHtml}
                 </div>
             </div>
 

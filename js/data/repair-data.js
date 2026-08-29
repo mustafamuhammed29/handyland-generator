@@ -128,8 +128,6 @@ export const REPAIR_DATA = {
             model: "Alle Modelle & Marken",
             repairType: "display",
             price: "69,00 €",
-            upsellType: "free",
-            upsellPrice: "+ 0,00 €",
             genericMode: true,
             ebayCompliance: true,
             freeGifts: true,
@@ -142,8 +140,6 @@ export const REPAIR_DATA = {
             model: "Alle Modelle & Marken",
             repairType: "display",
             price: "119,00 €",
-            upsellType: "paid",
-            upsellPrice: "+ 15,00 €",
             genericMode: true,
             ebayCompliance: true,
             freeGifts: true
@@ -155,8 +151,6 @@ export const REPAIR_DATA = {
             model: "Alle Modelle & Marken",
             repairType: "battery",
             price: "69,00 €",
-            upsellType: "free",
-            upsellPrice: "+ 0,00 €",
             genericMode: true,
             ebayCompliance: true,
             freeGifts: true
@@ -168,8 +162,6 @@ export const REPAIR_DATA = {
             model: "Alle Modelle & Marken",
             repairType: "backcover",
             price: "79,00 €",
-            upsellType: "free",
-            upsellPrice: "+ 0,00 €",
             genericMode: true,
             ebayCompliance: true,
             freeGifts: true
@@ -181,8 +173,6 @@ export const REPAIR_DATA = {
             model: "Alle Modelle & Marken",
             repairType: "charging",
             price: "59,00 €",
-            upsellType: "none",
-            upsellPrice: "+ 15,00 €",
             genericMode: true,
             ebayCompliance: true,
             freeGifts: true
