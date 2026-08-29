@@ -824,18 +824,21 @@ function openPreFilledSlip() {
     const repair = elements.repairTypeSelect ? elements.repairTypeSelect.value : 'display';
     const today = new Date().toLocaleDateString('de-DE');
 
+    const price = elements.priceInput ? elements.priceInput.value.trim() : '';
+
     const params = new URLSearchParams({
         name: name,
         ebayUser: ebayUser,
         address: address,
         zipCity: zipCity,
         phone: phone,
+        brand: brand,
         model: `${brand} ${model}`,
         pin: pin,
         repair: repair,
+        price: price,
         notes: notes,
-        date: today,
-        print: '1'
+        date: today
     });
 
     window.open(`reparaturschein.html?${params.toString()}`, '_blank');
