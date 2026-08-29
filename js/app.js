@@ -1180,9 +1180,16 @@ function saveSettings() {
 
 function loadSavedSettings() {
     try {
-        const savedLink = localStorage.getItem('hl_form_link');
+        let savedLink = localStorage.getItem('hl_form_link');
+        // Auto-migrate legacy .pdf link to .html so users get the interactive digital form
+        if (savedLink && savedLink.includes('reparaturschein.pdf')) {
+            savedLink = savedLink.replace('reparaturschein.pdf', 'reparaturschein.html');
+            localStorage.setItem('hl_form_link', savedLink);
+        }
         if (savedLink && savedLink.length > 0) {
             elements.formLinkInput.value = savedLink;
+        } else {
+            elements.formLinkInput.value = 'https://mustafamuhammed29.github.io/handyland-generator/reparaturschein.html';
         }
     } catch (e) {}
 }
