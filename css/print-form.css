@@ -440,7 +440,7 @@ body {
 /* ================= SECTION 5: SIGNATURES ================= */
 .hl-signature-section {
     display: grid;
-    grid-template-columns: 130px 1fr;
+    grid-template-columns: 155px 1fr;
     gap: 8px;
     align-items: end;
 }
@@ -567,6 +567,11 @@ body {
 
     .hl-input, .hl-line-input {
         color: #000000 !important;
+    }
+
+    ::placeholder {
+        color: transparent !important;
+        opacity: 0 !important;
     }
 
     .p-dot.active {
