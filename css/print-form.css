@@ -1,18 +1,17 @@
 /* ==========================================================================
-   HandyLand Heidelberg - Offizieller Reparatur-Begleitschein & Aufnahmeprotokoll
-   Exakte 1:1 Umsetzung des Laden-Begleitscheins (DIN A4 Print & Digital Web Form)
+   HandyLand Heidelberg - Begleitschein & Aufnahmeprotokoll
+   Exakte 1:1 Umsetzung des physischen Laden-Formulars (DIN A4 Single Page)
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@800;900&display=swap');
 
 :root {
-    --hl-black: #111116;
-    --hl-gold: #c59b27;
-    --hl-border: #22222a;
-    --hl-border-light: #444452;
-    --hl-text: #111116;
-    --hl-text-muted: #555562;
-    --hl-bg: #ffffff;
+    --ink-black: #000000;
+    --ink-dark: #1e1e24;
+    --ink-muted: #3a3a42;
+    --hl-yellow: #f5b700;
+    --paper-bg: #ffffff;
+    --border-color: #111111;
 }
 
 *, *::before, *::after {
@@ -23,39 +22,39 @@
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: #0d0d12;
-    color: var(--hl-text);
-    line-height: 1.35;
-    font-size: 11.5px;
-    padding: 60px 15px 40px;
+    background-color: #0f1015;
+    color: var(--ink-black);
+    line-height: 1.3;
+    font-size: 11px;
+    padding: 60px 10px 40px;
     display: flex;
     justify-content: center;
 }
 
-/* ================= FLOATING ACTION BAR FOR WEB ================= */
-.web-actions {
+/* ================= WEB TOP ACTION BAR ================= */
+.web-actions-bar {
     position: fixed;
-    top: 15px;
+    top: 12px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     gap: 12px;
     z-index: 1000;
-    background: rgba(22, 22, 30, 0.92);
+    background: rgba(24, 24, 32, 0.95);
     backdrop-filter: blur(12px);
     padding: 8px 16px;
     border-radius: 40px;
-    border: 1px solid rgba(212, 175, 55, 0.35);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(245, 183, 0, 0.35);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
 }
 
-.btn-action {
+.btn-top {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     padding: 8px 16px;
     border-radius: 30px;
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 700;
     cursor: pointer;
     text-decoration: none;
@@ -65,438 +64,493 @@ body {
 
 .btn-back {
     background: rgba(255, 255, 255, 0.08);
-    color: #f0f0f0;
+    color: #e2e8f0;
     border: 1px solid rgba(255, 255, 255, 0.15);
 }
 .btn-back:hover {
     background: rgba(255, 255, 255, 0.18);
 }
 
-.btn-reset {
+.btn-clear {
     background: rgba(239, 68, 68, 0.15);
     color: #fca5a5;
     border: 1px solid rgba(239, 68, 68, 0.3);
 }
-.btn-reset:hover {
+.btn-clear:hover {
     background: rgba(239, 68, 68, 0.3);
     color: #ffffff;
 }
 
-.btn-print {
+.btn-print-main {
     background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
     color: #ffffff;
     box-shadow: 0 4px 14px rgba(37, 211, 102, 0.4);
 }
-.btn-print:hover {
+.btn-print-main:hover {
     transform: scale(1.04);
     box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
 }
 
-/* ================= DIN A4 SHEET CONTAINER ================= */
-.sheet-container {
+/* ================= EXACT DIN A4 SHEET CONTAINER ================= */
+.page-a4 {
     width: 210mm;
     min-height: 297mm;
-    background: var(--hl-bg);
-    padding: 10mm 12mm;
-    border-radius: 4px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    background: var(--paper-bg);
+    padding: 10mm 14mm 8mm;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    color: #111116;
+    color: var(--ink-black);
 }
 
-/* ================= 1. HEADER BAR ================= */
-.hl-header-bar {
-    background: #15151c;
+/* ================= 1. HEADER ================= */
+.doc-header {
+    background: #181820;
     color: #ffffff;
     padding: 12px 18px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-radius: 3px;
-    margin-bottom: 8px;
+    border-radius: 2px;
+    margin-bottom: 12px;
 }
 
-.hl-logo-title {
+.logo-main {
     font-family: 'Outfit', sans-serif;
-    font-size: 26px;
+    font-size: 28px;
     font-weight: 900;
     letter-spacing: 0.5px;
-    color: #f5b700;
+    color: #eab308;
     line-height: 1;
 }
-.hl-logo-title span {
-    color: #ffffff;
-}
-.hl-logo-sub {
-    font-size: 11px;
+
+.logo-subline {
+    font-size: 10.5px;
     font-weight: 700;
-    color: #e2e8f0;
+    color: #f8fafc;
     letter-spacing: 0.8px;
     margin-top: 4px;
 }
 
-.hl-gear-icon {
-    width: 44px;
-    height: 44px;
+.svg-gear-phone {
+    width: 46px;
+    height: 46px;
 }
 
-/* ================= SECTIONS & HEADERS ================= */
-.hl-form-body {
+/* ================= 2. FORM BODY ================= */
+.doc-body {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
 }
 
-.hl-section {
-    border-top: 2px solid #111116;
-    padding-top: 4px;
+.sec-block {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
-.hl-sec-head {
+.sec-heading-row {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin-bottom: 5px;
-}
-.hl-sec-head h3 {
-    font-size: 12.5px;
-    font-weight: 900;
-    letter-spacing: 0.4px;
-    color: #111116;
-}
-.hl-sec-hint {
-    font-size: 10.5px;
-    color: var(--hl-text-muted);
-    font-weight: 500;
-}
-
-/* ================= INPUT BOXES & STACKS ================= */
-.hl-field-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.hl-input-box {
-    display: flex;
-    align-items: center;
-    border: 1.5px solid #22222a;
-    padding: 3px 8px;
-    background: #ffffff;
-}
-.hl-input-box label {
-    font-size: 10.5px;
-    font-weight: 600;
-    color: var(--hl-text-muted);
-    width: 145px;
-    flex-shrink: 0;
-}
-.hl-input {
-    width: 100%;
-    border: none;
-    outline: none;
-    font-family: inherit;
-    font-size: 11.5px;
-    font-weight: 600;
-    color: #111116;
-    background: transparent;
-    padding: 2px 0;
-}
-
-/* Password & 3x3 Pattern Lock */
-.hl-password-grid {
-    display: grid;
-    grid-template-columns: 145px 1fr 65px;
-    border: 1.5px solid #22222a;
-    align-items: center;
-    background: #ffffff;
-}
-
-.hl-pw-label {
-    font-size: 10.5px;
-    font-weight: 600;
-    color: var(--hl-text-muted);
-    padding-left: 8px;
-}
-
-.hl-pw-inputs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    border-left: 1.5px solid #22222a;
-    border-right: 1.5px solid #22222a;
-    height: 100%;
-}
-
-.hl-input-subbox {
-    display: flex;
-    flex-direction: column;
-    padding: 2px 8px;
-}
-.hl-input-subbox:first-child {
-    border-right: 1px solid #e2e8f0;
-}
-.hl-input-subbox label {
-    font-size: 9.5px;
-    color: var(--hl-text-muted);
-    font-weight: 600;
-}
-
-.hl-pattern-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 3px;
-    cursor: pointer;
-}
-.hl-pattern-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 10px);
-    grid-gap: 5px;
-    padding: 3px;
-}
-.p-dot {
-    width: 8px;
-    height: 8px;
-    border: 1.5px solid #64748b;
-    border-radius: 50%;
-    background: transparent;
-    transition: all 0.2s ease;
-}
-.p-dot.active {
-    background: #111116;
-    border-color: #111116;
-    transform: scale(1.2);
-}
-
-/* ================= SECTION 2: GERÄTEDATEN ================= */
-.hl-device-grid {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 8px;
-}
-
-.hl-device-checks {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    border: 1.5px solid #22222a;
-    padding: 3px 10px;
-    background: #ffffff;
-}
-
-.hl-check-inline {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 10.5px;
-}
-.hl-inline-title {
-    font-weight: 700;
-    color: var(--hl-text-muted);
-}
-.hl-check-inline label {
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    cursor: pointer;
-    font-weight: 600;
-}
-
-/* ================= SECTION 3: AUFNAHMEPROTOKOLL ================= */
-.hl-proto-row {
-    margin-bottom: 5px;
-}
-
-.hl-proto-label {
-    font-size: 10.5px;
-    font-weight: 700;
-    color: #111116;
-    margin-bottom: 2px;
-    display: block;
-}
-
-.hl-proto-checks {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 10.5px;
-    font-weight: 500;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 2px;
     margin-bottom: 3px;
 }
-.hl-proto-checks label {
-    cursor: pointer;
+
+.sec-title {
+    font-size: 12.5px;
+    font-weight: 900;
+    color: var(--ink-black);
+    letter-spacing: 0.3px;
 }
 
-.hl-line-input {
+.sec-subtitle {
+    font-size: 10px;
+    color: var(--ink-muted);
+    font-weight: 500;
+}
+
+/* ================= FIELD GROUPS & BOXES ================= */
+.field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.field-label-outside {
+    font-size: 10px;
+    color: var(--ink-muted);
+    font-weight: 500;
+}
+
+.box-single {
+    border: 1px solid var(--border-color);
+    height: 24px;
+    padding: 1px 8px;
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+}
+
+.form-control {
     width: 100%;
     border: none;
-    border-bottom: 1px solid #111116;
     outline: none;
     font-family: inherit;
     font-size: 11px;
     font-weight: 600;
-    padding: 2px 0;
+    color: var(--ink-black);
     background: transparent;
 }
 
-/* Defect Checkbox Grid */
-.hl-defect-grid {
+/* ================= PASSWORD ROW ================= */
+.pw-complex-row {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 4px 10px;
-    margin-top: 3px;
+    grid-template-columns: 110px 1fr 1fr 68px;
+    gap: 8px;
+    align-items: end;
+    margin-top: 2px;
+}
+
+.pw-left-label {
+    font-size: 10.5px;
+    color: var(--ink-muted);
+    font-weight: 500;
+    padding-bottom: 4px;
+}
+
+.pw-box-pass, .pw-box-pin {
+    border: 1px solid var(--border-color);
+    height: 28px;
+    padding: 1px 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #ffffff;
+}
+
+.inner-box-label {
+    font-size: 8.5px;
+    color: var(--ink-muted);
+    font-weight: 500;
+    line-height: 1;
+}
+
+.inner-input {
+    font-size: 11px;
+    padding: 0;
+    height: 14px;
+}
+
+/* Pattern 3x3 Dots Box */
+.pw-box-pattern {
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    height: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background: #ffffff;
+}
+
+.pattern-9-dots {
+    display: grid;
+    grid-template-columns: repeat(3, 7px);
+    grid-gap: 3.5px;
+}
+
+.p-dot {
+    width: 6px;
+    height: 6px;
+    border: 1px solid #64748b;
+    border-radius: 50%;
+    background: transparent;
+    transition: all 0.2s ease;
+}
+
+.p-dot.active {
+    background: var(--ink-black);
+    border-color: var(--ink-black);
+    transform: scale(1.2);
+}
+
+/* ================= SECTION 2: GERÄTEDATEN ================= */
+.device-data-row {
+    display: grid;
+    grid-template-columns: 1fr 160px;
+    gap: 12px;
+    align-items: end;
+}
+
+.dev-model-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.dev-accessories-col {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-bottom: 2px;
+}
+
+.acc-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 10.5px;
+}
+
+.acc-title {
+    font-weight: 500;
+    color: var(--ink-muted);
+    width: 58px;
+}
+
+.custom-radio-lbl, .custom-check-lbl {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.custom-radio-lbl input, .custom-check-lbl input {
+    accent-color: var(--ink-black);
+    width: 12px;
+    height: 12px;
+    cursor: pointer;
+}
+
+/* ================= SECTION 3: AUFNAHMEPROTOKOLL ================= */
+.proto-line-group {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
     margin-bottom: 4px;
 }
 
-.hl-chk-item {
-    display: inline-flex;
+.proto-text-line {
+    display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 10px;
+    font-size: 10.5px;
+    font-weight: 500;
+}
+
+.proto-text-subline {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.proto-full-label {
+    font-size: 10.5px;
+    font-weight: 500;
+    color: var(--ink-black);
+}
+
+.underline-input {
+    flex: 1;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    outline: none;
+    font-family: inherit;
     font-size: 10.5px;
     font-weight: 600;
-    cursor: pointer;
+    color: var(--ink-black);
+    background: transparent;
+    padding: 1px 0;
 }
 
-.hl-chk-item input[type="checkbox"],
-.hl-proto-checks input[type="radio"],
-.hl-check-inline input[type="radio"],
-.hl-time-item input[type="radio"] {
-    accent-color: #111116;
-    width: 13px;
-    height: 13px;
-    cursor: pointer;
-}
-
-.hl-sonstiges-row {
+/* Defect Matrix */
+.defect-section-row {
     display: grid;
-    grid-template-columns: 85px 1fr;
-    align-items: center;
+    grid-template-columns: 120px 1fr;
+    gap: 8px;
+    align-items: start;
+    margin-top: 4px;
+    margin-bottom: 4px;
 }
 
-/* Time Estimate Grid */
-.hl-time-grid {
+.defect-left-lbl {
+    font-size: 10.5px;
+    font-weight: 500;
+    color: var(--ink-black);
+    line-height: 1.25;
+}
+
+.defect-right-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.defect-row-1, .defect-row-2 {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.defect-row-3 {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.inline-underline {
+    flex: 1;
+}
+
+/* Time Matrix */
+.time-section-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 8px;
+    align-items: center;
+    margin-top: 4px;
+    margin-bottom: 6px;
+}
+
+.time-left-lbl {
+    font-size: 10.5px;
+    font-weight: 500;
+    color: var(--ink-black);
+    line-height: 1.25;
+}
+
+.time-right-options {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 6px;
-    margin-top: 2px;
-}
-.hl-time-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 10.5px;
-    font-weight: 600;
-    cursor: pointer;
 }
 
-/* Bottom 3 Boxes: Pickup, Technician, Price */
-.hl-service-bottom-grid {
+/* Bottom Protocol 3 Boxes */
+.proto-three-boxes {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    border: 1.5px solid #22222a;
-    margin-top: 6px;
+    grid-template-columns: 1fr 1fr 125px;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.proto-box-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.box-top-lbl {
+    font-size: 9.5px;
+    color: var(--ink-muted);
+    font-weight: 500;
+}
+
+.proto-box-rect {
+    border: 1px solid var(--border-color);
+    height: 38px;
+    padding: 2px 6px;
+    display: flex;
+    align-items: center;
     background: #ffffff;
 }
 
-.hl-bot-box {
-    display: flex;
+.price-rect {
     flex-direction: column;
-    padding: 4px 8px;
-    border-right: 1.5px solid #22222a;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 3px 6px;
 }
-.hl-bot-box:last-child {
-    border-right: none;
+
+.price-inside-lbl {
+    font-size: 8px;
+    color: var(--ink-muted);
+    font-weight: 500;
 }
-.hl-bot-box label {
-    font-size: 9.5px;
-    font-weight: 700;
-    color: var(--hl-text-muted);
-}
-.hl-price-val {
-    font-size: 14px !important;
+
+.price-input-bold {
+    font-size: 13px !important;
     font-weight: 900 !important;
-    color: #111116 !important;
+    color: var(--ink-black) !important;
 }
 
 /* ================= SECTION 4: LEGAL TERMS ================= */
-.hl-terms-box {
-    border: 1px solid #64748b;
-    padding: 6px 8px;
-    font-size: 8.5px;
+.terms-legal-block {
+    border-top: 1px solid #cbd5e1;
+    padding-top: 6px;
+    font-size: 8px;
     line-height: 1.25;
-    color: #22222a;
+    color: #1e1e24;
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    background: #fdfdfd;
-}
-.hl-terms-box p {
+    gap: 3.5px;
     text-align: justify;
 }
 
 /* ================= SECTION 5: SIGNATURES ================= */
-.hl-signature-section {
+.signature-main-row {
     display: grid;
-    grid-template-columns: 155px 1fr;
-    gap: 8px;
+    grid-template-columns: 145px 1fr;
+    gap: 10px;
     align-items: end;
+    margin-top: 2px;
 }
 
-.hl-date-box {
-    border: 1.5px solid #22222a;
-    padding: 4px 8px;
-    height: 48px;
+.sign-date-col {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-}
-.hl-date-box label {
-    font-size: 9.5px;
-    font-weight: 700;
-    color: var(--hl-text-muted);
+    gap: 2px;
 }
 
-.hl-sign-col {
+.date-box-h {
+    height: 38px;
+}
+
+.sign-cust-col {
     display: flex;
     flex-direction: column;
     gap: 3px;
 }
 
-.hl-sign-agreement-text {
+.sign-agree-headline {
     font-size: 9.5px;
     font-weight: 700;
-    color: #111116;
+    color: var(--ink-black);
 }
 
-.hl-customer-sign-box {
-    border: 1.5px solid #22222a;
-    height: 48px;
+.customer-sign-rect {
+    border: 1px solid var(--border-color);
+    height: 38px;
     position: relative;
     background: #ffffff;
     cursor: crosshair;
 }
 
-.hl-sign-placeholder {
+.sign-hint-text {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 10.5px;
+    top: 4px;
+    left: 6px;
+    font-size: 8.5px;
     color: #94a3b8;
-    font-weight: 500;
     pointer-events: none;
+    font-weight: 500;
 }
 
-.hl-sign-canvas {
+.sign-interactive-canvas {
     width: 100%;
     height: 100%;
     display: block;
 }
 
-.btn-clear-sign {
+.btn-clear-canvas {
     position: absolute;
     top: 2px;
     right: 4px;
@@ -515,26 +569,26 @@ body {
     z-index: 10;
 }
 
-/* ================= FOOTER BAR ================= */
-.hl-footer-bar {
-    background: #15151c;
+/* ================= FOOTER BANNER ================= */
+.doc-footer {
+    background: #181820;
     color: #ffffff;
     text-align: center;
-    font-size: 10.5px;
+    font-size: 10px;
     font-weight: 800;
     letter-spacing: 0.6px;
-    padding: 6px 12px;
-    border-radius: 3px;
+    padding: 7px 12px;
+    border-radius: 2px;
     margin-top: 6px;
 }
 
-/* ================= EXACT DIN A4 PRINT STYLING ================= */
+/* ================= EXACT DIN A4 PRINT RULES ================= */
 @media print {
     @page {
         size: A4 portrait;
         margin: 0;
     }
-    
+
     html, body {
         background: #ffffff !important;
         padding: 0 !important;
@@ -544,14 +598,13 @@ body {
         display: block !important;
     }
 
-    .web-actions, .btn-clear-sign {
+    .web-actions-bar, .btn-clear-canvas {
         display: none !important;
     }
 
-    .sheet-container {
+    .page-a4 {
         box-shadow: none !important;
-        border-radius: 0 !important;
-        padding: 10mm 12mm !important;
+        padding: 10mm 14mm 8mm !important;
         width: 210mm !important;
         height: 297mm !important;
         max-height: 297mm !important;
@@ -559,13 +612,13 @@ body {
         page-break-inside: avoid !important;
     }
 
-    .hl-header-bar, .hl-footer-bar {
+    .doc-header, .doc-footer {
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
         color-adjust: exact !important;
     }
 
-    .hl-input, .hl-line-input {
+    .form-control, .underline-input {
         color: #000000 !important;
     }
 

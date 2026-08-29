@@ -135,6 +135,9 @@ export function generateEbayHtml(config) {
                     <a href="${escapeHtml(formLink)}" target="_blank" class="hl-form-btn">
                         🖨️ Reparaturschein öffnen &amp; drucken
                     </a>
+                    <div class="hl-form-opt-note" style="font-size: 11.5px; color: #a5a5b5; text-align: center; margin-top: 8px; font-weight: 500;">
+                        <em>(Optional / Freiwillig – du kannst das Formular digital ausfüllen &amp; drucken oder einen einfachen Zettel beilegen)</em>
+                    </div>
                 </div>
             </div>
         </div>`;

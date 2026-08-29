@@ -6,246 +6,264 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>HandyLand Heidelberg - Reparatur-Begleitschein &amp; Aufnahmeprotokoll</title>
-    <meta name="description" content="Offizielles Aufnahmeprotokoll &amp; Reparatur-Begleitschein für HandyLand Heidelberg. Digital ausfüllen, online unterschreiben und als PDF drucken.">
-    <link rel="stylesheet" href="css/print-form.css?v=8.2">
+    <title>HandyLand Heidelberg - Begleitschein &amp; Aufnahmeprotokoll</title>
+    <meta name="description" content="Offizielles Begleitformular und Aufnahmeprotokoll für HandyLand Heidelberg. Digital ausfüllbar und druckbar.">
+    <link rel="stylesheet" href="css/print-form.css?v=9.0">
 </head>
 <body>
 
-    <!-- Floating Top Bar for Web/Mobile Users (Hidden in Print) -->
-    <header class="web-actions" aria-label="Aktionsleiste">
-        <a href="index.html" class="btn-action btn-back">
+    <!-- Floating Top Action Bar (Web Only - Hidden on Print) -->
+    <aside class="web-actions-bar" aria-label="Aktionen">
+        <a href="index.html" class="btn-top btn-back">
             <span>🔙</span> Zum Generator
         </a>
-        <button type="button" class="btn-action btn-reset" id="btnResetForm">
-            <span>🔄</span> Formular Leeren (Blanko)
+        <button type="button" class="btn-top btn-clear" id="btnResetForm">
+            <span>🔄</span> Formular Leeren (Blanko-Vorlage)
         </button>
-        <button type="button" class="btn-action btn-print" id="btnPrintForm">
+        <button type="button" class="btn-top btn-print-main" id="btnPrintForm">
             <span>🖨️</span> Drucken / Als PDF speichern
         </button>
-    </header>
+    </aside>
 
-    <!-- Main DIN A4 Sheet Container -->
-    <main class="sheet-container" id="printableSheet">
+    <!-- Main DIN A4 Physical Page Sheet -->
+    <main class="page-a4" id="printSheet">
         
         <!-- ================= 1. HEADER ================= -->
-        <header class="hl-header-bar">
-            <div class="hl-brand-group">
-                <div class="hl-brand-logo-wrap">
-                    <div class="hl-logo-title">HANDY<span>LAND</span></div>
-                    <div class="hl-logo-sub">AN- UND VERKAUF • REPARATUR • ZUBEHÖR</div>
-                </div>
+        <header class="doc-header">
+            <div class="header-text-col">
+                <div class="logo-main">HANDYLAND</div>
+                <div class="logo-subline">AN- UND VERKAUF • REPARATUR • ZUBEHÖR</div>
             </div>
-            <div class="hl-header-graphic">
-                <svg viewBox="0 0 100 100" class="hl-gear-icon" aria-hidden="true">
-                    <circle cx="50" cy="50" r="44" stroke="#c59b27" stroke-width="3" fill="#1a1a24"/>
-                    <!-- Smartphone silhouette inside -->
-                    <rect x="36" y="24" width="28" height="52" rx="4" fill="#ffffff"/>
-                    <rect x="39" y="30" width="22" height="38" rx="1" fill="#1a1a24"/>
-                    <circle cx="50" cy="71" r="2" fill="#c59b27"/>
-                    <line x1="45" y1="27" x2="55" y2="27" stroke="#c59b27" stroke-width="1.5" stroke-linecap="round"/>
+            <div class="header-logo-icon">
+                <svg viewBox="0 0 100 100" class="svg-gear-phone">
+                    <circle cx="50" cy="50" r="44" stroke="#eab308" stroke-width="3" fill="#1e1e24"/>
+                    <!-- Tilted phone -->
+                    <g transform="rotate(-15 50 50)">
+                        <rect x="34" y="20" width="32" height="60" rx="5" fill="#ffffff" stroke="#eab308" stroke-width="1.5"/>
+                        <rect x="37" y="27" width="26" height="44" rx="2" fill="#1e1e24"/>
+                        <circle cx="50" cy="75" r="2.5" fill="#eab308"/>
+                        <line x1="44" y1="23.5" x2="56" y2="23.5" stroke="#eab308" stroke-width="1.5" stroke-linecap="round"/>
+                    </g>
                 </svg>
             </div>
         </header>
 
-        <!-- ================= FORM BODY ================= -->
-        <form id="intakeForm" class="hl-form-body" onsubmit="return false;">
+        <!-- ================= FORM CONTAINER ================= -->
+        <form id="docForm" class="doc-body" onsubmit="return false;">
             
-            <!-- SECTION 1: PERSÖNLICHE DATEN -->
-            <section class="hl-section">
-                <div class="hl-sec-head">
-                    <h3>IHRE PERSÖNLICHEN DATEN</h3>
-                    <span class="hl-sec-hint">Diese Felder bitte selbst ausfüllen.</span>
+            <!-- ================= SECTION 1: PERSÖNLICHE DATEN ================= -->
+            <section class="sec-block">
+                <div class="sec-heading-row">
+                    <h2 class="sec-title">IHRE PERSÖNLICHEN DATEN</h2>
+                    <span class="sec-subtitle">Diese Felder bitte selbst ausfüllen.</span>
                 </div>
-                
-                <div class="hl-field-stack">
-                    <div class="hl-input-box">
-                        <label for="fieldCustomerName">Vorname, Nachname</label>
-                        <input type="text" id="fieldCustomerName" class="hl-input" placeholder="z.B. Max Mustermann">
-                    </div>
-                    
-                    <div class="hl-input-box">
-                        <label for="fieldPhoneEmail">Telefon Nr. / E-Mail</label>
-                        <input type="text" id="fieldPhoneEmail" class="hl-input" placeholder="z.B. 0176 12345678 / max@beispiel.de">
-                    </div>
-                    
-                    <div class="hl-password-grid">
-                        <div class="hl-pw-label">Handypasswort</div>
-                        <div class="hl-pw-inputs">
-                            <div class="hl-input-subbox">
-                                <label for="fieldPassword">Passwort</label>
-                                <input type="text" id="fieldPassword" class="hl-input" placeholder="z.B. 123456">
-                            </div>
-                            <div class="hl-input-subbox">
-                                <label for="fieldSimPin">SIM-Pin</label>
-                                <input type="text" id="fieldSimPin" class="hl-input" placeholder="z.B. 0000">
-                            </div>
-                        </div>
-                        
-                        <!-- Interactive 3x3 Pattern Lock Grid -->
-                        <div class="hl-pattern-box" title="Entsperrmuster (Punkte anklicken zum Verbinden)">
-                            <div class="hl-pattern-grid" id="patternGrid">
-                                <div class="p-dot" data-idx="1"></div>
-                                <div class="p-dot" data-idx="2"></div>
-                                <div class="p-dot" data-idx="3"></div>
-                                <div class="p-dot" data-idx="4"></div>
-                                <div class="p-dot" data-idx="5"></div>
-                                <div class="p-dot" data-idx="6"></div>
-                                <div class="p-dot" data-idx="7"></div>
-                                <div class="p-dot" data-idx="8"></div>
-                                <div class="p-dot" data-idx="9"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
-            <!-- SECTION 2: GERÄTEDATEN -->
-            <section class="hl-section">
-                <div class="hl-sec-head">
-                    <h3>IHRE GERÄTEDATEN</h3>
-                    <span class="hl-sec-hint">Diese Felder bitte selbst ausfüllen.</span>
-                </div>
-                
-                <div class="hl-device-grid">
-                    <div class="hl-input-box">
-                        <label for="fieldModel">Hersteller, Modell</label>
-                        <input type="text" id="fieldModel" class="hl-input" placeholder="z.B. Apple iPhone 14 Pro">
+                <div class="field-group">
+                    <label class="field-label-outside" for="fieldCustomerName">Vorname, Nachname</label>
+                    <div class="box-single">
+                        <input type="text" id="fieldCustomerName" class="form-control" autocomplete="name">
                     </div>
-                    <div class="hl-device-checks">
-                        <div class="hl-check-inline">
-                            <span class="hl-inline-title">SIM Karte</span>
-                            <label><input type="radio" name="chkSimCard" value="ja" id="simJa"> Ja</label>
-                            <label><input type="radio" name="chkSimCard" value="nein" id="simNein" checked> Nein</label>
-                        </div>
-                        <div class="hl-check-inline">
-                            <span class="hl-inline-title">Hülle</span>
-                            <label><input type="radio" name="chkCase" value="ja" id="caseJa"> Ja</label>
-                            <label><input type="radio" name="chkCase" value="nein" id="caseNein" checked> Nein</label>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label-outside" for="fieldPhoneEmail">Telefon Nr. / E-Mail</label>
+                    <div class="box-single">
+                        <input type="text" id="fieldPhoneEmail" class="form-control" autocomplete="email">
+                    </div>
+                </div>
+
+                <!-- Password Row -->
+                <div class="pw-complex-row">
+                    <div class="pw-left-label">Handypasswort</div>
+                    <div class="pw-box-pass">
+                        <span class="inner-box-label">Passwort</span>
+                        <input type="text" id="fieldPassword" class="form-control inner-input">
+                    </div>
+                    <div class="pw-box-pin">
+                        <span class="inner-box-label">SIM-Pin</span>
+                        <input type="text" id="fieldSimPin" class="form-control inner-input">
+                    </div>
+                    <div class="pw-box-pattern" title="Entsperrmuster (Punkte zum Aktivieren anklicken)">
+                        <div class="pattern-9-dots" id="patternGrid">
+                            <div class="p-dot" data-i="1"></div>
+                            <div class="p-dot" data-i="2"></div>
+                            <div class="p-dot" data-i="3"></div>
+                            <div class="p-dot" data-i="4"></div>
+                            <div class="p-dot" data-i="5"></div>
+                            <div class="p-dot" data-i="6"></div>
+                            <div class="p-dot" data-i="7"></div>
+                            <div class="p-dot" data-i="8"></div>
+                            <div class="p-dot" data-i="9"></div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- SECTION 3: AUFNAHMEPROTOKOLL -->
-            <section class="hl-section">
-                <div class="hl-sec-head">
-                    <h3>AUFNAHMEPROTOKOLL</h3>
-                    <span class="hl-sec-hint">Bitte von Ihrem Serviceberater ausfüllen lassen.</span>
-                </div>
-                
-                <!-- Past Repair Row -->
-                <div class="hl-proto-row">
-                    <div class="hl-proto-label">Wurde das Gerät in der Vergangenheit bereits repariert?</div>
-                    <div class="hl-proto-checks">
-                        <label><input type="radio" name="chkPastRepair" value="nein" id="pastRepNein" checked> Nein.</label>
-                        <label><input type="radio" name="chkPastRepair" value="ja" id="pastRepJa"> Ja, am Gerät wurden folgende Reparaturen in der Vergangenheit vorgenommen:</label>
-                    </div>
-                    <input type="text" id="fieldPastRepairs" class="hl-line-input" placeholder="Vorherige Reparaturen eingeben...">
+            <!-- ================= SECTION 2: GERÄTEDATEN ================= -->
+            <section class="sec-block">
+                <div class="sec-heading-row">
+                    <h2 class="sec-title">IHRE GERÄTEDATEN</h2>
+                    <span class="sec-subtitle">Diese Felder bitte selbst ausfüllen.</span>
                 </div>
 
-                <!-- Existing Cosmetic Damages -->
-                <div class="hl-proto-row">
-                    <label for="fieldCosmeticDamages" class="hl-proto-label">Bestehende optische Mängel vor der Übergabe an unseren Serviceberater:</label>
-                    <input type="text" id="fieldCosmeticDamages" class="hl-line-input" placeholder="z.B. Kratzer am Rahmen, Displayglas gesplittert, Gehäusedelle...">
+                <div class="device-data-row">
+                    <div class="dev-model-col">
+                        <label class="field-label-outside" for="fieldModel">Hersteller, Modell</label>
+                        <div class="box-single">
+                            <input type="text" id="fieldModel" class="form-control">
+                        </div>
+                    </div>
+                    <div class="dev-accessories-col">
+                        <div class="acc-row">
+                            <span class="acc-title">SIM Karte</span>
+                            <label class="custom-radio-lbl"><input type="radio" name="chkSim" value="ja" id="simJa"> Ja</label>
+                            <label class="custom-radio-lbl"><input type="radio" name="chkSim" value="nein" id="simNein" checked> Nein</label>
+                        </div>
+                        <div class="acc-row">
+                            <span class="acc-title">Hülle</span>
+                            <label class="custom-radio-lbl"><input type="radio" name="chkCase" value="ja" id="caseJa"> Ja</label>
+                            <label class="custom-radio-lbl"><input type="radio" name="chkCase" value="nein" id="caseNein" checked> Nein</label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= SECTION 3: AUFNAHMEPROTOKOLL ================= -->
+            <section class="sec-block">
+                <div class="sec-heading-row">
+                    <h2 class="sec-title">AUFNAHMEPROTOKOLL</h2>
+                    <span class="sec-subtitle">Bitte von Ihrem Serviceberater ausfüllen lassen.</span>
                 </div>
 
-                <!-- Defect Checklist -->
-                <div class="hl-proto-row">
-                    <div class="hl-proto-label">Defekt, Fehler oder Problem am Gerät:</div>
-                    <div class="hl-defect-grid">
-                        <label class="hl-chk-item"><input type="checkbox" id="chkLautsprecher"> Lautsprecher</label>
-                        <label class="hl-chk-item"><input type="checkbox" id="chkOhrmuschel"> Ohrmuschel</label>
-                        <label class="hl-chk-item"><input type="checkbox" id="chkMikrofon"> Mikrofon</label>
-                        
-                        <label class="hl-chk-item"><input type="checkbox" id="chkDisplay"> Display</label>
-                        <label class="hl-chk-item"><input type="checkbox" id="chkBackcover"> Back Cover</label>
-                        <label class="hl-chk-item"><input type="checkbox" id="chkAkku"> Akku</label>
-                        <label class="hl-chk-item"><input type="checkbox" id="chkLadebuchse"> Ladebuchse</label>
-                        <label class="hl-chk-item"><input type="checkbox" id="chkWasserschaden"> Wasserschaden</label>
+                <!-- Past repairs -->
+                <div class="proto-line-group">
+                    <div class="proto-text-line">
+                        <span>Wurde das Gerät in der Vergangenheit bereits repariert?</span>
+                        <label class="custom-radio-lbl"><input type="radio" name="chkPast" value="nein" id="pastNein" checked> Nein.</label>
+                        <label class="custom-radio-lbl"><input type="radio" name="chkPast" value="ja" id="pastJa"> Ja , am Gerät wurden folgende</label>
                     </div>
-                    <div class="hl-sonstiges-row">
-                        <label class="hl-chk-item"><input type="checkbox" id="chkSonstiges"> sonstiges:</label>
-                        <input type="text" id="fieldSonstiges" class="hl-line-input" placeholder="Sonstiger Fehler...">
+                    <div class="proto-text-subline">
+                        <span>Reparaturen in der Vergangenheit vorgenommen:</span>
+                        <input type="text" id="fieldPastRepairs" class="underline-input">
+                    </div>
+                </div>
+
+                <!-- Optical Defects -->
+                <div class="proto-line-group">
+                    <label class="proto-full-label" for="fieldCosmetic">Bestehende optische Mängel vor der Übergabe an unseren Serviceberater:</label>
+                    <input type="text" id="fieldCosmetic" class="underline-input">
+                </div>
+
+                <!-- Defects Checkbox Grid -->
+                <div class="defect-section-row">
+                    <div class="defect-left-lbl">
+                        <div>Defekt, Fehler oder</div>
+                        <div>Problem am Gerät:</div>
+                    </div>
+                    <div class="defect-right-grid">
+                        <div class="defect-row-1">
+                            <label class="custom-check-lbl"><input type="checkbox" id="chkLautsprecher"> Lautsprecher</label>
+                            <label class="custom-check-lbl"><input type="checkbox" id="chkOhrmuschel"> Ohrmuschel</label>
+                            <label class="custom-check-lbl"><input type="checkbox" id="chkMikrofon"> Mikrofon</label>
+                        </div>
+                        <div class="defect-row-2">
+                            <label class="custom-check-lbl"><input type="checkbox" id="chkDisplay"> Display</label>
+                            <label class="custom-check-lbl"><input type="checkbox" id="chkBackcover"> Back Cover</label>
+                            <label class="custom-check-lbl"><input type="checkbox" id="chkAkku"> Akku</label>
+                            <label class="custom-check-lbl"><input type="checkbox" id="chkLadebuchse"> Ladebuchse</label>
+                            <label class="custom-check-lbl"><input type="checkbox" id="chkWasserschaden"> Wasserschaden</label>
+                        </div>
+                        <div class="defect-row-3">
+                            <label class="custom-check-lbl"><input type="checkbox" id="chkSonstiges"> sonstiges:</label>
+                            <input type="text" id="fieldSonstiges" class="underline-input inline-underline">
+                        </div>
                     </div>
                 </div>
 
                 <!-- Time Estimate -->
-                <div class="hl-proto-row">
-                    <div class="hl-proto-label">Zeitaufwand für Ihre Reparatur:</div>
-                    <div class="hl-time-grid">
-                        <label class="hl-time-item"><input type="radio" name="rdoTime" value="30min"> 30 min</label>
-                        <label class="hl-time-item"><input type="radio" name="rdoTime" value="45min"> 45 min</label>
-                        <label class="hl-time-item"><input type="radio" name="rdoTime" value="1h"> 1 h</label>
-                        <label class="hl-time-item"><input type="radio" name="rdoTime" value="1.5h"> 1,5 h</label>
-                        <label class="hl-time-item"><input type="radio" name="rdoTime" value="2h"> 2 h</label>
-                        <label class="hl-time-item"><input type="radio" name="rdoTime" value="2.5h"> 2,5 h</label>
-                        <label class="hl-time-item"><input type="radio" name="rdoTime" value="3h"> 3 h</label>
-                        <label class="hl-time-item"><input type="radio" name="rdoTime" value="4h"> 4 h</label>
+                <div class="time-section-row">
+                    <div class="time-left-lbl">
+                        <div>Zeitaufwand für Ihre</div>
+                        <div>Reparatur:</div>
+                    </div>
+                    <div class="time-right-options">
+                        <label class="custom-radio-lbl"><input type="radio" name="chkTime" value="30min"> 30 min</label>
+                        <label class="custom-radio-lbl"><input type="radio" name="chkTime" value="45min"> 45 min</label>
+                        <label class="custom-radio-lbl"><input type="radio" name="chkTime" value="1h"> 1 h</label>
+                        <label class="custom-radio-lbl"><input type="radio" name="chkTime" value="1.5h"> 1,5 h</label>
+                        <label class="custom-radio-lbl"><input type="radio" name="chkTime" value="2h"> 2 h</label>
+                        <label class="custom-radio-lbl"><input type="radio" name="chkTime" value="2.5h"> 2,5 h</label>
+                        <label class="custom-radio-lbl"><input type="radio" name="chkTime" value="3h"> 3 h</label>
+                        <label class="custom-radio-lbl"><input type="radio" name="chkTime" value="4h"> 4 h</label>
                     </div>
                 </div>
 
-                <!-- Pickup Date, Technician Signature & Price Boxes -->
-                <div class="hl-service-bottom-grid">
-                    <div class="hl-bot-box">
-                        <label for="fieldAbholtermin">Abholtermin:</label>
-                        <input type="text" id="fieldAbholtermin" class="hl-input" placeholder="z.B. Heute ab 17:00 Uhr">
+                <!-- 3 Bottom Protocol Boxes -->
+                <div class="proto-three-boxes">
+                    <div class="proto-box-col">
+                        <label class="box-top-lbl" for="fieldAbholtermin">Abholtermin:</label>
+                        <div class="proto-box-rect">
+                            <input type="text" id="fieldAbholtermin" class="form-control">
+                        </div>
                     </div>
                     
-                    <div class="hl-bot-box">
-                        <label for="fieldServiceSign">Unterschrift des Serviceberater:</label>
-                        <input type="text" id="fieldServiceSign" class="hl-input" placeholder="Name / Handzeichen">
+                    <div class="proto-box-col">
+                        <label class="box-top-lbl" for="fieldServiceSign">Unterschrift des Serviceberater:</label>
+                        <div class="proto-box-rect">
+                            <input type="text" id="fieldServiceSign" class="form-control">
+                        </div>
                     </div>
 
-                    <div class="hl-bot-box hl-price-box-wrap">
-                        <label for="fieldPrice">Preis (inklusive MwSt):</label>
-                        <input type="text" id="fieldPrice" class="hl-input hl-price-val" placeholder="z.B. 69,00 €">
+                    <div class="proto-box-col proto-price-col">
+                        <div class="proto-box-rect price-rect">
+                            <span class="price-inside-lbl">Preis (inklusive MwSt):</span>
+                            <input type="text" id="fieldPrice" class="form-control price-input-bold">
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <!-- SECTION 4: TERMS & CONDITIONS (AGB & DISCLAIMER) -->
-            <section class="hl-terms-box">
+            <!-- ================= SECTION 4: TERMS & DISCLAIMER ================= -->
+            <section class="terms-legal-block">
                 <p>Hiermit beauftrage ich den HANDYLAND Service um alle Arbeiten gemäß obigen Informationen am Gerät durchzuführen. Das Gerät hat keine Beschädigungen außer der oben angegebenen. Ich bin mir bewusst, dass gespeicherte Daten, Programme und Lizenzen im Rahmen der Reparatur verloren gehen können und mache den HANDYLAND Service nicht für Datenverlust haftbar. Aller Angaben erfolgen ohne Gewähr. Alle Rechte vorbehalten.</p>
                 <p>Wir weisen darauf hin, dass trotz größter Sorgfalt, gespeicherte Daten auf Ihrem Gerät verloren gehen können. Sorgen Sie bitte dafür, dass Ihre Daten gesichert sind und Teile kaputt gehen können.</p>
                 <p>HANDYLAND haftet NICHT für andere Teile im/am Gerät, die durch Tausch/Reparatur kaputt gehen können. Wir haften NUR auf die von uns getauschten und/oder bei uns gekauften Teile. Keine Haftung bei Software- oder Datenproblem.</p>
                 <p><strong>Wenn das Gerät nicht innerhalb von 10 Werktagen ab dem vorher vereinbarten Abholtermin abgeholt wird, so fällt bei der Abholung eine Aufwandspauschale von 10€ an.</strong></p>
             </section>
 
-            <!-- SECTION 5: DATE & CUSTOMER SIGNATURE -->
-            <section class="hl-signature-section">
-                <div class="hl-date-col">
-                    <div class="hl-date-box">
-                        <label for="fieldDate">Datum:</label>
-                        <input type="text" id="fieldDate" class="hl-input" value="Heidelberg, 29.08.2026">
+            <!-- ================= SECTION 5: DATE & CUSTOMER SIGNATURE ================= -->
+            <section class="signature-main-row">
+                <div class="sign-date-col">
+                    <label class="field-label-outside" for="fieldDate">Datum:</label>
+                    <div class="box-single date-box-h">
+                        <input type="text" id="fieldDate" class="form-control" value="Heidelberg, 29.08.2026">
                     </div>
                 </div>
-                
-                <div class="hl-sign-col">
-                    <div class="hl-sign-agreement-text">
+
+                <div class="sign-cust-col">
+                    <div class="sign-agree-headline">
                         Mit meiner Unterschrift akzeptiere ich die Bedingungen auf diesem Dokument und bestätige den Reparaturauftrag.
                     </div>
-                    <div class="hl-customer-sign-box" id="signContainer">
-                        <span class="hl-sign-placeholder">Unterschrift des Kunden</span>
-                        <canvas id="signCanvas" class="hl-sign-canvas"></canvas>
-                        <button type="button" class="btn-clear-sign" id="btnClearSign" title="Unterschrift löschen">✕</button>
+                    <div class="customer-sign-rect" id="signContainer">
+                        <span class="sign-hint-text">Unterschrift des Kunden:</span>
+                        <canvas id="signCanvas" class="sign-interactive-canvas"></canvas>
+                        <button type="button" class="btn-clear-canvas" id="btnClearSign" title="Unterschrift löschen">✕</button>
                     </div>
                 </div>
             </section>
 
         </form>
 
-        <!-- ================= FOOTER ================= -->
-        <footer class="hl-footer-bar">
+        <!-- ================= FOOTER BANNER ================= -->
+        <footer class="doc-footer">
             WIR HOFFEN, IHR GERÄT IST BALD WIEDER EINSATZBEREIT! DANKE FÜR IHR VERTRAUEN.
         </footer>
 
     </main>
 
-    <!-- Interactive Script for Form Handling, Auto-Fill, Pattern Lock & Digital Signature Canvas -->
+    <!-- Interactive Script for Form Handling, Auto-Fill, Pattern Lock & Canvas Drawing -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // URL Parameters Parsing for Auto-Fill
             const params = new URLSearchParams(window.location.search);
             
             const setVal = (id, val) => {
@@ -263,13 +281,13 @@
                 if (el && cond) el.checked = true;
             };
 
-            // Pre-fill from URL params (compatible with eBay generator dashboard)
-            const customerName = params.get('name') || '';
+            // Pre-fill parameters from generator
+            const name = params.get('name') || '';
             const phone = params.get('phone') || '';
             const email = params.get('email') || '';
             const contact = [phone, email].filter(Boolean).join(' / ');
             
-            setVal('fieldCustomerName', customerName);
+            setVal('fieldCustomerName', name);
             setVal('fieldPhoneEmail', contact || params.get('contact') || '');
             setVal('fieldPassword', params.get('pin') || params.get('password') || '');
             setVal('fieldSimPin', params.get('simpin') || '');
@@ -280,25 +298,25 @@
             setVal('fieldModel', fullModel);
             
             setVal('fieldPrice', params.get('price') || '');
-            setVal('fieldCosmeticDamages', params.get('cosmetic') || '');
+            setVal('fieldCosmetic', params.get('cosmetic') || '');
             setVal('fieldPastRepairs', params.get('pastRepairs') || '');
-            if (params.get('pastRepairs')) setRadio('chkPastRepair', 'ja');
+            if (params.get('pastRepairs')) setRadio('chkPast', 'ja');
 
-            // Defect types
-            const repairType = (params.get('repair') || '').toLowerCase();
-            if (repairType.includes('display') || repairType.includes('glas')) setCheck('chkDisplay', true);
-            if (repairType.includes('akku') || repairType.includes('batterie')) setCheck('chkAkku', true);
-            if (repairType.includes('lade') || repairType.includes('charging') || repairType.includes('buchse')) setCheck('chkLadebuchse', true);
-            if (repairType.includes('backcover') || repairType.includes('rückseite') || repairType.includes('deckel')) setCheck('chkBackcover', true);
-            if (repairType.includes('kamera') || repairType.includes('camera')) { setCheck('chkSonstiges', true); setVal('fieldSonstiges', 'Kamerareparatur'); }
-            if (repairType.includes('wasser') || repairType.includes('water')) setCheck('chkWasserschaden', true);
+            // Defect types auto-checks
+            const repair = (params.get('repair') || '').toLowerCase();
+            if (repair.includes('display') || repair.includes('glas')) setCheck('chkDisplay', true);
+            if (repair.includes('akku') || repair.includes('batterie')) setCheck('chkAkku', true);
+            if (repair.includes('lade') || repair.includes('charging') || repair.includes('buchse')) setCheck('chkLadebuchse', true);
+            if (repair.includes('backcover') || repair.includes('rückseite') || repair.includes('deckel')) setCheck('chkBackcover', true);
+            if (repair.includes('kamera') || repair.includes('camera')) { setCheck('chkSonstiges', true); setVal('fieldSonstiges', 'Kamerareparatur'); }
+            if (repair.includes('wasser') || repair.includes('water')) setCheck('chkWasserschaden', true);
 
-            // Date Default
+            // Date
             const today = new Date();
-            const dateStr = today.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
-            setVal('fieldDate', `Heidelberg, ${dateStr}`);
+            const dateFormatted = today.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            setVal('fieldDate', `Heidelberg, ${dateFormatted}`);
 
-            // Interactive Pattern Dots
+            // Interactive Pattern Dots (Click to highlight pattern)
             const dots = document.querySelectorAll('.p-dot');
             dots.forEach(dot => {
                 dot.addEventListener('click', () => {
@@ -308,10 +326,8 @@
 
             // Interactive Digital Signature Canvas
             const canvas = document.getElementById('signCanvas');
-            const placeholder = document.querySelector('.hl-sign-placeholder');
             const btnClearSign = document.getElementById('btnClearSign');
             let isDrawing = false;
-            let hasDrawn = false;
 
             if (canvas) {
                 const ctx = canvas.getContext('2d');
@@ -324,10 +340,10 @@
                     ctx.lineWidth = 2;
                     ctx.lineCap = 'round';
                     ctx.lineJoin = 'round';
-                    ctx.strokeStyle = '#0f172a';
+                    ctx.strokeStyle = '#000000';
                 };
                 
-                setTimeout(resizeCanvas, 100);
+                setTimeout(resizeCanvas, 150);
                 window.addEventListener('resize', resizeCanvas);
 
                 const getPos = (e) => {
@@ -342,8 +358,6 @@
 
                 const startDraw = (e) => {
                     isDrawing = true;
-                    hasDrawn = true;
-                    if (placeholder) placeholder.style.display = 'none';
                     if (btnClearSign) btnClearSign.style.display = 'flex';
                     const pos = getPos(e);
                     ctx.beginPath();
@@ -375,8 +389,6 @@
                     btnClearSign.addEventListener('click', (e) => {
                         e.stopPropagation();
                         ctx.clearRect(0, 0, canvas.width, canvas.height);
-                        hasDrawn = false;
-                        if (placeholder) placeholder.style.display = 'block';
                         btnClearSign.style.display = 'none';
                     });
                 }
@@ -389,20 +401,18 @@
 
             // Reset Action
             document.getElementById('btnResetForm').addEventListener('click', () => {
-                if (confirm('Möchtest du das gesamte Formular leeren (z.B. für Blanko-Ausdrucke im Laden)?')) {
-                    document.getElementById('intakeForm').reset();
+                if (confirm('Möchtest du alle Eingaben leeren, um eine leere Blanko-Vorlage zum handschriftlichen Ausfüllen zu erhalten?')) {
+                    document.getElementById('docForm').reset();
                     document.querySelectorAll('.p-dot').forEach(d => d.classList.remove('active'));
-                    setVal('fieldDate', `Heidelberg, ${dateStr}`);
+                    setVal('fieldDate', `Heidelberg, ${dateFormatted}`);
                     if (canvas) {
                         const ctx = canvas.getContext('2d');
                         ctx.clearRect(0, 0, canvas.width, canvas.height);
-                        if (placeholder) placeholder.style.display = 'block';
                         if (btnClearSign) btnClearSign.style.display = 'none';
                     }
                 }
             });
 
-            // Auto-trigger print if requested via URL (?print=1)
             if (params.get('print') === '1') {
                 setTimeout(() => window.print(), 500);
             }
