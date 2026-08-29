@@ -119,11 +119,11 @@ export const REPAIR_DATA = {
         }
     ],
 
-    // Quick 1-Click Repair Presets
+    // Quick 1-Click Repair Presets (Essential Only)
     quickPresets: [
         {
             id: "ebay_universal",
-            name: "🌐 eBay Universal-Vorlage (Display/Akku/Backcover/Ladebuchse)",
+            name: "🌐 eBay Universal-Vorlage (Alle Modelle & Reparaturen)",
             brand: "Universal",
             model: "Alle Modelle & Marken",
             repairType: "display",
@@ -136,64 +136,12 @@ export const REPAIR_DATA = {
             featured: true
         },
         {
-            id: "universal_display",
-            name: "📱 Universal Display Tausch",
-            brand: "Universal",
-            model: "Alle Modelle & Marken",
-            repairType: "display",
-            price: "89,00 €",
-            upsellType: "free",
-            upsellPrice: "+ 0,00 €",
-            genericMode: true,
-            ebayCompliance: true,
-            freeGifts: true
-        },
-        {
-            id: "universal_battery",
-            name: "🔋 Universal Akku Service",
-            brand: "Universal",
-            model: "Alle Modelle & Marken",
-            repairType: "battery",
-            price: "59,00 €",
-            upsellType: "free",
-            upsellPrice: "+ 0,00 €",
-            genericMode: true,
-            ebayCompliance: true,
-            freeGifts: true
-        },
-        {
-            id: "universal_backcover",
-            name: "🛠️ Universal Backcover Glas",
-            brand: "Universal",
-            model: "Alle Modelle & Marken",
-            repairType: "backcover",
-            price: "69,00 €",
-            upsellType: "free",
-            upsellPrice: "+ 0,00 €",
-            genericMode: true,
-            ebayCompliance: true,
-            freeGifts: true
-        },
-        {
-            id: "universal_charging",
-            name: "🔌 Universal USB-C Ladebuchse",
-            brand: "Universal",
-            model: "Alle Modelle & Marken",
-            repairType: "charging",
-            price: "49,00 €",
-            upsellType: "free",
-            upsellPrice: "+ 0,00 €",
-            genericMode: true,
-            ebayCompliance: true,
-            freeGifts: true
-        },
-        {
-            id: "apple_display",
-            name: "📱 iPhone Display Express",
+            id: "preset_display",
+            name: "📱 Display Reparatur (Express)",
             brand: "Apple",
             model: "iPhone 14 Pro",
             repairType: "display",
-            price: "129,00 €",
+            price: "119,00 €",
             upsellType: "paid",
             upsellPrice: "+ 15,00 €",
             genericMode: false,
@@ -201,8 +149,8 @@ export const REPAIR_DATA = {
             freeGifts: true
         },
         {
-            id: "apple_battery",
-            name: "🔋 iPhone Akku 100%",
+            id: "preset_battery",
+            name: "🔋 Akku / Batterie Tausch (100%)",
             brand: "Apple",
             model: "iPhone 13",
             repairType: "battery",
@@ -214,46 +162,7 @@ export const REPAIR_DATA = {
             freeGifts: true
         },
         {
-            id: "samsung_display",
-            name: "📱 Samsung AMOLED Tausch",
-            brand: "Samsung",
-            model: "Galaxy S23",
-            repairType: "display",
-            price: "159,00 €",
-            upsellType: "paid",
-            upsellPrice: "+ 15,00 €",
-            genericMode: false,
-            ebayCompliance: true,
-            freeGifts: true
-        },
-        {
-            id: "samsung_battery",
-            name: "🔋 Samsung Akku Service",
-            brand: "Samsung",
-            model: "Galaxy S22",
-            repairType: "battery",
-            price: "59,00 €",
-            upsellType: "none",
-            upsellPrice: "+ 15,00 €",
-            genericMode: false,
-            ebayCompliance: true,
-            freeGifts: true
-        },
-        {
-            id: "charging_port",
-            name: "🔌 USB-C Ladebuchse",
-            brand: "Apple",
-            model: "iPhone 12",
-            repairType: "charging",
-            price: "59,00 €",
-            upsellType: "none",
-            upsellPrice: "+ 15,00 €",
-            genericMode: false,
-            ebayCompliance: true,
-            freeGifts: true
-        },
-        {
-            id: "backcover_glass",
+            id: "preset_backcover",
             name: "🛠️ Backcover Glas Tausch",
             brand: "Apple",
             model: "iPhone 14",
@@ -261,6 +170,19 @@ export const REPAIR_DATA = {
             price: "79,00 €",
             upsellType: "free",
             upsellPrice: "+ 0,00 €",
+            genericMode: false,
+            ebayCompliance: true,
+            freeGifts: true
+        },
+        {
+            id: "preset_charging",
+            name: "🔌 Ladebuchse / USB-C Service",
+            brand: "Apple",
+            model: "iPhone 12",
+            repairType: "charging",
+            price: "59,00 €",
+            upsellType: "none",
+            upsellPrice: "+ 15,00 €",
             genericMode: false,
             ebayCompliance: true,
             freeGifts: true
