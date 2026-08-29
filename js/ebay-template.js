@@ -9,7 +9,7 @@
  * - Prefix all CSS selectors with `.hl-` to prevent styling conflicts inside eBay's page container.
  */
 
-import { REPAIR_DATA } from './data/repair-data.js';
+import { REPAIR_DATA } from './data/repair-data.js?v=7.0';
 
 export function generateEbayHtml(config) {
     const {
