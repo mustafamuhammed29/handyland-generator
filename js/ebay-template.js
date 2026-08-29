@@ -9,7 +9,7 @@
  * - Prefix all CSS selectors with `.hl-` to prevent styling conflicts inside eBay's page container.
  */
 
-import { REPAIR_DATA } from './data/repair-data.js?v=9.1';
+import { REPAIR_DATA } from './data/repair-data.js?v=9.2';
 
 export function generateEbayHtml(config) {
     const {
@@ -24,7 +24,7 @@ export function generateEbayHtml(config) {
         shippingCost = "6,99 € (versichert mit DHL & Tracking)",
         warrantyMonths = "12",
         processingTime = "12-24h",
-        genericMode = false, // 'Generic Mode' (no specific model/price in body texts)
+        genericMode = true, // 'Generic Mode' (no specific model/price in body texts)
         ebayComplianceMode = true, // 'eBay Compliance Mode' (hide WhatsApp/external links in HTML)
         freeGifts = { cleaning: true, cover: true, lensGlass: true }, // Fixed 3 free promo gifts
         upsellType = "none", // 'none' | 'paid' | 'free'

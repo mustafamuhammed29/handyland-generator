@@ -119,7 +119,7 @@ export const REPAIR_DATA = {
         }
     ],
 
-    // Quick 1-Click Repair Presets (Essential Only)
+    // Quick 1-Click Repair Presets (All Generic Mode / No Fixed Prices)
     quickPresets: [
         {
             id: "ebay_universal",
@@ -138,52 +138,52 @@ export const REPAIR_DATA = {
         {
             id: "preset_display",
             name: "📱 Display Reparatur (Express)",
-            brand: "Apple",
-            model: "iPhone 14 Pro",
+            brand: "Universal",
+            model: "Alle Modelle & Marken",
             repairType: "display",
             price: "119,00 €",
             upsellType: "paid",
             upsellPrice: "+ 15,00 €",
-            genericMode: false,
+            genericMode: true,
             ebayCompliance: true,
             freeGifts: true
         },
         {
             id: "preset_battery",
             name: "🔋 Akku / Batterie Tausch (100%)",
-            brand: "Apple",
-            model: "iPhone 13",
+            brand: "Universal",
+            model: "Alle Modelle & Marken",
             repairType: "battery",
             price: "69,00 €",
             upsellType: "free",
             upsellPrice: "+ 0,00 €",
-            genericMode: false,
+            genericMode: true,
             ebayCompliance: true,
             freeGifts: true
         },
         {
             id: "preset_backcover",
             name: "🛠️ Backcover Glas Tausch",
-            brand: "Apple",
-            model: "iPhone 14",
+            brand: "Universal",
+            model: "Alle Modelle & Marken",
             repairType: "backcover",
             price: "79,00 €",
             upsellType: "free",
             upsellPrice: "+ 0,00 €",
-            genericMode: false,
+            genericMode: true,
             ebayCompliance: true,
             freeGifts: true
         },
         {
             id: "preset_charging",
             name: "🔌 Ladebuchse / USB-C Service",
-            brand: "Apple",
-            model: "iPhone 12",
+            brand: "Universal",
+            model: "Alle Modelle & Marken",
             repairType: "charging",
             price: "59,00 €",
             upsellType: "none",
             upsellPrice: "+ 15,00 €",
-            genericMode: false,
+            genericMode: true,
             ebayCompliance: true,
             freeGifts: true
         }
