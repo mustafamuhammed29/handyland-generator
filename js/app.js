@@ -5,8 +5,8 @@
  * customer slip auto-filling, theme switching, and file downloads.
  */
 
-import { REPAIR_DATA } from './data/repair-data.js?v=7.0';
-import { generateEbayHtml } from './ebay-template.js?v=7.0';
+import { REPAIR_DATA } from './data/repair-data.js?v=8.0';
+import { generateEbayHtml } from './ebay-template.js?v=8.0';
 
 // Application State
 const state = {
