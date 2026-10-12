@@ -32,6 +32,21 @@
                 <span class="logo-badge">Generator Pro</span>
             </div>
 
+            <!-- Mode Switcher: Reparatur-Service vs Frontglas mit OCA -->
+            <div class="app-mode-switch-wrapper">
+                <div class="app-mode-switch-bar">
+                    <button type="button" id="modeBtnRepair" class="btn-mode-tab active" title="Vorlagen-Generator für Smartphone-Reparaturen">
+                        🛠️ Reparatur
+                    </button>
+                    <button type="button" id="modeBtnFrontglas" class="btn-mode-tab" title="Vorlagen-Generator für Frontglas mit OCA Ersatzteil-Verkauf">
+                        💎 Frontglas OCA
+                    </button>
+                </div>
+            </div>
+
+            <!-- ================= REPARATUR-SERVICE MODE CONTAINER ================= -->
+            <div id="repairModeContainer" class="repair-mode-container">
+
             <!-- Quick Navigation Mini Bar for Instant Access -->
             <div class="quick-nav-container">
                 <nav class="quick-nav-bar" aria-label="Schnellzugriff auf Abschnitte">
@@ -404,6 +419,103 @@
                     </button>
                 </div>
             </div>
+
+            </div> <!-- END repairModeContainer -->
+
+            <!-- ================= FRONTGLAS MIT OCA MODE CONTAINER ================= -->
+            <div id="frontglasModeContainer" class="frontglas-mode-container" style="display: none;">
+
+                <!-- SEO Title Optimizer Box for Frontglas -->
+                <div class="seo-box">
+                    <div class="seo-header">
+                        <span>🎯 eBay SEO Titel (Max 80 Zeichen)</span>
+                        <span id="fgTitleCharCount" class="seo-counter">0/80</span>
+                    </div>
+                    <div class="seo-input-group">
+                        <input type="text" id="fgSeoTitleInput" class="seo-input" placeholder="SEO Titel wird generiert...">
+                        <button type="button" id="fgBtnCopySeo" class="btn-icon-copy" title="Titel in Zwischenablage kopieren">📋</button>
+                    </div>
+                </div>
+
+                <!-- Section FG-1: Compatibility, Color & Shipping (Universal Mode - All Devices) -->
+                <div class="form-section">
+                    <div class="section-header">📦 1. Kompatibilität, Farbe &amp; Versand</div>
+                    <div class="fg-generic-info-box">
+                        ✨ <strong>Universelle Vorlage für alle Geräte:</strong> Kein festes Modell und kein Festpreis im Text – perfekt für alle Smartphone-Modelle und eBay-Variationsangebote (Dropdown-Auswahl).
+                    </div>
+                    
+                    <div class="row-2">
+                        <div class="control-group">
+                            <label for="fgBrandInput">Geräte-Kompatibilität</label>
+                            <select id="fgBrandInput">
+                                <!-- Populated dynamically via JS -->
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label for="fgColorInput">Glas-Farbe / Rahmen</label>
+                            <input type="text" id="fgColorInput" value="Schwarz / Siehe Modellauswahl">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="fgShippingCostInput">Versandinformation</label>
+                        <input type="text" id="fgShippingCostInput" value="Kostenloser DHL Versand (mit Tracking)">
+                    </div>
+                </div>
+
+                <!-- Section FG-2: Image / Photo of the Front Glass -->
+                <div class="form-section">
+                    <div class="section-header">🖼️ 2. Foto der Scheibe (Upload / URL)</div>
+                    <div class="fg-image-upload-box">
+                        <input type="file" id="fgImageFileInput" accept="image/*" style="display: none;">
+                        <button type="button" id="fgBtnUploadFile" class="btn-upload-file">
+                            📁 Foto vom Computer auswählen &amp; hochladen
+                        </button>
+                        <div class="control-group" style="margin-top: 4px;">
+                            <label for="fgImageUrlInput">Oder direkte Bild-URL (z.B. Imgur / eBay Bildlink):</label>
+                            <input type="text" id="fgImageUrlInput" placeholder="https://i.imgur.com/beispiel.jpg">
+                        </div>
+                        <div id="fgImagePreviewRow" class="fg-img-preview-row" style="display: none;">
+                            <img id="fgImageThumb" class="fg-img-thumb" src="" alt="Vorschau">
+                            <div class="fg-img-thumb-info">
+                                <div class="fg-img-thumb-title" id="fgImageThumbTitle">Produktbild geladen</div>
+                                <div class="fg-img-thumb-sub">✅ Wird im eBay-Angebot angezeigt</div>
+                            </div>
+                            <button type="button" id="fgBtnRemoveImage" class="btn-remove-thumb" title="Bild entfernen">❌ Entfernen</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section FG-3: Critical Buyer Warning -->
+                <div class="form-section">
+                    <div class="section-header">⚠️ 3. Wichtiger Käufer-Warnhinweis</div>
+                    <div class="fg-warning-hint-box">
+                        Dieser Hinweis schützt vor Missverständnissen und ungerechtfertigten Rücksendungen von Käufern, die fälschlicherweise ein komplettes Display erwarten.
+                    </div>
+                    <div class="control-group">
+                        <label for="fgWarningInput">Hinweistext (Nur Frontglas / Kein LCD/OLED):</label>
+                        <textarea id="fgWarningInput" rows="5"></textarea>
+                    </div>
+                </div>
+
+                <!-- Section FG-4: Specifications & Scope of Delivery -->
+                <div class="form-section">
+                    <div class="section-header">⚙️ 4. Spezifikationen &amp; Lieferumfang</div>
+                    <div class="control-group">
+                        <label for="fgSpecsInput">Technische Produktmerkmale (&lt;li&gt; Liste):</label>
+                        <textarea id="fgSpecsInput" rows="4"></textarea>
+                    </div>
+                    <div class="control-group">
+                        <label for="fgLieferumfangInput">Lieferumfang (&lt;li&gt; Liste):</label>
+                        <textarea id="fgLieferumfangInput" rows="3"></textarea>
+                    </div>
+                    <div class="control-group">
+                        <label for="fgHinweiseInput">Montage- &amp; Rückgabe-Hinweise (&lt;li&gt; Liste):</label>
+                        <textarea id="fgHinweiseInput" rows="3"></textarea>
+                    </div>
+                </div>
+
+            </div> <!-- END frontglasModeContainer -->
 
             <!-- Sticky Generate Action Bar -->
             <div class="sidebar-sticky-footer">

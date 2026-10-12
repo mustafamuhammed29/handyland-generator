@@ -435,3 +435,57 @@ export const REPAIR_DATA = {
         "Batteriewechsel 100%"
     ]
 };
+
+// ================= FRONTGLAS MIT OCA - ERSATZTEIL PRODUKTDATEN =================
+export const FRONTGLAS_DATA = {
+    brands: [
+        { 
+            id: "Universal", 
+            name: "🌐 Universell (Alle Smartphone-Modelle)",
+            label: "Alle gängigen Smartphone-Modelle"
+        },
+        { 
+            id: "Apple", 
+            name: "🍎 Apple iPhone (Alle Modelle)",
+            label: "Apple iPhone Modelle"
+        },
+        { 
+            id: "Samsung", 
+            name: "📱 Samsung Galaxy (Alle Modelle)",
+            label: "Samsung Galaxy Modelle"
+        },
+        { 
+            id: "Xiaomi", 
+            name: "📱 Xiaomi (Alle Modelle)",
+            label: "Xiaomi Modelle"
+        },
+        { 
+            id: "Google", 
+            name: "📱 Google Pixel (Alle Modelle)",
+            label: "Google Pixel Modelle"
+        },
+        { 
+            id: "Other", 
+            name: "🔧 Weitere Marken (Huawei, Sony, etc.)",
+            label: "Alle Smartphone-Modelle"
+        }
+    ],
+    defaultSpecsHtml: `<li><strong>Vorlaminierte optische OCA-Klebefolie (Optical Clear Adhesive):</strong> Kein Hantieren mit flüssigem LOCA-Kleber, keine Sauerei, keine Luftblasen und maximale Lichtdurchlässigkeit (>99.5%).</li>
+<li><strong>9H Hartglas in Erstausrüsterqualität:</strong> Hochbelastbares, kratzfestes Spezial-Ersatzglas – schützt zuverlässig vor Kratzern durch Schlüssel, Münzen & Stöße.</li>
+<li><strong>Oleophobe Nano-Oberflächenbeschichtung:</strong> Schmutzabweisend gegen Fingerabdrücke, Öl & Fett mit samtweichem, originalgetreuem Touch-Gleitgefühl.</li>
+<li><strong>100% Passgenauigkeit (1:1 Maßanfertigung):</strong> Exakt geschliffene Kanten und millimetergenaue Aussparungen für Hörmuschel, Frontkamera und Näherungssensoren.</li>
+<li><strong>Kristallklare Farb- & Bildwiedergabe:</strong> Keine Beeinträchtigung von Helligkeit, Kontrast, HDR oder Blickwinkel des Original-Displays.</li>
+<li><strong>Sichere Schutzfolierung:</strong> Beidseitig mit transparenter Schutzfolie versehen für staubfreien Transport bis zur Montage.</li>`,
+    defaultWarning: `⚠️ WICHTIGER TECHNISCHER HINWEIS (VOR DEM KAUF BEACHTEN):
+• Dies ist AUSSCHLIESSLICH das äußere Frontglas mit voraufgebrachter OCA-Klebefolie!
+• Es handelt sich NICHT um eine komplette Displayeinheit (kein LCD- / kein OLED-Panel und kein Touch-Digitizer enthalten).
+• Voraussetzung: Die Bildanzeige und die Touch-Funktion Ihres Displays müssen noch zu 100% intakt sein und fehlerfrei reagieren.
+• Nur für Fachleute / Reparaturwerkstätten: Der Glastausch erfordert professionelles Spezialwerkzeug (Heizplatte / Trenndraht / Freeze-Separation, Vakuum-Laminiergerät und Autoklav zur Blasenentfernung). Für Beschädigungen durch unsachgemäßen Einbau wird keine Haftung übernommen.`,
+    defaultLieferumfangHtml: `<li><strong>1x Premium Frontglas mit vorlaminierter OCA-Klebefolie</strong> für das gewählte Smartphone-Modell (mit Schutzfolie)</li>
+<li><strong>Bruchsichere Spezialverpackung:</strong> Stabiler Hartkarton mit antistatischer Polsterung für sicheren Transport</li>
+<li><strong>Blitzversand aus Deutschland (Heidelberg):</strong> Versicherter Versand per DHL mit Sendungsverfolgung</li>
+<li><strong>Offizielle Rechnung</strong> mit ausgewiesener deutscher MwSt. (19%)</li>`,
+    defaultHinweiseHtml: `<li>Bitte prüfen Sie die Glasscheibe vor dem Verkleben / Einbau sorgfältig auf Passgenauigkeit und Transportschäden.</li>
+<li>Ziehen Sie die OCA-Schutzfolie erst unmittelbar vor dem Einlegen in die Laminiermaschine im staubfreien Raum ab.</li>
+<li>Rücknahme / Umtausch ist aus technischen Gründen nur im unverbauten Zustand mit unbeschädigten Schutzfolien möglich.</li>`
+};

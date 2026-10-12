@@ -5,18 +5,21 @@
  * customer slip auto-filling, theme switching, and file downloads.
  */
 
-import { REPAIR_DATA } from './data/repair-data.js?v=9.3';
+import { REPAIR_DATA, FRONTGLAS_DATA } from './data/repair-data.js?v=9.3';
 import { generateEbayHtml } from './ebay-template.js?v=9.3';
+import { generateFrontglasEbayHtml } from './frontglas-template.js?v=9.3';
 
 // Application State
 const state = {
+    appMode: 'repair', // 'repair' | 'frontglas'
     currentTab: 'preview',
     currentDevice: 'desktop',
     currentTheme: 'gold',
     currentHtml: '',
     currentKleinanzeigenText: '',
     savedTemplates: [],
-    matrixRows: []
+    matrixRows: [],
+    frontglasImage: ''
 };
 
 // DOM Elements Cache
@@ -29,6 +32,7 @@ function init() {
     loadSavedTemplates();
     renderModelChips();
     initMatrixRows();
+    initFrontglasSection();
     bindEvents();
     loadSavedSettings();
     updateDynamicTexts();
@@ -37,6 +41,12 @@ function init() {
 
 function cacheElements() {
     elements = {
+        // App Mode Switcher Elements
+        modeBtnRepair: document.getElementById('modeBtnRepair'),
+        modeBtnFrontglas: document.getElementById('modeBtnFrontglas'),
+        repairModeContainer: document.getElementById('repairModeContainer'),
+        frontglasModeContainer: document.getElementById('frontglasModeContainer'),
+
         // Theme Swatches
         themeButtons: document.querySelectorAll('.btn-theme-swatch'),
         presetsContainer: document.getElementById('presetsContainer'),
@@ -59,7 +69,7 @@ function cacheElements() {
         giftCover: document.getElementById('giftCover'),
         giftLensGlass: document.getElementById('giftLensGlass'),
 
-        // Inputs
+        // Inputs (Repair Mode)
         brandSelect: document.getElementById('brandInput'),
         modelInput: document.getElementById('modelInput'),
         repairTypeSelect: document.getElementById('repairTypeInput'),
@@ -116,10 +126,29 @@ function cacheElements() {
         custNotes: document.getElementById('custNotes'),
         btnOpenFilledForm: document.getElementById('btnOpenFilledForm'),
 
-        // SEO Box
+        // SEO Box (Repair)
         seoTitleInput: document.getElementById('seoTitleInput'),
         seoCounter: document.getElementById('titleCharCount'),
         btnCopySeo: document.getElementById('btnCopySeo'),
+
+        // Frontglas mit OCA Controls
+        fgSeoTitleInput: document.getElementById('fgSeoTitleInput'),
+        fgTitleCharCount: document.getElementById('fgTitleCharCount'),
+        fgBtnCopySeo: document.getElementById('fgBtnCopySeo'),
+        fgBrandInput: document.getElementById('fgBrandInput'),
+        fgColorInput: document.getElementById('fgColorInput'),
+        fgShippingCostInput: document.getElementById('fgShippingCostInput'),
+        fgImageFileInput: document.getElementById('fgImageFileInput'),
+        fgBtnUploadFile: document.getElementById('fgBtnUploadFile'),
+        fgImageUrlInput: document.getElementById('fgImageUrlInput'),
+        fgImagePreviewRow: document.getElementById('fgImagePreviewRow'),
+        fgImageThumb: document.getElementById('fgImageThumb'),
+        fgImageThumbTitle: document.getElementById('fgImageThumbTitle'),
+        fgBtnRemoveImage: document.getElementById('fgBtnRemoveImage'),
+        fgWarningInput: document.getElementById('fgWarningInput'),
+        fgSpecsInput: document.getElementById('fgSpecsInput'),
+        fgLieferumfangInput: document.getElementById('fgLieferumfangInput'),
+        fgHinweiseInput: document.getElementById('fgHinweiseInput'),
         
         // Main Actions & Tabs
         btnGenerate: document.getElementById('btnGenerate'),
@@ -223,6 +252,140 @@ function renderModelChips() {
     } else {
         elements.modelChipsContainer.innerHTML = '';
     }
+}
+
+// ================= FRONTGLAS MIT OCA COMPONENT =================
+function initFrontglasSection() {
+    if (!elements.fgBrandInput) return;
+
+    // Populate Brand select
+    elements.fgBrandInput.innerHTML = FRONTGLAS_DATA.brands.map(b => 
+        `<option value="${b.id}">${b.name}</option>`
+    ).join('');
+
+    // Pre-fill textareas with default texts
+    if (elements.fgWarningInput && !elements.fgWarningInput.value) {
+        elements.fgWarningInput.value = FRONTGLAS_DATA.defaultWarning;
+    }
+    if (elements.fgSpecsInput && !elements.fgSpecsInput.value) {
+        elements.fgSpecsInput.value = FRONTGLAS_DATA.defaultSpecsHtml;
+    }
+    if (elements.fgLieferumfangInput && !elements.fgLieferumfangInput.value) {
+        elements.fgLieferumfangInput.value = FRONTGLAS_DATA.defaultLieferumfangHtml;
+    }
+    if (elements.fgHinweiseInput && !elements.fgHinweiseInput.value) {
+        elements.fgHinweiseInput.value = FRONTGLAS_DATA.defaultHinweiseHtml;
+    }
+
+    updateFrontglasSeoTitle();
+}
+
+function updateFrontglasSeoTitle() {
+    if (!elements.fgSeoTitleInput) return;
+    const brand = elements.fgBrandInput ? elements.fgBrandInput.value : 'Universal';
+    
+    // Auto-compose universal high-converting eBay title (up to 80 chars)
+    let title = 'Frontglas mit OCA Folie für Smartphone Display Glas Scheibe 9H';
+    if (brand && brand !== 'Universal' && brand !== 'Other') {
+        const brandLabel = (brand === 'Apple') ? 'Apple iPhone' : (brand === 'Samsung') ? 'Samsung Galaxy' : brand;
+        title = `Frontglas mit OCA Folie für ${brandLabel} Display Glas Scheibe 9H`;
+    }
+    elements.fgSeoTitleInput.value = title;
+    
+    const count = title.length;
+    if (elements.fgTitleCharCount) {
+        elements.fgTitleCharCount.innerText = `${count}/80`;
+        if (count > 80) {
+            elements.fgTitleCharCount.style.color = '#ef4444';
+            elements.fgTitleCharCount.style.borderColor = '#ef4444';
+        } else if (count >= 70) {
+            elements.fgTitleCharCount.style.color = '#f59e0b';
+            elements.fgTitleCharCount.style.borderColor = '#f59e0b';
+        } else {
+            elements.fgTitleCharCount.style.color = '#25D366';
+            elements.fgTitleCharCount.style.borderColor = 'rgba(37, 211, 102, 0.4)';
+        }
+    }
+}
+
+function switchAppMode(mode) {
+    state.appMode = mode;
+
+    if (mode === 'repair') {
+        if (elements.modeBtnRepair) elements.modeBtnRepair.classList.add('active');
+        if (elements.modeBtnFrontglas) elements.modeBtnFrontglas.classList.remove('active');
+        if (elements.repairModeContainer) elements.repairModeContainer.style.display = 'block';
+        if (elements.frontglasModeContainer) elements.frontglasModeContainer.style.display = 'none';
+
+        if (elements.tabKleinanzeigenBtn) {
+            elements.tabKleinanzeigenBtn.style.display = 'inline-flex';
+        }
+        showToast('🛠️ Reparatur-Service Generator aktiv');
+    } else {
+        if (elements.modeBtnFrontglas) elements.modeBtnFrontglas.classList.add('active');
+        if (elements.modeBtnRepair) elements.modeBtnRepair.classList.remove('active');
+        if (elements.repairModeContainer) elements.repairModeContainer.style.display = 'none';
+        if (elements.frontglasModeContainer) elements.frontglasModeContainer.style.display = 'flex';
+
+        if (elements.tabKleinanzeigenBtn) {
+            elements.tabKleinanzeigenBtn.style.display = 'none';
+            if (state.currentTab === 'kleinanzeigen') {
+                switchTab('preview');
+            }
+        }
+        showToast('💎 Frontglas mit OCA Ersatzteil-Generator aktiv');
+    }
+
+    generateAndRender();
+}
+
+function handleFrontglasFileUpload(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+        showToast('⚠️ Bitte eine gültige Bilddatei auswählen!');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+        const dataUrl = event.target.result;
+        state.frontglasImage = dataUrl;
+        setFrontglasImagePreview(dataUrl, file.name);
+        if (elements.fgImageUrlInput) elements.fgImageUrlInput.value = '';
+        generateAndRender();
+        showToast('✅ Produktbild geladen & im Angebot eingefügt!');
+    };
+    reader.readAsDataURL(file);
+}
+
+function handleFrontglasImageUrlInput() {
+    const url = elements.fgImageUrlInput ? elements.fgImageUrlInput.value.trim() : '';
+    if (url) {
+        state.frontglasImage = url;
+        setFrontglasImagePreview(url, 'Bild-URL');
+    } else if (!elements.fgImageFileInput || !elements.fgImageFileInput.files.length) {
+        state.frontglasImage = '';
+        clearFrontglasImagePreview();
+    }
+    generateAndRender();
+}
+
+function setFrontglasImagePreview(src, name) {
+    if (!elements.fgImagePreviewRow) return;
+    if (elements.fgImageThumb) elements.fgImageThumb.src = src;
+    if (elements.fgImageThumbTitle) elements.fgImageThumbTitle.innerText = name || 'Produktbild';
+    elements.fgImagePreviewRow.style.display = 'flex';
+}
+
+function clearFrontglasImagePreview() {
+    state.frontglasImage = '';
+    if (elements.fgImageFileInput) elements.fgImageFileInput.value = '';
+    if (elements.fgImageUrlInput) elements.fgImageUrlInput.value = '';
+    if (elements.fgImagePreviewRow) elements.fgImagePreviewRow.style.display = 'none';
+    generateAndRender();
+    showToast('🗑️ Produktbild entfernt (Standard-Grafik aktiv).');
 }
 
 // ================= CUSTOM TEMPLATES (LocalStorage) =================
@@ -566,6 +729,57 @@ function escapeHtml(str) {
 }
 
 function bindEvents() {
+    // Mode Switcher (Reparatur vs Frontglas mit OCA)
+    if (elements.modeBtnRepair) {
+        elements.modeBtnRepair.addEventListener('click', () => switchAppMode('repair'));
+    }
+    if (elements.modeBtnFrontglas) {
+        elements.modeBtnFrontglas.addEventListener('click', () => switchAppMode('frontglas'));
+    }
+
+    // Frontglas Image Upload & URL handling
+    if (elements.fgBtnUploadFile && elements.fgImageFileInput) {
+        elements.fgBtnUploadFile.addEventListener('click', () => elements.fgImageFileInput.click());
+        elements.fgImageFileInput.addEventListener('change', handleFrontglasFileUpload);
+    }
+    if (elements.fgImageUrlInput) {
+        elements.fgImageUrlInput.addEventListener('input', handleFrontglasImageUrlInput);
+    }
+    if (elements.fgBtnRemoveImage) {
+        elements.fgBtnRemoveImage.addEventListener('click', clearFrontglasImagePreview);
+    }
+
+    // Frontglas Brand
+    if (elements.fgBrandInput) {
+        elements.fgBrandInput.addEventListener('change', () => {
+            updateFrontglasSeoTitle();
+            generateAndRender();
+        });
+    }
+
+    if (elements.fgBtnCopySeo && elements.fgSeoTitleInput) {
+        elements.fgBtnCopySeo.addEventListener('click', () => {
+            copyToClipboard(elements.fgSeoTitleInput.value, '🔍 Frontglas SEO Titel kopiert!');
+        });
+    }
+
+    // Frontglas Live Inputs
+    const fgInputs = [
+        elements.fgColorInput,
+        elements.fgShippingCostInput,
+        elements.fgWarningInput,
+        elements.fgSpecsInput,
+        elements.fgLieferumfangInput,
+        elements.fgHinweiseInput,
+        elements.fgSeoTitleInput
+    ];
+    fgInputs.forEach(inp => {
+        if (inp) {
+            inp.addEventListener('input', generateAndRender);
+            inp.addEventListener('change', generateAndRender);
+        }
+    });
+
     // Add Matrix Row Button
     if (elements.btnAddMatrixRow) {
         elements.btnAddMatrixRow.addEventListener('click', addMatrixRow);
@@ -951,6 +1165,27 @@ function updateSeoTitle() {
 }
 
 function generateAndRender() {
+    if (state.appMode === 'frontglas') {
+        const fgConfig = {
+            themeId: state.currentTheme,
+            brand: elements.fgBrandInput ? elements.fgBrandInput.value : 'Universal',
+            shippingCost: elements.fgShippingCostInput ? elements.fgShippingCostInput.value.trim() : 'Kostenloser DHL Versand (inkl. Tracking)',
+            color: elements.fgColorInput ? elements.fgColorInput.value.trim() : 'Schwarz / Siehe Modellauswahl',
+            imageUrl: state.frontglasImage || (elements.fgImageUrlInput ? elements.fgImageUrlInput.value.trim() : ''),
+            specsHtml: elements.fgSpecsInput ? elements.fgSpecsInput.value.trim() : '',
+            warningText: elements.fgWarningInput ? elements.fgWarningInput.value.trim() : '',
+            lieferumfangHtml: elements.fgLieferumfangInput ? elements.fgLieferumfangInput.value.trim() : '',
+            hinweiseHtml: elements.fgHinweiseInput ? elements.fgHinweiseInput.value.trim() : '',
+            customTitle: elements.fgSeoTitleInput ? elements.fgSeoTitleInput.value.trim() : ''
+        };
+
+        const generatedHtml = generateFrontglasEbayHtml(fgConfig);
+        state.currentHtml = generatedHtml;
+        if (elements.codeOutput) elements.codeOutput.value = generatedHtml;
+        renderPreviewIframe(generatedHtml);
+        return;
+    }
+
     const selectedRepairOption = elements.repairTypeSelect.options[elements.repairTypeSelect.selectedIndex];
     const repairName = selectedRepairOption ? selectedRepairOption.text : "Reparatur";
 
@@ -1092,10 +1327,16 @@ function setPreviewDevice(device) {
 }
 
 function downloadHtmlFile() {
-    const brand = elements.brandSelect.value.toLowerCase();
-    const model = elements.modelInput.value.trim().toLowerCase().replace(/\s+/g, '-');
-    const repair = elements.repairTypeSelect.value;
-    const filename = `ebay-template-${brand}-${model}-${repair}.html`;
+    let filename = '';
+    if (state.appMode === 'frontglas') {
+        const brand = (elements.fgBrandInput ? elements.fgBrandInput.value : 'universal').toLowerCase();
+        filename = `ebay-frontglas-oca-${brand}-alle-modelle.html`;
+    } else {
+        const brand = elements.brandSelect.value.toLowerCase();
+        const model = elements.modelInput.value.trim().toLowerCase().replace(/\s+/g, '-');
+        const repair = elements.repairTypeSelect.value;
+        filename = `ebay-template-${brand}-${model}-${repair}.html`;
+    }
 
     const blob = new Blob([state.currentHtml], { type: 'text/html;charset=utf-8' });
     const link = document.createElement('a');

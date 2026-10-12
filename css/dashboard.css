@@ -1202,3 +1202,161 @@ body {
     border-color: rgba(245, 158, 11, 0.5) !important;
     background: rgba(245, 158, 11, 0.05) !important;
 }
+
+/* ==========================================================================
+   FRONTGLAS MIT OCA - ERSATZTEILE DASHBOARD EXTENSIONS
+   ========================================================================== */
+.app-mode-switch-wrapper {
+    margin: -2px 0 4px 0;
+}
+.app-mode-switch-bar {
+    display: flex;
+    background: #09090e;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 4px;
+    gap: 6px;
+}
+.btn-mode-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+.btn-mode-tab:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.06);
+}
+.btn-mode-tab.active {
+    background: var(--gold-gradient);
+    color: #08080c;
+    font-weight: 900;
+    box-shadow: 0 2px 14px rgba(212, 175, 55, 0.4);
+}
+
+.frontglas-mode-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.fg-image-upload-box {
+    background: var(--bg-card);
+    border: 1px dashed var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: var(--transition);
+}
+.fg-image-upload-box:hover {
+    border-color: var(--gold-primary);
+}
+.btn-upload-file {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 11px 14px;
+    background: rgba(212, 175, 55, 0.12);
+    border: 1px solid var(--gold-primary);
+    color: var(--gold-light);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+}
+.btn-upload-file:hover {
+    background: var(--gold-primary);
+    color: #08080c;
+}
+.fg-img-preview-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    background: #09090e;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+.fg-img-thumb {
+    width: 54px;
+    height: 54px;
+    object-fit: contain;
+    background: #111422;
+    border-radius: 6px;
+    border: 1px solid var(--gold-primary);
+    padding: 2px;
+}
+.fg-img-thumb-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow: hidden;
+}
+.fg-img-thumb-title {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.fg-img-thumb-sub {
+    font-size: 11px;
+    color: #10b981;
+    font-weight: 600;
+}
+.btn-remove-thumb {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid var(--accent-red);
+    color: #fca5a5;
+    padding: 5px 9px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+}
+.btn-remove-thumb:hover {
+    background: var(--accent-red);
+    color: #ffffff;
+}
+
+.fg-warning-hint-box {
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font-size: 11.5px;
+    color: #fca5a5;
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+.fg-generic-info-box {
+    background: rgba(212, 175, 55, 0.08);
+    border: 1px solid rgba(212, 175, 55, 0.28);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font-size: 11.5px;
+    color: var(--gold-light);
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+
